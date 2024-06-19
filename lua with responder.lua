@@ -59,39 +59,6 @@ local REQUIRED_CHAR_PARTS = {
     ["LowerTorso"] = true,
     ["Head"] = true,
 }
-local JAIL = INFORMATION:WaitForChild("Jail")
-
-
-if tonumber(JAIL.Value) > 0 then
-    print("Jailed")
-
-    local key = PLAYER.Backpack:FindFirstChild("[Key]") or PLAYER.Character:FindFirstChild("[Key]")
-    
-    -- Purchase key if not already in possession
-    while not key do
-        if not SHOP then
-            print("Shop object not found. Cannot purchase key.")
-            return
-        end
-        
-        local keyPosition = SHOP["[Key] - $133"].Head.Position + Vector3.new(0, 3, 0)
-        PLAYER.Character.HumanoidRootPart.CFrame = CFrame.new(keyPosition)
-        fireclickdetector(SHOP["[Key] - $133"].ClickDetector)
-        task.wait(1)
-        key = PLAYER.Backpack:FindFirstChild("[Key]") or PLAYER.Character:FindFirstChild("[Key]")
-    end
-
-    -- Use key until free
-    while tonumber(JAIL.Value) > 0 do
-        task.wait(1)
-        if key and key.Parent then
-            key.Parent = PLAYER.Character
-        else
-            key = PLAYER.Backpack:FindFirstChild("[Key]") or PLAYER.Character:FindFirstChild("[Key]")
-        end
-    end
-end
-RenderSettings.EagerBulkExecution = false
 
 
 Terrain.WaterWaveSize = 0
