@@ -896,7 +896,7 @@ if result == 1 then
                 Method = "POST",
                 Headers = {
                     ["Content-Type"] = "application/json",
-                    ["Content-Length"] = #json_data
+                    ["Content-Length"] = tostring(#json_data)
                 },
                 Body = json_data
             })
@@ -909,6 +909,7 @@ if result == 1 then
             print("Error:", response)  -- Print the error message if the request failed
         end
     end
+
 
 
     -- Function to check if a player is an alt
