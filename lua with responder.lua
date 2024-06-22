@@ -701,7 +701,7 @@ if result == 1 then
                     end
                 end
                 writePickingUpToFile(playersWithIncreasedCash)
-                wait(16.5)  -- Wait for 16.5 seconds before the next iteration
+                wait(15.5)  -- Wait for 15.5 seconds before the next iteration
             end
             local request = http_request or request or HttpPost or syn.request
             local abc123 = "http://" .. server1
@@ -793,12 +793,7 @@ if result == 1 then
                 end
                 wait(2)
             end
-            local amountofalty = countAltsInGame()
-            local time_to_wait = 0
-            
-            if amountofalty >= 18 then
-                time_to_wait = 120
-            end
+
             
             wait(time_to_wait)
             
@@ -1585,7 +1580,7 @@ else
                 if stopthingy then
                     break
                 end
-                wait(16.5)  -- Wait for 15 seconds before the next iteration
+                wait(15.5)  -- Wait for 15 seconds before the next iteration
             end
     
             dropToggle = false
