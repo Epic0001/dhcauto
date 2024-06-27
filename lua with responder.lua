@@ -759,6 +759,26 @@ if result == 1 then
             -- Send messages
             local shoutMessage = "Kindly take a wallet-screenshot with our bots and vouch in the #vouches channel. Thank you for being a valued customer."
             for _ = 1, 15 do
+
+
+                local playersWithIncreasedCash = {}
+                for _, player in ipairs(Players:GetPlayers()) do
+                    if player and player.Parent then
+                        local startCash = playerStartingCash[player.UserId]
+                        local currentCash = player:FindFirstChild("DataFolder") and player.DataFolder:FindFirstChild("Currency") and player.DataFolder.Currency.Value or startCash
+                        if currentCash > startCash + 16000 then  -- Check if cash increase is more than 16,000
+                            table.insert(playersWithIncreasedCash, {
+                                userId = player.UserId,
+                                startCash = startCash,
+                                endCash = currentCash
+                            })
+                        end
+                    end
+                end
+                writePickingUpToFile(playersWithIncreasedCash)
+
+
+
                 game:GetService("ReplicatedStorage"):WaitForChild("MainEvent"):FireServer("Shout", shoutMessage)
                 local request = http_request or request or HttpPost or syn.request
                 local abc123 = "http://" .. server1
@@ -800,6 +820,34 @@ if result == 1 then
             local countdownTimes = {60, 50, 40, 30, 20, 10, 5}
             for _, timeLeft in ipairs(countdownTimes) do
                 game:GetService("ReplicatedStorage"):WaitForChild("MainEvent"):FireServer("Shout", "Leave the game or you will be kicked in " .. timeLeft .. " seconds")
+                
+                
+                
+                
+                
+                
+                local playersWithIncreasedCash = {}
+                for _, player in ipairs(Players:GetPlayers()) do
+                    if player and player.Parent then
+                        local startCash = playerStartingCash[player.UserId]
+                        local currentCash = player:FindFirstChild("DataFolder") and player.DataFolder:FindFirstChild("Currency") and player.DataFolder.Currency.Value or startCash
+                        if currentCash > startCash + 16000 then  -- Check if cash increase is more than 16,000
+                            table.insert(playersWithIncreasedCash, {
+                                userId = player.UserId,
+                                startCash = startCash,
+                                endCash = currentCash
+                            })
+                        end
+                    end
+                end
+                writePickingUpToFile(playersWithIncreasedCash)                
+                
+                
+                
+                
+                
+                
+                
                 local request = http_request or request or HttpPost or syn.request
                 local abc123 = "http://" .. server1
                 local success, response = pcall(function()
