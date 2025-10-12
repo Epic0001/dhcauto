@@ -248,7 +248,7 @@ local TextChatService = game:GetService("TextChatService")
 -- Safe chat send function
 local function Chat(text)
     pcall(function()
-        local channel = TextChatService:FindFirstChild("TextChannels") and TextChatService.TextChannels:FindFirstChild("RBXGeneral")
+        local channel = TextChatService.TextChannels:FindFirstChild("RBXGeneral")
         if channel then
             channel:SendAsync(tostring(text))
         else
@@ -256,6 +256,7 @@ local function Chat(text)
         end
     end)
 end
+
 
 -- Listen for incoming messages (commands from main controller)
 if TextChatService and TextChatService.OnIncomingMessage then
