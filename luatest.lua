@@ -243,7 +243,7 @@ if result == 1 then
     local LOW_GFX_PARTS = {} -- [part] = originalMaterial
     local MAIN_EVENT = ReplicatedStorage:WaitForChild("MainEvent")
   -- Modern Chat Handler (replaces DefaultChatSystemChatEvents)
-local TextChatService = cloneref and cloneref(game:GetService("TextChatService")) or game:GetService("TextChatService")
+local TextChatService = game:GetService("TextChatService")
 
 -- Safe chat send function
 local function Chat(text)
