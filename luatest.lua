@@ -433,7 +433,7 @@ print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH))
         else
             count = 0
             task.wait()
-       
+     
         end
     end
 
