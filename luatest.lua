@@ -41,8 +41,7 @@ local PLAYER = Players.LocalPlayer
 print("[DEBUG] LocalPlayer: " .. tostring(PLAYER.Name))
 local MOUSE = PLAYER:GetMouse()
 print("[DEBUG] Mouse initialized for player")
-local DATA_FOLDER = PLAYER:WaitForChild("DataFolder")
-print("[DEBUG] DataFolder found for player")
+
 local INVENTORY = DATA_FOLDER:WaitForChild("Inventory")
 print("[DEBUG] Inventory found in DataFolder")
 local PLAYER_CASH = DATA_FOLDER:WaitForChild("Currency")
@@ -269,7 +268,7 @@ if result == 1 then
     print("[DEBUG] MainModule reloaded for main alt")
     local PLAYER = Players.LocalPlayer
     local MOUSE = PLAYER:GetMouse()
-    local DATA_FOLDER = PLAYER:WaitForChild("DataFolder")
+
     local INFORMATION = DATA_FOLDER:WaitForChild("Information")
     local INVENTORY = DATA_FOLDER:WaitForChild("Inventory")
     local PLAYER_CREW = INFORMATION:FindFirstChild("Crew")
@@ -1112,7 +1111,7 @@ else
     local mainModule = require(ReplicatedStorage:WaitForChild("MainModule"))
     local PLAYER = Players.LocalPlayer
     local MOUSE = PLAYER:GetMouse()
-    local DATA_FOLDER = PLAYER:WaitForChild("DataFolder")
+
     local INFORMATION = DATA_FOLDER:WaitForChild("Information")
     local INVENTORY = DATA_FOLDER:WaitForChild("Inventory")
     local PLAYER_CREW = INFORMATION:FindFirstChild("Crew")
