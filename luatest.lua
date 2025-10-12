@@ -41,11 +41,13 @@ local PLAYER = Players.LocalPlayer
 print("[DEBUG] LocalPlayer: " .. tostring(PLAYER.Name))
 local MOUSE = PLAYER:GetMouse()
 print("[DEBUG] Mouse initialized for player")
-
+local DATA_FOLDER = PLAYER:WaitForChild("DataFolder", 10)
+local PLAYER_CASH = DATA_FOLDER and DATA_FOLDER:WaitForChild("Currency", 10)
+print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH.Value))
 local INVENTORY = DATA_FOLDER:WaitForChild("Inventory")
 print("[DEBUG] Inventory found in DataFolder")
-local PLAYER_CASH = DATA_FOLDER:WaitForChild("Currency")
-print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH.Value))
+
+
 local INFORMATION = DATA_FOLDER:WaitForChild("Information")
 print("[DEBUG] Information folder found in DataFolder")
 local ORIGINAL_CASH_AMOUNT = PLAYER_CASH.Value
@@ -268,12 +270,14 @@ if result == 1 then
     print("[DEBUG] MainModule reloaded for main alt")
     local PLAYER = Players.LocalPlayer
     local MOUSE = PLAYER:GetMouse()
-
+local DATA_FOLDER = PLAYER:WaitForChild("DataFolder", 10)
+local PLAYER_CASH = DATA_FOLDER and DATA_FOLDER:WaitForChild("Currency", 10)
+print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH.Value))
     local INFORMATION = DATA_FOLDER:WaitForChild("Information")
     local INVENTORY = DATA_FOLDER:WaitForChild("Inventory")
     local PLAYER_CREW = INFORMATION:FindFirstChild("Crew")
     print("[DEBUG] Player crew: " .. tostring(PLAYER_CREW))
-    local PLAYER_CASH = PLAYER.DataFolder:WaitForChild("Currency")
+
     local ORIGINAL_CASH_AMOUNT = PLAYER_CASH.Value
     local CASHIERS = workspace:WaitForChild("Cashiers")
     local IGNORED = workspace:WaitForChild("Ignored")
@@ -1111,11 +1115,13 @@ else
     local mainModule = require(ReplicatedStorage:WaitForChild("MainModule"))
     local PLAYER = Players.LocalPlayer
     local MOUSE = PLAYER:GetMouse()
-
+local DATA_FOLDER = PLAYER:WaitForChild("DataFolder", 10)
+local PLAYER_CASH = DATA_FOLDER and DATA_FOLDER:WaitForChild("Currency", 10)
+print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH.Value))
     local INFORMATION = DATA_FOLDER:WaitForChild("Information")
     local INVENTORY = DATA_FOLDER:WaitForChild("Inventory")
     local PLAYER_CREW = INFORMATION:FindFirstChild("Crew")
-    local PLAYER_CASH = PLAYER.DataFolder:WaitForChild("Currency")
+  
     local ORIGINAL_CASH_AMOUNT = PLAYER_CASH.Value
     local CASHIERS = workspace:WaitForChild("Cashiers")
     local IGNORED = workspace:WaitForChild("Ignored")
