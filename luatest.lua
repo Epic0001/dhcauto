@@ -212,11 +212,11 @@ print("[DEBUG] getAltNumber2 result: " .. tostring(result))
 if result == 1 then
     local function makeEverythingInvisible()
         local allParts = game.Workspace:GetDescendants()
-        print("[DEBUG] makeEverythingInvisible: Found " .. #allParts .. " descendants in workspace")
+      
         for _, part in ipairs(allParts) do
             if part:IsA("BasePart") then
                 part.Transparency = 1
-                print("[DEBUG] makeEverythingInvisible: Set Transparency to 1 for: " .. part.Name)
+              
             end
         end
     end
@@ -1056,11 +1056,11 @@ if result == 1 then
 else
     local function makeEverythingInvisible()
         local allParts = game.Workspace:GetDescendants()
-        print("[DEBUG] makeEverythingInvisible (alt): Found " .. #allParts .. " descendants")
+        
         for _, part in ipairs(allParts) do
             if part:IsA("BasePart") then
                 part.Transparency = 1
-                print("[DEBUG] makeEverythingInvisible (alt): Set Transparency for: " .. part.Name)
+              
             end
         end
     end
