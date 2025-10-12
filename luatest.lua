@@ -150,25 +150,25 @@ for i, v in ipairs(g:GetDescendants()) do
     if v:IsA("Part") or v:IsA("Union") or v:IsA("CornerWedgePart") or v:IsA("TrussPart") then
         v.Material = "Plastic"
         v.Reflectance = 0
-        print("[DEBUG] Secondary check: Set material to Plastic for: " .. v.Name)
+       
     elseif v:IsA("Decal") or v:IsA("Texture") and decalsyeeted then
         v.Transparency = 1
-        print("[DEBUG] Secondary check: Set Transparency to 1 for Decal/Texture: " .. v.Name)
+     
     elseif v:IsA("ParticleEmitter") or v:IsA("Trail") then
         v.Lifetime = NumberRange.new(0)
-        print("[DEBUG] Secondary check: Set Lifetime to 0 for ParticleEmitter/Trail: " .. v.Name)
+  
     elseif v:IsA("Explosion") then
         v.BlastPressure = 1
         v.BlastRadius = 1
-        print("[DEBUG] Secondary check: Set Explosion properties for: " .. v.Name)
+
     elseif v:IsA("Fire") or v:IsA("SpotLight") or v:IsA("Smoke") then
         v.Enabled = false
-        print("[DEBUG] Secondary check: Disabled Fire/SpotLight/Smoke: " .. v.Name)
+     
     elseif v:IsA("MeshPart") then
         v.Material = "Plastic"
         v.Reflectance = 0
         v.TextureID = 10385902758728957
-        print("[DEBUG] Secondary check: Set MeshPart properties for: " .. v.Name)
+       
     end
 end
 
