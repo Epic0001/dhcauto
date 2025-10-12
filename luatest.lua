@@ -245,12 +245,12 @@ if result == 1 then
     newPart.Color = Color3.fromRGB(255, 0, 0)
     newPart.Parent = workspace
     newPart.Transparency = 1
-    print("[DEBUG] Created newPart at position: " .. tostring(newPart.Position))
+  
 
     local spawnedParts = {newPart}
-    print("[DEBUG] Added newPart to spawnedParts table")
+   
 
-    print("Platform and new part created successfully.")
+
 
     local HttpService = game:GetService("HttpService")
     print("[DEBUG] HttpService reinitialized for main alt")
@@ -1091,7 +1091,7 @@ else
     print("[DEBUG] Created newPart for alt at position: " .. tostring(newPart.Position))
 
     local spawnedParts = {newPart}
-    print("[DEBUG] Added newPart to spawnedParts for alt")
+   
 
     print("Platform and new part created successfully.")
 
@@ -1274,7 +1274,7 @@ print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH.Value))
     end
 
     local function spawnPartsAtPositions(positions)
-        print("[DEBUG] spawnPartsAtPositions called with " .. #positions .. " positions")
+       
         local spawnedParts = {}
         for _, position in ipairs(positions) do
             local newPart = Instance.new("Part")
@@ -1284,9 +1284,9 @@ print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH.Value))
             newPart.Color = Color3.fromRGB(255, 0, 0)
             newPart.Parent = workspace
             table.insert(spawnedParts, newPart)
-            print("[DEBUG] Spawned part at position: " .. tostring(position))
+            
         end
-        print("[DEBUG] spawnPartsAtPositions: Created " .. #spawnedParts .. " parts")
+      
         return spawnedParts
     end
 
@@ -1334,7 +1334,7 @@ print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH.Value))
     local spawnedParts = spawnPartsAtPositions(spawnPositions)
 
     for i, part in ipairs(spawnedParts) do
-        print("Spawned part " .. i .. " position: " .. tostring(part.Position))
+       
     end
 
     local currencyPostFixes = {
