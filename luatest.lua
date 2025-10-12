@@ -1134,7 +1134,7 @@ print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH.Value))
     local MAP = workspace:WaitForChild("MAP")
     local LOW_GFX_PARTS = {}
     local MAIN_EVENT = ReplicatedStorage:WaitForChild("MainEvent")
-    local CHAT_EVENT = ReplicatedStorage:WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("SayMessageRequest")
+    
     local DefaultChatSystemChatEvents = ReplicatedStorage:WaitForChild("DefaultChatSystemChatEvents")
     local messageDoneFiltering = DefaultChatSystemChatEvents:WaitForChild("OnMessageDoneFiltering")
     local PLAYER_GUI = PLAYER:WaitForChild("PlayerGui")
