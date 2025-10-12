@@ -1,9 +1,6 @@
--- Define global variables (replace with actual values)
-getgenv().ipv4 = getgenv().ipv4 or "your_server_ip" -- Replace with actual IP (e.g., "192.168.1.100")
-getgenv().alts = getgenv().alts or {123456, 789012} -- Replace with actual UserIds
-getgenv().dont_kick = getgenv().dont_kick or {}
+
 getgenv().hideCash = true
-getgenv().time_to_wait = 30
+
 
 -- Services
 local HttpService = game:GetService("HttpService")
