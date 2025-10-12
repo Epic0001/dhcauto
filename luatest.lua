@@ -213,7 +213,7 @@ if result == 1 then
     local Lighting = game:GetService("Lighting")
     local TweenService = game:GetService("TweenService")
     local Stats = game:GetService("Stats")
-    local ChatService = game:GetService("Chat")
+   
     local HttpService = game:GetService("HttpService")
     local mainModule = require(ReplicatedStorage:WaitForChild("MainModule"))
     local PLAYER = Players.LocalPlayer
@@ -244,7 +244,7 @@ if result == 1 then
     local MAIN_EVENT = ReplicatedStorage:WaitForChild("MainEvent")
   -- Modern Chat Handler (replaces DefaultChatSystemChatEvents)
 local TextChatService = game:GetService("TextChatService")
-
+  print("TextChatService loaded")
 -- Safe chat send function
 local function Chat(text)
     pcall(function()
