@@ -347,10 +347,7 @@ print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH))
         warn("[Chat] TextChatService.OnIncomingMessage not available.")
     end
 
-    local DefaultChatSystemChatEvents = ReplicatedStorage:WaitForChild("DefaultChatSystemChatEvents")
-    local messageDoneFiltering = DefaultChatSystemChatEvents:WaitForChild("OnMessageDoneFiltering")
-    print("[DEBUG] DefaultChatSystemChatEvents initialized")
-
+  
     local PLAYER_GUI = PLAYER:WaitForChild("PlayerGui")
     local CORE_GUI = game.CoreGui
     print("[DEBUG] PlayerGui and CoreGui initialized")
@@ -1135,8 +1132,7 @@ print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH.Value))
     local LOW_GFX_PARTS = {}
     local MAIN_EVENT = ReplicatedStorage:WaitForChild("MainEvent")
     
-    local DefaultChatSystemChatEvents = ReplicatedStorage:WaitForChild("DefaultChatSystemChatEvents")
-    local messageDoneFiltering = DefaultChatSystemChatEvents:WaitForChild("OnMessageDoneFiltering")
+
     local PLAYER_GUI = PLAYER:WaitForChild("PlayerGui")
     local CORE_GUI = game.CoreGui
     print("[DEBUG] Workspace objects and GUI initialized for alt")
