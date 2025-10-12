@@ -231,12 +231,12 @@ if result == 1 then
     feetPlatform.Size = Vector3.new(5, 2, 5)
     feetPlatform.Color = Color3.fromRGB(255, 255, 255)
     feetPlatform.Transparency = 1
-    print("[DEBUG] Created feetPlatform at position: " .. tostring(feetPlatform.Position))
+   
 
     local floorPartFolder = Instance.new("Folder")
     floorPartFolder.Name = "FloorParts"
     floorPartFolder.Parent = workspace
-    print("[DEBUG] Created FloorParts folder in workspace")
+  
 
     local newPart = Instance.new("Part")
     newPart.Anchored = true
@@ -323,7 +323,7 @@ print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH))
             LowGfxScreenGui.Enabled = true
             LowGfxScreenGui.IgnoreGuiInset = true
             LowGfxScreenGui.Parent = CORE_GUI
-            print("[DEBUG] Created LowGfxScreenGui")
+       
 
             local LowGfxBackground = Instance.new("Frame")
             LowGfxBackground.Name = "LowGfxBackground"
@@ -331,7 +331,7 @@ print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH))
             LowGfxBackground.BackgroundColor3 = Color3.new(0, 0, 0)
             LowGfxBackground.Size = UDim2.new(1, 0, 1, 0)
             LowGfxBackground.Parent = LowGfxScreenGui
-            print("[DEBUG] Created LowGfxBackground")
+          
 
             local LGFXUIGradient = Instance.new("UIGradient")
             LGFXUIGradient.Name = "LGFXUIGradient"
@@ -341,7 +341,7 @@ print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH))
             }
             LGFXUIGradient.Rotation = 290
             LGFXUIGradient.Parent = LowGfxBackground
-            print("[DEBUG] Created LGFXUIGradient")
+          
 
             local LowGfxTitle = Instance.new("TextLabel")
             LowGfxTitle.Name = "LowGfxTitle"
@@ -353,7 +353,7 @@ print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH))
             LowGfxTitle.Font = Enum.Font.SourceSans
             LowGfxTitle.TextScaled = true
             LowGfxTitle.Parent = LowGfxBackground
-            print("[DEBUG] Created LowGfxTitle with cash: " .. tostring(PLAYER_CASH.Value))
+          
 
             PLAYER_CASH.Changed:Connect(function()
                 if LowGfxTitle then
@@ -374,7 +374,7 @@ print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH))
             UsernameLabel.Font = Enum.Font.SourceSans
             UsernameLabel.TextScaled = true
             UsernameLabel.Parent = LowGfxBackground
-            print("[DEBUG] Created UsernameLabel with text: " .. PLAYER.Name)
+       
 
             local ProfilePicture = Instance.new("ImageLabel")
             ProfilePicture.Name = "ProfilePicture"
@@ -383,9 +383,9 @@ print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH))
             ProfilePicture.BackgroundTransparency = 1
             ProfilePicture.Image = "http://www.roblox.com/Thumbs/Avatar.ashx?x=100&y=100&Format=png&userId="..PLAYER.UserId
             ProfilePicture.Parent = LowGfxBackground
-            print("[DEBUG] Created ProfilePicture for UserId: " .. PLAYER.UserId)
+        
         end
-        print("LowGfxScreenGui created and enabled")
+
     else
         print("CORE_GUI not found")
     end
@@ -433,7 +433,7 @@ print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH))
         else
             count = 0
             task.wait()
-            print("[DEBUG] Task wait triggered after 1200 iterations")
+       
         end
     end
 
@@ -445,7 +445,7 @@ print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH))
         else
             count = 0
             task.wait()
-            print("[DEBUG] Task wait triggered in LOW_GFX_PARTS loop")
+       
         end
     end
 
@@ -1037,12 +1037,12 @@ else
     feetPlatform.Size = Vector3.new(5, 2, 5)
     feetPlatform.Color = Color3.fromRGB(255, 255, 255)
     feetPlatform.Transparency = 1
-    print("[DEBUG] Created feetPlatform for alt at position: " .. tostring(feetPlatform.Position))
+
 
     local floorPartFolder = Instance.new("Folder")
     floorPartFolder.Name = "FloorParts"
     floorPartFolder.Parent = workspace
-    print("[DEBUG] Created FloorParts folder for alt")
+
 
     local newPart = Instance.new("Part")
     newPart.Anchored = true
@@ -1051,12 +1051,12 @@ else
     newPart.Color = Color3.fromRGB(255, 0, 0)
     newPart.Parent = workspace
     newPart.Transparency = 1
-    print("[DEBUG] Created newPart for alt at position: " .. tostring(newPart.Position))
+ 
 
     local spawnedParts = {newPart}
    
 
-    print("Platform and new part created successfully.")
+
 
     local HttpService = game:GetService("HttpService")
     local lastReceivedMessage = ""
@@ -1108,7 +1108,7 @@ print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH.Value))
             LowGfxScreenGui.Enabled = true
             LowGfxScreenGui.IgnoreGuiInset = true
             LowGfxScreenGui.Parent = CORE_GUI
-            print("[DEBUG] Created LowGfxScreenGui for alt")
+      
 
             local LowGfxBackground = Instance.new("Frame")
             LowGfxBackground.Name = "LowGfxBackground"
@@ -1116,7 +1116,7 @@ print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH.Value))
             LowGfxBackground.BackgroundColor3 = Color3.new(0, 0, 0)
             LowGfxBackground.Size = UDim2.new(1, 0, 1, 0)
             LowGfxBackground.Parent = LowGfxScreenGui
-            print("[DEBUG] Created LowGfxBackground for alt")
+        
 
             local LGFXUIGradient = Instance.new("UIGradient")
             LGFXUIGradient.Name = "LGFXUIGradient"
@@ -1126,7 +1126,7 @@ print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH.Value))
             }
             LGFXUIGradient.Rotation = 290
             LGFXUIGradient.Parent = LowGfxBackground
-            print("[DEBUG] Created LGFXUIGradient for alt")
+         
 
             local LowGfxTitle = Instance.new("TextLabel")
             LowGfxTitle.Name = "LowGfxTitle"
@@ -1138,8 +1138,6 @@ print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH.Value))
             LowGfxTitle.Font = Enum.Font.SourceSans
             LowGfxTitle.TextScaled = true
             LowGfxTitle.Parent = LowGfxBackground
-            print("[DEBUG] Created LowGfxTitle for alt with cash: " .. tostring(PLAYER_CASH.Value))
-
             PLAYER_CASH.Changed:Connect(function()
                 if LowGfxTitle then
                     LowGfxTitle.Text = tostring(PLAYER_CASH.Value)
@@ -1159,7 +1157,7 @@ print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH.Value))
             UsernameLabel.Font = Enum.Font.SourceSans
             UsernameLabel.TextScaled = true
             UsernameLabel.Parent = LowGfxBackground
-            print("[DEBUG] Created UsernameLabel for alt with text: " .. PLAYER.Name)
+           
 
             local ProfilePicture = Instance.new("ImageLabel")
             ProfilePicture.Name = "ProfilePicture"
@@ -1168,9 +1166,9 @@ print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH.Value))
             ProfilePicture.BackgroundTransparency = 1
             ProfilePicture.Image = "http://www.roblox.com/Thumbs/Avatar.ashx?x=100&y=100&Format=png&userId="..PLAYER.UserId
             ProfilePicture.Parent = LowGfxBackground
-            print("[DEBUG] Created ProfilePicture for alt with UserId: " .. PLAYER.UserId)
+            
         end
-        print("LowGfxScreenGui created and enabled")
+  
     else
         print("CORE_GUI not found")
     end
