@@ -216,7 +216,7 @@ local function dropMoney(money, name)
             end
 
             pcall(function()
-                MAIN_EVENT:FireServer("DropMoney", 10000)
+                MAIN_EVENT:FireServer("DropMoney", 15000)
             end)
             task.wait(16.5)
         end
