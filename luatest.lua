@@ -1,77 +1,77 @@
 local server1 = ipv4 .. ":5000"
 local server2 = ipv4 .. ":6000"
 local Workspace = game:GetService('Workspace')
-print("[DEBUG] Workspace service initialized")
+
 local Lighting = game:GetService('Lighting')
-print("[DEBUG] Lighting service initialized")
+
 local Players = game:GetService('Players')
-print("[DEBUG] Players service initialized")
+
 local Terrain = Workspace:FindFirstChild('Terrain')
-print("[DEBUG] Terrain found: " .. tostring(Terrain))
+
 local RenderSettings = settings():GetService("RenderSettings")
-print("[DEBUG] RenderSettings service initialized")
+
 local RunService = game:GetService("RunService")
-print("[DEBUG] RunService initialized")
+
 --Services
 local HttpService = game:GetService("HttpService")
-print("[DEBUG] HttpService initialized")
+
 local request = http_request or request or HttpPost or syn.request
-print("[DEBUG] HTTP request function set")
+
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-print("[DEBUG] ReplicatedStorage initialized")
+
 local GroupService = game:GetService("GroupService")
-print("[DEBUG] GroupService initialized")
+
 local Stats = game:GetService("Stats")
-print("[DEBUG] Stats service initialized")
+
 local TweenService = game:GetService("TweenService")
-print("[DEBUG] TweenService initialized")
+
 local VirtualUser = game:GetService("VirtualUser")
-print("[DEBUG] VirtualUser initialized")
+
 local VirtualInputManager = game:GetService("VirtualInputManager")
-print("[DEBUG] VirtualInputManager initialized")
+
 local UserInputService = game:GetService("UserInputService")
-print("[DEBUG] UserInputService initialized")
+
 
 --Module scripts
 local mainModule = require(ReplicatedStorage:WaitForChild("MainModule"))
-print("[DEBUG] MainModule loaded from ReplicatedStorage")
+
 
 --Consts
 local PLAYER = Players.LocalPlayer
-print("[DEBUG] LocalPlayer: " .. tostring(PLAYER.Name))
+
 local MOUSE = PLAYER:GetMouse()
-print("[DEBUG] Mouse initialized for player")
+
 local DATA_FOLDER = PLAYER:WaitForChild("DataFolder", 10)
 local PLAYER_CASH = DATA_FOLDER and DATA_FOLDER:WaitForChild("Currency", 10)
-print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH))
+
 local INVENTORY = DATA_FOLDER:WaitForChild("Inventory")
-print("[DEBUG] Inventory found in DataFolder")
+
 
 
 local INFORMATION = DATA_FOLDER:WaitForChild("Information")
-print("[DEBUG] Information folder found in DataFolder")
+
 local ORIGINAL_CASH_AMOUNT = PLAYER_CASH.Value
-print("[DEBUG] Original cash amount: " .. tostring(ORIGINAL_CASH_AMOUNT))
+
 local IGNORED = workspace:WaitForChild("Ignored")
-print("[DEBUG] Ignored folder found in workspace")
+
 local ATMS = workspace:WaitForChild("Cashiers")
-print("[DEBUG] Cashiers folder found in workspace")
+
 local PLAYERS_FOLDER = workspace:WaitForChild("Players")
-print("[DEBUG] Players folder found in workspace")
+
 local SHOP = IGNORED:WaitForChild("Shop")
-print("[DEBUG] Shop found in Ignored folder")
+
 local ITEMS_DROP = IGNORED:WaitForChild("ItemsDrop")
-print("[DEBUG] ItemsDrop found in Ignored folder")
+
 local CASH_DROP = IGNORED:WaitForChild("Drop")
-print("[DEBUG] Drop found in Ignored folder")
+
 local SHOPS = SHOP:GetChildren()
-print("[DEBUG] Shops found: " .. tostring(#SHOPS))
+
 local SPAWN = IGNORED:WaitForChild("Spawn")
-print("[DEBUG] Spawn found in Ignored folder")
+
 local LIGHTS = workspace:WaitForChild("Lights")
-print("[DEBUG] Lights found in workspace")
+
 local MAIN_EVENT = ReplicatedStorage:WaitForChild("MainEvent")
-print("[DEBUG] MainEvent found in ReplicatedStorage")
+
 
 local REQUIRED_ITEMS = {
 	["[Knife] - $159"] = 2,
@@ -79,7 +79,7 @@ local REQUIRED_ITEMS = {
 	["12 [Revolver Ammo] - $80"] = 1,
 	["[Key] - $133"] = 1,
 }
-print("[DEBUG] Required items table initialized")
+
 
 local REQUIRED_CHAR_PARTS = {
     ["Humanoid"] = true,
@@ -88,17 +88,17 @@ local REQUIRED_CHAR_PARTS = {
     ["LowerTorso"] = true,
     ["Head"] = true,
 }
-print("[DEBUG] Required character parts table initialized")
+
 
 Terrain.WaterWaveSize = 0
 Terrain.WaterWaveSpeed = 0
 Terrain.WaterReflectance = 0
 Terrain.WaterTransparency = 0
-print("[DEBUG] Terrain water properties set to 0")
+
 Lighting.GlobalShadows = false
 Lighting.FogEnd = 9e9
 Lighting.Brightness = 0
-print("[DEBUG] Lighting properties set: GlobalShadows=false, FogEnd=9e9, Brightness=0")
+
 
 for _, v in ipairs(game:GetDescendants()) do
     if v:IsA("Part") or v:IsA("Union") or v:IsA("CornerWedgePart") or v:IsA("TrussPart") then
@@ -272,7 +272,7 @@ if result == 1 then
     local MOUSE = PLAYER:GetMouse()
 local DATA_FOLDER = PLAYER:WaitForChild("DataFolder", 10)
 local PLAYER_CASH = DATA_FOLDER and DATA_FOLDER:WaitForChild("Currency", 10)
-print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH.Value))
+print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH))
     local INFORMATION = DATA_FOLDER:WaitForChild("Information")
     local INVENTORY = DATA_FOLDER:WaitForChild("Inventory")
     local PLAYER_CREW = INFORMATION:FindFirstChild("Crew")
