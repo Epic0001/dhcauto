@@ -107,11 +107,11 @@ for _, v in ipairs(game:GetDescendants()) do
     elseif v:IsA("Decal") or v:IsA("Texture") and v.Parent.Name ~= "Spill" then
         v.Parent = game:GetService('Workspace').Terrain
         v:remove()
-        print("[DEBUG] Removed Decal/Texture: " .. v.Name)
+       
     elseif v:IsA("ParticleEmitter") or v:IsA("Trail") then
         v.Parent = game:GetService('Workspace').Terrain
         v:remove()
-        print("[DEBUG] Removed ParticleEmitter/Trail: " .. v.Name)
+      
     elseif v:IsA("Explosion") then
         v.Parent = game:GetService('Workspace').Terrain
         v:remove()
@@ -186,7 +186,7 @@ end
 for _, v in ipairs(game:GetService("Workspace"):GetDescendants()) do
     if v:IsA('Seat') or string.lower(v.Name):match('seat') then
         v:remove()
-        print("[DEBUG] Removed seat: " .. v.Name)
+      
     end
 end
 
