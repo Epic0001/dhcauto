@@ -146,7 +146,7 @@ l.GlobalShadows = false
 l.FogEnd = 9e9
 l.Brightness = 0
 settings().Rendering.QualityLevel = "Level01"
-print("[DEBUG] Secondary terrain and lighting settings applied")
+
 
 for i, v in ipairs(g:GetDescendants()) do
     if v:IsA("Part") or v:IsA("Union") or v:IsA("CornerWedgePart") or v:IsA("TrussPart") then
@@ -180,7 +180,7 @@ for i, e in ipairs(l:GetChildren()) do
    
     else
         e:remove()
-        print("[DEBUG] Removed other Lighting child: " .. e.Name)
+      
     end
 end
 
@@ -192,23 +192,23 @@ for _, v in ipairs(game:GetService("Workspace"):GetDescendants()) do
 end
 
 local player_1234_id = game.Players.LocalPlayer.UserId
-print("[DEBUG] Local player UserId: " .. tostring(player_1234_id))
+
 
 function getAltNumber2(userId)
     local alts = getgenv().alts
-    print("[DEBUG] getAltNumber2 called with userId: " .. tostring(userId))
+
     for i, id in ipairs(alts) do
         if userId == id then
             print("[DEBUG] getAltNumber2 found alt number: " .. i)
             return i
         end
     end
-    print("[DEBUG] getAltNumber2: No alt found for userId")
+   
     return false
 end
 
 local result = getAltNumber2(player_1234_id)
-print("[DEBUG] getAltNumber2 result: " .. tostring(result))
+
 
 if result == 1 then
     local function makeEverythingInvisible()
@@ -223,7 +223,7 @@ if result == 1 then
     end
 
     makeEverythingInvisible()
-    print("[DEBUG] makeEverythingInvisible executed")
+   
 
     local feetPlatform = Instance.new("Part")
     feetPlatform.Anchored = true
@@ -253,7 +253,7 @@ if result == 1 then
 
 
     local HttpService = game:GetService("HttpService")
-    print("[DEBUG] HttpService reinitialized for main alt")
+   
     local lastReceivedMessage = ""
     local Players = game:GetService("Players")
     local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -264,19 +264,19 @@ if result == 1 then
     local Lighting = game:GetService("Lighting")
     local TweenService = game:GetService("TweenService")
     local Stats = game:GetService("Stats")
-    print("[DEBUG] Services reinitialized for main alt")
+   
 
     local mainModule = require(ReplicatedStorage:WaitForChild("MainModule"))
-    print("[DEBUG] MainModule reloaded for main alt")
+   
     local PLAYER = Players.LocalPlayer
     local MOUSE = PLAYER:GetMouse()
 local DATA_FOLDER = PLAYER:WaitForChild("DataFolder", 10)
 local PLAYER_CASH = DATA_FOLDER and DATA_FOLDER:WaitForChild("Currency", 10)
-print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH))
+
     local INFORMATION = DATA_FOLDER:WaitForChild("Information")
     local INVENTORY = DATA_FOLDER:WaitForChild("Inventory")
     local PLAYER_CREW = INFORMATION:FindFirstChild("Crew")
-    print("[DEBUG] Player crew: " .. tostring(PLAYER_CREW))
+    
 
     local ORIGINAL_CASH_AMOUNT = PLAYER_CASH.Value
     local CASHIERS = workspace:WaitForChild("Cashiers")
@@ -290,18 +290,17 @@ print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH))
     local MAP = workspace:WaitForChild("MAP")
     local LOW_GFX_PARTS = {}
     local MAIN_EVENT = ReplicatedStorage:WaitForChild("MainEvent")
-    print("[DEBUG] Workspace objects reinitialized for main alt")
+  
 
     local TextChatService = game:GetService("TextChatService")
-    print("TextChatService loaded")
 
     local function Chat(text)
-        print("[DEBUG] Chat function called with text: " .. tostring(text))
+      
         pcall(function()
             local channel = TextChatService.TextChannels:FindFirstChild("RBXGeneral")
             if channel then
                 channel:SendAsync(tostring(text))
-                print("[DEBUG] Chat message sent to RBXGeneral: " .. text)
+              
             else
                 warn("[Chat] RBXGeneral channel not found.")
             end
@@ -313,7 +312,7 @@ print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH))
   
     local PLAYER_GUI = PLAYER:WaitForChild("PlayerGui")
     local CORE_GUI = game.CoreGui
-    print("[DEBUG] PlayerGui and CoreGui initialized")
+   
 
     if CORE_GUI then
         local LowGfxScreenGui = CORE_GUI:FindFirstChild("LowGfxScreenGui")
@@ -358,7 +357,7 @@ print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH))
             PLAYER_CASH.Changed:Connect(function()
                 if LowGfxTitle then
                     LowGfxTitle.Text = tostring(PLAYER_CASH.Value)
-                    print("[DEBUG] Updated LowGfxTitle to cash: " .. tostring(PLAYER_CASH.Value))
+                 
                 else
                     print("LowGfxTitle not found")
                 end
@@ -387,31 +386,30 @@ print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH))
         end
 
     else
-        print("CORE_GUI not found")
+      
     end
 
     local function findPlayer(name)
-        print("[DEBUG] findPlayer called with name: " .. tostring(name))
+     
         if name then
             if Players:FindFirstChild(name) then
-                print("[DEBUG] findPlayer: Found exact match: " .. name)
+              
                 return Players[name]
             end
             name = name:lower()
             for _, player in ipairs(Players:GetPlayers()) do
                 if name == player.Name:lower():sub(1, #name) then
-                    print("[DEBUG] findPlayer: Found partial match: " .. player.Name)
+                   
                     return player
                 end
             end
         end
-        print("[DEBUG] findPlayer: No player found")
+     
         return nil
     end
 
     local function onPlayerAdded(player)
-        print("Player joined: " .. player.Name)
-        print("Welcome to the game!")
+
         local ohString1 = "VIP_CMD"
         local ohString2 = "Summon"
         local ohInstance3 = player
@@ -420,13 +418,13 @@ print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH))
     end
 
     Players.PlayerAdded:Connect(onPlayerAdded)
-    print("[DEBUG] Connected onPlayerAdded event")
+
 
     local count = 0
     for _, v in ipairs(game:GetDescendants()) do
         if v:IsA("Decal") and v.Name ~= "face" then
             v:Destroy()
-            print("[DEBUG] Destroyed Decal: " .. v.Name)
+     
         end
         if count < 1200 then
             count += 1
@@ -453,7 +451,7 @@ print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH))
     local lastReceivedMessage = nil
 
     local function listenForResponse()
-        print("[DEBUG] listenForResponse called")
+      
         local request = http_request or request or HttpPost or syn.request
         local abc123 = "http://" .. server1
         local success, response = pcall(function()
@@ -466,7 +464,7 @@ print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH))
         if success then
             print("[DEBUG] HTTP GET request to " .. abc123 .. " successful")
             if response and response.Success and response.Body then
-                print("success")
+            
                 local responseData = HttpService:JSONDecode(response.Body)
                 local flaskMessage = responseData.reply
                 local stopthingy = responseData.stop or false
@@ -1330,7 +1328,7 @@ print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH.Value))
             print("[DEBUG] Drop parameters (alt) - Alts: " .. numberOfAltsInGame .. ", Target drop: " .. targetdrop .. ", Times to drop: " .. roundedTimestoDrop)
             Chat("Started dropping " .. tostring(money) .. ", for " .. tostring(name), "All")
             for i = 1, roundedTimestoDrop do
-                print("[DEBUG] Drop iteration (alt): " .. i)
+          
                 MAIN_EVENT:FireServer("DropMoney", 15000)
                 print("[DEBUG] Fired DropMoney event (alt) with 15000")
                 local request = http_request or request or HttpPost or syn.request
