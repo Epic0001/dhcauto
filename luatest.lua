@@ -104,7 +104,7 @@ for _, v in ipairs(game:GetDescendants()) do
     if v:IsA("Part") or v:IsA("Union") or v:IsA("CornerWedgePart") or v:IsA("TrussPart") then
         v.Material = "Plastic"
         v.Reflectance = 0
-        print("[DEBUG] Set material to Plastic and Reflectance to 0 for: " .. v.Name)
+     
     elseif v:IsA("Decal") or v:IsA("Texture") and v.Parent.Name ~= "Spill" then
         v.Parent = game:GetService('Workspace').Terrain
         v:remove()
@@ -126,10 +126,10 @@ for _, v in ipairs(game:GetDescendants()) do
         v.Reflectance = 0
         v.TextureID = 0
         v.MeshId = 'rbxassetid://0'
-        print("[DEBUG] Set MeshPart properties for: " .. v.Name)
+      
     elseif v:IsA('Model') then
         sethiddenproperty(v, "LevelOfDetail", "Automatic")
-        print("[DEBUG] Set LevelOfDetail to Automatic for Model: " .. v.Name)
+      
     end
 end
 
@@ -479,7 +479,7 @@ print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH.Value))
 
     for part, originalMaterial in pairs(LOW_GFX_PARTS) do
         part.Material = Enum.Material.SmoothPlastic
-        print("[DEBUG] Set material to SmoothPlastic for part: " .. part.Name)
+      
         if count < 1200 then
             count += 1
         else
