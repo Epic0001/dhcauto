@@ -308,44 +308,7 @@ print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH))
         end)
     end
 
-    if TextChatService and TextChatService.OnIncomingMessage then
-        TextChatService.OnIncomingMessage = function(message)
-            print("[DEBUG] OnIncomingMessage triggered")
-            if not message or not message.TextSource then
-                print("[DEBUG] Invalid message or TextSource")
-                return
-            end
-            local userId = message.TextSource.UserId
-            local text = message.Text or ""
-            print("[DEBUG] Received message from UserId: " .. tostring(userId) .. ", Text: " .. text)
-            if getgenv().mainId and userId == getgenv().mainId then
-                local parts = string.split(text, " ")
-                if #parts == 0 then
-                    print("[DEBUG] Empty message parts")
-                    return
-                end
-                local prefix = parts[1]:sub(1,1)
-                if prefix == "/" or prefix == "." then
-                    local cmdName = parts[1]:sub(2):lower()
-                    local args = {}
-                    for i = 2, #parts do
-                        table.insert(args, parts[i])
-                    end
-                    print("[DEBUG] Command received: " .. cmdName .. ", Args: " .. table.concat(args, ", "))
-                    if altCommands and altCommands[cmdName] then
-                        pcall(function()
-                            altCommands[cmdName](Players.LocalPlayer, args)
-                            print("[DEBUG] Executed command: " .. cmdName)
-                        end)
-                    else
-                        warn("[Chat] Unknown command: " .. cmdName)
-                    end
-                end
-            end
-        end
-    else
-        warn("[Chat] TextChatService.OnIncomingMessage not available.")
-    end
+
 
   
     local PLAYER_GUI = PLAYER:WaitForChild("PlayerGui")
