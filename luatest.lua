@@ -43,7 +43,7 @@ local MOUSE = PLAYER:GetMouse()
 print("[DEBUG] Mouse initialized for player")
 local DATA_FOLDER = PLAYER:WaitForChild("DataFolder", 10)
 local PLAYER_CASH = DATA_FOLDER and DATA_FOLDER:WaitForChild("Currency", 10)
-print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH.Value))
+print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH))
 local INVENTORY = DATA_FOLDER:WaitForChild("Inventory")
 print("[DEBUG] Inventory found in DataFolder")
 
