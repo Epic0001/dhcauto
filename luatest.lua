@@ -116,11 +116,11 @@ for _, v in ipairs(game:GetDescendants()) do
     elseif v:IsA("Explosion") then
         v.Parent = game:GetService('Workspace').Terrain
         v:remove()
-        print("[DEBUG] Removed Explosion: " .. v.Name)
+   
     elseif v:IsA("Fire") or v:IsA("SpotLight") or v:IsA("Smoke") then
         v.Parent = game:GetService('Workspace').Terrain
         v:remove()
-        print("[DEBUG] Removed Fire/SpotLight/Smoke: " .. v.Name)
+  
     elseif v:IsA("MeshPart") then
         v.Material = "Plastic"
         v.Reflectance = 0
@@ -177,7 +177,7 @@ end
 for i, e in ipairs(l:GetChildren()) do
     if e:IsA("BlurEffect") or e:IsA("SunRaysEffect") or e:IsA("ColorCorrectionEffect") or e:IsA("BloomEffect") or e:IsA("DepthOfFieldEffect") then
         e:remove()
-        print("[DEBUG] Removed Lighting effect: " .. e.Name)
+   
     else
         e:remove()
         print("[DEBUG] Removed other Lighting child: " .. e.Name)
@@ -1024,7 +1024,7 @@ print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH.Value))
         else
             v:WaitForChild("Decal"):Destroy()
             v:WaitForChild("Decal"):Destroy()
-            print("[DEBUG] Removed decals for part: " .. v.Name)
+        
         end
     end)
 
