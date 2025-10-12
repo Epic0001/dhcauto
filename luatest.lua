@@ -72,6 +72,13 @@ local LIGHTS = workspace:WaitForChild("Lights")
 
 local MAIN_EVENT = ReplicatedStorage:WaitForChild("MainEvent")
 
+local CHAT_CHANNEL
+local success, err = pcall(function()
+    CHAT_CHANNEL = TextChatService.TextChannels.RBXGeneral
+end)
+if not success or not CHAT_CHANNEL then
+    CHAT_CHANNEL = { SendAsync = function(message) end } -- Fallback: Skip chat
+end
 
 local REQUIRED_ITEMS = {
 	["[Knife] - $159"] = 2,
@@ -968,18 +975,18 @@ local PLAYER_CASH = DATA_FOLDER and DATA_FOLDER:WaitForChild("Currency", 10)
             child:WaitForChild("Decal"):Destroy()
             child:WaitForChild("BillboardGui").Enabled = false
             child:Destroy()
-            print("[DEBUG] Processed and destroyed dropped part: " .. child.Name)
+          
         end
     end)
 
     IGNORED.Drop.ChildAdded:Connect(function(v)
-        print("[DEBUG] Drop.ChildAdded (hideCash) triggered for: " .. v.Name)
+       
         if hideCash == true and v:IsA("Part") and v.Parent ~= nil then
             v:WaitForChild("Decal"):Destroy()
             v:WaitForChild("Decal"):Destroy()
             v.Transparency = 1
             v:WaitForChild("BillboardGui").Enabled = false
-            print("[DEBUG] Hid cash for part: " .. v.Name)
+            
         else
             v:WaitForChild("Decal"):Destroy()
             v:WaitForChild("Decal"):Destroy()
@@ -989,7 +996,7 @@ local PLAYER_CASH = DATA_FOLDER and DATA_FOLDER:WaitForChild("Currency", 10)
 
     function getAltNumber(userId)
         local alts = getgenv().alts
-        print("[DEBUG] getAltNumber called with userId: " .. tostring(userId))
+        
         for i, id in ipairs(alts) do
             if userId == id then
                 print("[DEBUG] getAltNumber: Found alt number " .. i)
@@ -1069,14 +1076,14 @@ else
     local TweenService = game:GetService("TweenService")
     local Stats = game:GetService("Stats")
     local ChatService = game:GetService("Chat")
-    print("[DEBUG] Services initialized for alt")
+   
 
     local mainModule = require(ReplicatedStorage:WaitForChild("MainModule"))
     local PLAYER = Players.LocalPlayer
     local MOUSE = PLAYER:GetMouse()
 local DATA_FOLDER = PLAYER:WaitForChild("DataFolder", 10)
 local PLAYER_CASH = DATA_FOLDER and DATA_FOLDER:WaitForChild("Currency", 10)
-print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH.Value))
+
     local INFORMATION = DATA_FOLDER:WaitForChild("Information")
     local INVENTORY = DATA_FOLDER:WaitForChild("Inventory")
     local PLAYER_CREW = INFORMATION:FindFirstChild("Crew")
@@ -1097,7 +1104,7 @@ print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH.Value))
 
     local PLAYER_GUI = PLAYER:WaitForChild("PlayerGui")
     local CORE_GUI = game.CoreGui
-    print("[DEBUG] Workspace objects and GUI initialized for alt")
+    
 
     if CORE_GUI then
         local LowGfxScreenGui = CORE_GUI:FindFirstChild("LowGfxScreenGui")
@@ -1140,7 +1147,7 @@ print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH.Value))
             PLAYER_CASH.Changed:Connect(function()
                 if LowGfxTitle then
                     LowGfxTitle.Text = tostring(PLAYER_CASH.Value)
-                    print("[DEBUG] Updated LowGfxTitle for alt to cash: " .. tostring(PLAYER_CASH.Value))
+                    
                 else
                     print("LowGfxTitle not found")
                 end
@@ -1173,28 +1180,28 @@ print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH.Value))
     end
 
     local function findPlayer(name)
-        print("[DEBUG] findPlayer (alt) called with name: " .. tostring(name))
+       
         if name then
             if Players:FindFirstChild(name) then
-                print("[DEBUG] findPlayer (alt): Found exact match: " .. name)
+               
                 return Players[name]
             end
             name = name:lower()
             for _, player in ipairs(Players:GetPlayers()) do
                 if name == player.Name:lower():sub(1, #name) then
-                    print("[DEBUG] findPlayer (alt): Found partial match: " .. player.Name)
+                   
                     return player
                 end
             end
         end
-        print("[DEBUG] findPlayer (alt): No player found")
+       
         return nil
     end
 
     local firstMessage = nil
 
     local function listenForResponse()
-        print("[DEBUG] listenForResponse (alt) called")
+       
         local request = http_request or request or HttpPost or syn.request
         local abc123 = "http://" .. server1
         local success, response = pcall(function()
@@ -1204,17 +1211,17 @@ print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH.Value))
             })
         end)
         if success then
-            print("[DEBUG] HTTP GET request (alt) successful")
+          
             if response and response.Success and response.Body then
                 local responseData = HttpService:JSONDecode(response.Body)
                 local flaskMessage = responseData.reply
-                print("[DEBUG] Flask message (alt): " .. tostring(flaskMessage))
+              
                 if not firstMessage then
                     firstMessage = flaskMessage
-                    print("[DEBUG] Set firstMessage (alt): " .. tostring(firstMessage))
+             
                 else
                     if flaskMessage ~= lastReceivedMessage then
-                        print("flaskMessage: " .. flaskMessage)
+                    
                         local firstWord = flaskMessage:match("^%S+")
                         local middleWord = flaskMessage:match("%S+%s*(%S+)%s+%S+$")
                         local lastWord = flaskMessage:match("%S+$")
@@ -1305,27 +1312,23 @@ print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH.Value))
 
     function dropMoney(money, name)
         print("[DEBUG] dropMoney (alt) called with money: " .. tostring(money) .. ", name: " .. tostring(name))
-        local amountString = money
-        local limit = tonumber(amountString)
-        print("[DEBUG] Initial limit (alt): " .. tostring(limit))
-        if not limit then
-            for postFix, value in pairs(currencyPostFixes) do
-                if string.find(amountString, postFix) then
-                    local rawNumberString = string.gsub(amountString, postFix, "")
-                    local amountNumber = tonumber(rawNumberString)
-                    limit = amountNumber * value
-                    print("[DEBUG] Converted amount with postfix " .. postFix .. ": " .. tostring(limit))
-                    break
-                end
-            end
-        end
+    	local amountString = money
+    	local limit = tonumber(amountString)
+    	if not limit then
+        	for postFix, value in pairs(currencyPostFixes) do
+            	if string.find(amountString, postFix) then
+                	local rawNumberString = string.gsub(amountString, postFix, "")
+                	limit = tonumber(rawNumberString) * value
+                	break
+            	end
+        	end
+    	end
 
         if limit then
             numberOfAltsInGame = countAltsInGame()
             targetdrop = limit / numberOfAltsInGame
             timestodrop = targetdrop / 12750
             roundedTimestoDrop = math.ceil(timestodrop)
-            print("[DEBUG] Drop parameters (alt) - Alts: " .. numberOfAltsInGame .. ", Target drop: " .. targetdrop .. ", Times to drop: " .. roundedTimestoDrop)
             Chat("Started dropping " .. tostring(money) .. ", for " .. tostring(name), "All")
             for i = 1, roundedTimestoDrop do
           
@@ -1374,20 +1377,15 @@ print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH.Value))
         end
     end
 
-    function countAltsInGame()
-        local alts = getgenv().alts
-        local count = 0
-        print("[DEBUG] countAltsInGame (alt): Checking alts")
-        for _, altID in ipairs(alts) do
-            local player = game.Players:GetPlayerByUserId(altID)
-            if player then
-                count = count + 1
-                print("[DEBUG] countAltsInGame (alt): Found alt player " .. player.Name)
-            end
-        end
-        print("[DEBUG] countAltsInGame (alt): Total alts found: " .. count)
-        return count
-    end
+ 	function countAltsInGame()
+    	local count = 0
+    	for _, altID in ipairs(alts) do
+        	if Players:GetPlayerByUserId(altID) then
+            	count += 1
+        	end
+    	end
+   	 return count
+	end
 
     PLAYER.Idled:Connect(function()
         print("[DEBUG] Anti-AFK (alt) triggered")
@@ -1397,23 +1395,23 @@ print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH.Value))
     end)
 
     local function teleport(targetPosition)
-        print("[DEBUG] teleport (alt) called with position: " .. tostring(targetPosition))
+       
         local character = PLAYER.Character
         if character then
             local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
             if humanoidRootPart then
                 humanoidRootPart.CFrame = CFrame.new(targetPosition)
-                print("[DEBUG] Teleported (alt) to: " .. tostring(targetPosition))
+               
             end
         end
     end
 
     function getAltNumber(userId)
         local alts = getgenv().alts
-        print("[DEBUG] getAltNumber (alt) called with userId: " .. tostring(userId))
+      
         for i, id in ipairs(alts) do
             if userId == id then
-                print("[DEBUG] getAltNumber (alt): Found alt number " .. i)
+              
                 return i
             end
         end
@@ -1464,21 +1462,21 @@ print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH.Value))
     }
 
     function teleportBasedOnAltNumber(player)
-        print("[DEBUG] teleportBasedOnAltNumber called for player: " .. player.Name)
+      
         local userId = PLAYER.UserId
         local altNumber = getAltNumber(userId)
         local position = teleportPositions[altNumber] or Vector3.new(-381.01, 35.75, -286)
-        print("[DEBUG] Selected teleport position: " .. tostring(position))
+        
         teleport(position)
     end
 
     teleportBasedOnAltNumber(PLAYER)
-    print("[DEBUG] Executed teleportBasedOnAltNumber")
+    
 
     setfpscap(2)
     settings().Rendering.QualityLevel = 1
     UserSettings().GameSettings.MasterVolume = 0
-    print("[DEBUG] Set low graphics settings for alt: FPS=2, QualityLevel=1, Volume=0")
+   
 
     while true do
         listenForResponse()
