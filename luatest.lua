@@ -415,7 +415,7 @@ print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH))
         local ohString1 = "VIP_CMD"
         local ohString2 = "Summon"
         local ohInstance3 = player
-        ReplicatedStorage.MainEvent:FireServer(ohString1, ohString2, ohInstance3)
+			game:GetService("ReplicatedStorage"):WaitForChild("MainEvent"):FireServer("VIP_CMD", ohString2, player)
         print("[DEBUG] Fired MainEvent for player join: " .. player.Name)
     end
 
@@ -527,7 +527,8 @@ print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH))
     local function vipKick(player)
         print("[DEBUG] vipKick called for player: " .. player.Name)
         if player.Parent and not isProtectedPlayer(player.UserId) then
-            ReplicatedStorage.MainEvent:FireServer("VIP_CMD", "Kick", player)
+			game:GetService("ReplicatedStorage"):WaitForChild("MainEvent"):FireServer("VIP_CMD", "Kick", player)
+        
             print("[DEBUG] Fired VIP_CMD Kick for player: " .. player.Name)
         end
     end
@@ -655,7 +656,7 @@ print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH))
             Chat("Finished dropping " .. tostring(money) .. ", for " .. tostring(name), "All")
             print("[DEBUG] Money drop completed")
 
-            local shoutMessage = "Kindly take a wallet-screenshot with our bots and vouch in the #vouches channel. Thank you for being a valued customer."
+            local shoutMessage = "Kindly take a wallet-screenshot with our dropers and vouch. Thank you for being a valued customer."
             for _ = 1, 15 do
                 local playersWithIncreasedCash = {}
                 for _, player in ipairs(Players:GetPlayers()) do
