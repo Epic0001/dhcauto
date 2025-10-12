@@ -559,7 +559,7 @@ print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH))
 
             local numberOfAltsInGame = countAltsInGame()
             local targetdrop = limit / numberOfAltsInGame
-            local timestodrop = targetdrop / 8500
+            local timestodrop = targetdrop / 12750
             local roundedTimestoDrop = math.ceil(timestodrop)
             print("[DEBUG] Drop parameters - Alts: " .. numberOfAltsInGame .. ", Target drop: " .. targetdrop .. ", Times to drop: " .. roundedTimestoDrop)
 
@@ -587,9 +587,9 @@ print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH))
                     break
                 end
 
-                MAIN_EVENT:FireServer("DropMoney", 10000)
-                print("[DEBUG] Fired DropMoney event with 10000")
-                currentValue = currentValue + 8500
+                MAIN_EVENT:FireServer("DropMoney", 15000)
+                print("[DEBUG] Fired DropMoney event with 15000")
+                currentValue = currentValue + 12750
                 amountleft(currentValue, numberOfAltsInGame, limit)
                 altscash()
 
@@ -1326,14 +1326,14 @@ print("[DEBUG] Player cash initialized: " .. tostring(PLAYER_CASH.Value))
         if limit then
             numberOfAltsInGame = countAltsInGame()
             targetdrop = limit / numberOfAltsInGame
-            timestodrop = targetdrop / 8500
+            timestodrop = targetdrop / 12750
             roundedTimestoDrop = math.ceil(timestodrop)
             print("[DEBUG] Drop parameters (alt) - Alts: " .. numberOfAltsInGame .. ", Target drop: " .. targetdrop .. ", Times to drop: " .. roundedTimestoDrop)
             Chat("Started dropping " .. tostring(money) .. ", for " .. tostring(name), "All")
             for i = 1, roundedTimestoDrop do
                 print("[DEBUG] Drop iteration (alt): " .. i)
-                MAIN_EVENT:FireServer("DropMoney", 10000)
-                print("[DEBUG] Fired DropMoney event (alt) with 10000")
+                MAIN_EVENT:FireServer("DropMoney", 15000)
+                print("[DEBUG] Fired DropMoney event (alt) with 15000")
                 local request = http_request or request or HttpPost or syn.request
                 local abc123 = "http://" .. server1
                 local success, response = pcall(function()
