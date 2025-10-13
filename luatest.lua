@@ -568,7 +568,6 @@ local CORE_GUI = game.CoreGui
 
 -- Config variables
 local hideCash = true
-local Setup = 0 -- 0 for bank, 1 for club
 
 -- Format cash value for GUI
 local function formatCash(value)
@@ -629,7 +628,7 @@ if PLAYER.UserId ~= PS_Owner then
     makeEverythingInvisible()
     setfpscap(2)
 else
-    setfpscap(2)
+    setfpscap(60)
 end
 
 settings().Rendering.QualityLevel = 1
@@ -835,30 +834,6 @@ local teleportPositions = {
     [39] = Vector3.new(-405.01, 37, -273),
 }
 
--- Club TP
-local function teleportToClub(altNumber)
-    local success, err = pcall(function()
-        local CLUB_POSITION = Vector3.new(-291, 6, -405)
-        local offsetX = 0
-        local offsetZ = 0
-
-        if altNumber > 9 then
-            local firstDigit = tonumber(string.sub(tostring(altNumber), 1, 1))
-            local lastDigit = math.floor(altNumber % 10)
-            offsetX = (firstDigit * 35) / 2
-            offsetZ = (lastDigit * 10) / 2
-        else
-            local lastDigit = math.floor(altNumber % 10)
-            offsetZ = (lastDigit * 10) / 2
-        end
-
-        teleport2(CFrame.new(CLUB_POSITION + Vector3.new(offsetZ, 0, offsetX)))
-    end)
-    if not success then
-        warn("[DEBUG] Club Teleport Error: " .. tostring(err))
-    end
-end
-
 -- Get Alt Number
 function getAltNumber(userId)
     local success, err = pcall(function()
@@ -1060,12 +1035,8 @@ local function handleRespawn()
                 local userId = PLAYER.UserId
                 local altNumber = getAltNumber(userId)
                 local position = teleportPositions[altNumber] or Vector3.new(-381.01, 37, -286)
-                if Setup == 1 then
-                    teleportToClub(altNumber)
-                else
-                    teleport(position)
-                end
-            end)
+                teleport(position)
+            end
         end
     end)
     if not success then
@@ -1205,37 +1176,123 @@ local function sendStockToServer()
     end
 end
 
--- Initialize Alt Teleport
-local function initializeAlt()
+-- Initialize Teleport Based on Alt Number
+local function initializeTeleport()
     local success, err = pcall(function()
         local userId = PLAYER.UserId
         local altNumber = getAltNumber(userId)
         if altNumber then
             local position = teleportPositions[altNumber] or Vector3.new(-381.01, 37, -286)
-            if Setup == 1 then
-                teleportToClub(altNumber)
-            else
-                teleport(position)
-            end
+            teleport(position)
         end
     end)
     if not success then
-        warn("[DEBUG] initializeAlt Error: " .. tostring(err))
+        warn("[DEBUG] initializeTeleport Error: " .. tostring(err))
     end
 end
 
--- Start stock reporting and listening
-task.spawn(function()
-    local success, err = pcall(function()
-        while true do
-            sendStockToServer()
-            task.wait(60) -- Report every 60 seconds
+if PLAYER.UserId == PS_Owner then
+    -- Main (Owner) Logic
+    MAIN_EVENT:FireServer("RoleplayModeChange")
+    print("[DEBUG] Fired RoleplayModeChange event")
+
+    teleport(Vector3.new(-393.01, 37, -338)) -- Position for owner (alt 1)
+
+    task.spawn(function()
+        local success, err = pcall(function()
+            while true do
+                sendStockToServer()
+                task.wait(60) -- Report every 60 seconds
+            end
+        end)
+        if not success then
+            warn("[DEBUG] Stock Reporting Loop Error: " .. tostring(err))
         end
     end)
-    if not success then
-        warn("[DEBUG] Stock Reporting Loop Error: " .. tostring(err))
-    end
-end)
 
-task.spawn(listenForResponse)
-task.spawn(initializeAlt)
+    task.spawn(listenForResponse)
+
+    local centerPosition = CFrame.new(-263.75531005859375, -13.117109298706055, -378.037841796875)
+    teleport(centerPosition)
+
+    local function onPlayerAdded(player)
+        repeat
+            task.wait(0.1)
+        until player.Character and player.Character:FindFirstChild("FULLY_LOADED_CHAR") ~= nil
+
+        if is_bot(player.UserId) then
+            return
+        end
+
+        local playerData = getPlayerData(player.UserId)
+        if playerData then
+            local DHC_bought = playerData.DHC_bought or 0
+            local spentCash = playerData.spentCash or 0
+            local startCash = playerData.startCash or 0
+            task.spawn(Track, player.Name, DHC_bought, spentCash, startCash)
+            task.wait(1)
+            summon(player)
+            task.wait(1)
+        else
+            task.wait(3)
+            if not is_bot(player.UserId) and not is_whitelisted_user(player.UserId) then
+                kick(player)
+            else
+                summon(player)
+            end
+        end
+    end
+
+    task.spawn(function()
+        for _, player in ipairs(Players:GetPlayers()) do
+            if player ~= PLAYER then
+                if player and player.Parent then
+                    if not is_bot(player.UserId) then
+                        task.spawn(function()
+                            onPlayerAdded(player)
+                        end)
+                        task.wait(10)
+                    end
+                end
+            end
+        end
+    end)
+
+    Players.PlayerAdded:Connect(onPlayerAdded)
+else
+    -- Alt Logic
+    local function removeCharacter(player)
+        if player ~= PLAYER and player.Character and not is_bot(player.UserId) then
+            pcall(function()
+                player.Character:Destroy()
+            end)
+        end
+    end
+
+    for _, player in ipairs(Players:GetPlayers()) do
+        pcall(function()
+            removeCharacter(player)
+        end)
+    end
+
+    Players.PlayerAdded:Connect(function(player)
+        player.CharacterAdded:Connect(function()
+            pcall(function()
+                removeCharacter(player)
+            end)
+        end)
+    end)
+
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player ~= PLAYER then
+            player.CharacterAdded:Connect(function()
+                pcall(function()
+                    removeCharacter(player)
+                end)
+            end)
+        end
+    end
+
+    task.spawn(listenForResponse)
+    initializeTeleport()
+end
