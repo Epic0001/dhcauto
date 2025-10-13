@@ -586,83 +586,572 @@ local function kick(player)
     log("Kicked: " .. player.Name) -- MODIFIED: Also logs the kick action
 end
 
+-- Integrated functions from luatest (3).lua for drop logic and server communication
+local function Chat(text)
+    pcall(function()
+        local channel = TextChatService.TextChannels:FindFirstChild("RBXGeneral")
+        if channel then
+            channel:SendAsync(tostring(text))
+        else
+            warn("[Chat] RBXGeneral channel not found.")
+        end
+    end)
+end
+
+local function countAltsInGame()
+    local alts = getgenv().alts
+    local count = 0
+    print("[DEBUG] countAltsInGame: Checking alts")
+    for _, altID in ipairs(alts) do
+        local player = game.Players:GetPlayerByUserId(altID)
+        if player then
+            count = count + 1
+            print("[DEBUG] countAltsInGame: Found alt player " .. player.Name)
+        end
+    end
+    print("[DEBUG] countAltsInGame: Total alts found: " .. count)
+    return count
+end
+
+local function amountleft(amount, alts, limit)
+    print("[DEBUG] amountleft called with amount: " .. amount .. ", alts: " .. alts .. ", limit: " .. limit)
+    local ServerURL = "http://" .. server2 .. "/write-amountleft"
+    local total = amount * alts
+    local data = {
+        total = total,
+        limit = limit,
+        alts = alts
+    }
+    local json_data = game:GetService("HttpService"):JSONEncode(data)
+    local success, response = pcall(function()
+        return request({
+            Url = ServerURL,
+            Method = "POST",
+            Headers = {
+                ["Content-Type"] = "application/json",
+                ["Content-Length"] = tostring(#json_data)
+            },
+            Body = json_data
+        })
+    end)
+    if success then
+        print("Amount left data sent successfully.")
+    else
+        print("Error: " .. tostring(response))
+    end
+end
+
+local function isAlt(player)
+    print("[DEBUG] isAlt called for player: " .. player.Name)
+    local result = table.find(getgenv().alts, player.UserId)
+    print("[DEBUG] isAlt result: " .. tostring(result))
+    return result
+end
+
+local function getCombinedCashOfAltsInGame()
+    local totalCash = ORIGINAL_CASH_AMOUNT
+    print("[DEBUG] getCombinedCashOfAltsInGame: Starting cash: " .. totalCash)
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player ~= PLAYER and isAlt(player) then
+            local cash = player:WaitForChild("DataFolder"):WaitForChild("Currency").Value
+            totalCash = totalCash + cash
+            print("[DEBUG] Added cash for alt " .. player.Name .. ": " .. cash)
+        end
+    end
+    print("[DEBUG] Total combined cash: " .. totalCash)
+    return totalCash
+end
+
+local function altscash()
+    print("[DEBUG] altscash called")
+    local ServerURL = "http://" .. server2 .. "/write-cash"
+    local total = getCombinedCashOfAltsInGame()
+    local data = {
+        cash = total,
+    }
+    local json_data = game:GetService("HttpService"):JSONEncode(data)
+    local success, response = pcall(function()
+        return request({
+            Url = ServerURL,
+            Method = "POST",
+            Headers = {
+                ["Content-Type"] = "application/json",
+                ["Content-Length"] = #json_data
+            },
+            Body = json_data
+        })
+    end)
+    if success then
+        print("cash data sent successfully.")
+    else
+        print("Error: " .. tostring(response))
+    end
+end
+
+local function final()
+    print("[DEBUG] final function called")
+    local flaskServerURL = "http://" .. server2 .. "/123-123-false"
+    local success, response = pcall(function()
+        return request({
+            Url = flaskServerURL,
+            Method = "POST",
+            Headers = {
+                ["Content-Type"] = "application/json"
+            },
+            Body = HttpService:JSONEncode({status = "False"})
+        })
+    end)
+    if success then
+        if response and response.Success then
+            print("Successfully wrote 'False' to pickingup file.")
+        else
+            print("Error: Failed to write 'False' to pickingup file.")
+        end
+    else
+        print("Error occurred while making the request to Flask server.")
+    end
+end
+
+local function writePickingUpToFile(playerData)
+    print("[DEBUG] writePickingUpToFile called with playerData: " .. tostring(#playerData) .. " entries")
+    local flaskServerURL = "http://" .. server2 .. "/write-pickingup"
+    local success, response = pcall(function()
+        return request({
+            Url = flaskServerURL,
+            Method = "POST",
+            Headers = {
+                ["Content-Type"] = "application/json"
+            },
+            Body = HttpService:JSONEncode(playerData)
+        })
+    end)
+    if success then
+        if response and response.Success then
+            print("Successfully sent player data to Flask server.")
+        else
+            print("Error: Failed to send player data to Flask server.")
+        end
+    else
+        print("Error occurred while making the request to Flask server.")
+    end
+end
+
+local function vipKick(player)
+    print("[DEBUG] vipKick called for player: " .. player.Name)
+    if player.Parent and not isProtectedPlayer(player.UserId) then
+        game:GetService("ReplicatedStorage"):WaitForChild("MainEvent"):FireServer("VIP_CMD", "Kick", player)
+        print("[DEBUG] Fired VIP_CMD Kick for player: " .. player.Name)
+    end
+end
+
+local currencyPostFixes = {
+    ["k"] = 1000,
+    ["m"] = 1000000,
+    ["b"] = 1000000000,
+}
+
 -- Main logic split
 if PLAYER.UserId == PS_Owner then
     -- THIS SECTION IS FOR THE PS_OWNER (FIRST ALT)
+    local function makeEverythingInvisible()
+        local allParts = game.Workspace:GetDescendants()
+        for _, part in ipairs(allParts) do
+            if part:IsA("BasePart") then
+                part.Transparency = 1
+            end
+        end
+    end
+
+    makeEverythingInvisible()
+
+    local feetPlatform = Instance.new("Part")
+    feetPlatform.Anchored = true
+    feetPlatform.Position = Vector3.new(0, 0, 0)
+    feetPlatform.Size = Vector3.new(5, 2, 5)
+    feetPlatform.Color = Color3.fromRGB(255, 255, 255)
+    feetPlatform.Transparency = 1
+
+    local floorPartFolder = Instance.new("Folder")
+    floorPartFolder.Name = "FloorParts"
+    floorPartFolder.Parent = workspace
+
+    local newPart = Instance.new("Part")
+    newPart.Anchored = true
+    newPart.Position = Vector3.new(-393.01, 33, -338)
+    newPart.Size = Vector3.new(5, 5, 5)
+    newPart.Color = Color3.fromRGB(255, 0, 0)
+    newPart.Parent = workspace
+    newPart.Transparency = 1
+
+    local spawnedParts = {newPart}
+
+    local function findPlayer(name)
+        if name then
+            if Players:FindFirstChild(name) then
+                return Players[name]
+            end
+            name = name:lower()
+            for _, player in ipairs(Players:GetPlayers()) do
+                if name == player.Name:lower():sub(1, #name) then
+                    return player
+                end
+            end
+        end
+        return nil
+    end
+
+    local function onPlayerAdded(player)
+        local ohString1 = "VIP_CMD"
+        local ohString2 = "Summon"
+        local ohInstance3 = player
+        game:GetService("ReplicatedStorage"):WaitForChild("MainEvent"):FireServer("VIP_CMD", ohString2, player)
+        print("[DEBUG] Fired MainEvent for player join: " .. player.Name)
+    end
+
+    Players.PlayerAdded:Connect(onPlayerAdded)
+
+    local count = 0
+    for _, v in ipairs(game:GetDescendants()) do
+        if v:IsA("Decal") and v.Name ~= "face" then
+            v:Destroy()
+        end
+        if count < 1200 then
+            count += 1
+        else
+            count = 0
+            task.wait()
+        end
+    end
+
+    for part, originalMaterial in pairs(LOW_GFX_PARTS) do
+        part.Material = Enum.Material.SmoothPlastic
+        if count < 1200 then
+            count += 1
+        else
+            count = 0
+            task.wait()
+        end
+    end
+
+    local firstMessage = nil
+    local lastReceivedMessage = nil
+
+    local function listenForResponse()
+        local abc123 = "http://" .. server1
+        local success, response = pcall(function()
+            return request({
+                Url = abc123,
+                Method = "GET"
+            })
+        end)
+
+        if success then
+            print("[DEBUG] HTTP GET request to " .. abc123 .. " successful")
+            if response and response.Success and response.Body then
+                local responseData = HttpService:JSONDecode(response.Body)
+                local flaskMessage = responseData.reply
+                local stopthingy = responseData.stop or false
+                print("[DEBUG] Flask message: " .. tostring(flaskMessage) .. ", Stop: " .. tostring(stopthingy))
+
+                if not firstMessage then
+                    firstMessage = flaskMessage
+                    print("[DEBUG] Set firstMessage: " .. tostring(firstMessage))
+                else
+                    if flaskMessage ~= lastReceivedMessage then
+                        print("flaskMessage: " .. flaskMessage)
+                        local firstWord = flaskMessage:match("^%S+")
+                        local middleWord = flaskMessage:match("%S+%s*(%S+)%s+%S+$")
+                        local lastWord = flaskMessage:match("%S+$")
+                        print("[DEBUG] Parsed message - First: " .. tostring(firstWord) .. ", Middle: " .. tostring(middleWord) .. ", Last: " .. tostring(lastWord))
+                        lastReceivedMessage = flaskMessage
+
+                        if firstWord ~= "setting" and lastWord ~= "up" then
+                            if flaskMessage ~= firstMessage then
+                                print("Starting dropmoney")
+                                dropMoney(firstWord, middleWord)
+                            end
+                        end
+                    end
+                end
+            end
+        else
+            print("Error occurred while making the request to Flask.")
+        end
+    end
+
     local function isProtectedPlayer(userId)
-        for _, id in ipairs(getgenv().alts) do if userId == id then return true end end
-        for _, id in ipairs(getgenv().dont_kick) do if userId == id then return true end end
+        print("[DEBUG] isProtectedPlayer called with userId: " .. tostring(userId))
+        for _, id in ipairs(getgenv().alts) do
+            if userId == id then
+                print("[DEBUG] isProtectedPlayer: User is an alt")
+                return true
+            end
+        end
+        for _, id in ipairs(getgenv().dont_kick) do
+            if userId == id then
+                print("[DEBUG] isProtectedPlayer: User is in dont_kick list")
+                return true
+            end
+        end
+        print("[DEBUG] isProtectedPlayer: User is not protected")
         return false
     end
 
     function dropMoney(money, name)
+        print("[DEBUG] dropMoney called with money: " .. tostring(money) .. ", name: " .. tostring(name))
         local amountString = money
         local limit = tonumber(amountString)
-        local currencyPostFixes = {["k"] = 1000, ["m"] = 1000000, ["b"] = 1000000000}
+        print("[DEBUG] Initial limit: " .. tostring(limit))
+
         if not limit then
             for postFix, value in pairs(currencyPostFixes) do
                 if string.find(amountString, postFix) then
-                    limit = tonumber(string.gsub(amountString, postFix, "")) * value
+                    local rawNumberString = string.gsub(amountString, postFix, "")
+                    local amountNumber = tonumber(rawNumberString)
+                    limit = amountNumber * value
+                    print("[DEBUG] Converted amount with postfix " .. postFix .. ": " .. tostring(limit))
                     break
                 end
             end
         end
 
         if limit then
-            status(true)
-            log("Dropping " .. tostring(money) .. " for " .. name)
+            local playerStartingCash = {}
+            for _, player in ipairs(Players:GetPlayers()) do
+                playerStartingCash[player.UserId] = player:WaitForChild("DataFolder"):WaitForChild("Currency").Value
+                print("[DEBUG] Stored starting cash for player " .. player.Name .. ": " .. tostring(playerStartingCash[player.UserId]))
+            end
 
-            local numberOfAltsInGame = #getgenv().alts
+            local numberOfAltsInGame = countAltsInGame()
             local targetdrop = limit / numberOfAltsInGame
-            local roundedTimestoDrop = math.ceil(targetdrop / 12750)
+            local timestodrop = targetdrop / 12750
+            local roundedTimestoDrop = math.ceil(timestodrop)
+            print("[DEBUG] Drop parameters - Alts: " .. numberOfAltsInGame .. ", Target drop: " .. targetdrop .. ", Times to drop: " .. roundedTimestoDrop)
+game:GetService("ReplicatedStorage"):WaitForChild("MainEvent"):FireServer("Shout", "Started dropping " .. tostring(money) .. ", for " .. tostring(name))
 
+
+            local currentValue = 0
             for i = 1, roundedTimestoDrop do
+                print("[DEBUG] Drop iteration: " .. i)
+                local abc123 = "http://" .. server1
+                local success, response = pcall(function()
+                    return request({
+                        Url = abc123,
+                        Method = "GET"
+                    })
+                end)
+
+                local responseData = HttpService:JSONDecode(response.Body)
+                local stopthingy = responseData.stop or false
+                print("[DEBUG] Stop condition: " .. tostring(stopthingy))
+
+                if stopthingy then
+                 
+                    game:GetService("ReplicatedStorage"):WaitForChild("MainEvent"):FireServer("Shout", "Stopped dropping " .. tostring(money) .. ", for " .. tostring(name))
+                    print("[DEBUG] Stopped money drop due to stop condition")
+                    break
+                end
+
                 MAIN_EVENT:FireServer("DropMoney", 15000)
-                log("Drop " .. i .. "/" .. roundedTimestoDrop)
+                print("[DEBUG] Fired DropMoney event with 15000")
+                currentValue = currentValue + 12750
+                amountleft(currentValue, numberOfAltsInGame, limit)
+                altscash()
+
+                for _, player in ipairs(Players:GetPlayers()) do
+                    if not playerStartingCash[player.UserId] then
+                        playerStartingCash[player.UserId] = player:WaitForChild("DataFolder"):WaitForChild("Currency").Value
+                        print("[DEBUG] Updated starting cash for new player " .. player.Name)
+                    end
+                end
+
+                local playersWithIncreasedCash = {}
+                for _, player in ipairs(Players:GetPlayers()) do
+                    if player and player.Parent then
+                        local startCash = playerStartingCash[player.UserId]
+                        local currentCash = player:FindFirstChild("DataFolder") and player.DataFolder:FindFirstChild("Currency") and player.DataFolder.Currency.Value or startCash
+                        if currentCash > startCash + 16000 then
+                            table.insert(playersWithIncreasedCash, {
+                                userId = player.UserId,
+                                startCash = startCash,
+                                endCash = currentCash
+                            })
+                            print("[DEBUG] Player " .. player.Name .. " cash increased: " .. startCash .. " -> " .. currentCash)
+                        end
+                    end
+                end
+                writePickingUpToFile(playersWithIncreasedCash)
                 wait(16.5)
             end
 
-            log("Finished drop. Shouting...")
-            local shoutMessage = "Kindly take a wallet-screenshot with our dropers and vouch. Thank you for being a valued customer."
-            for _ = 1, 5 do
-                shout(shoutMessage)
-                wait(2)
+            local abc123 = "http://" .. server1
+            local success, response = pcall(function()
+                return request({
+                    Url = abc123,
+                    Method = "GET"
+                })
+            end)
+
+            local responseData = HttpService:JSONDecode(response.Body)
+            local stopthingy = responseData.stop or false
+
+            if stopthingy then
+                local playersWithIncreasedCash = {}
+                for _, player in ipairs(Players:GetPlayers()) do
+                    if player and player.Parent then
+                        local startCash = playerStartingCash[player.UserId]
+                        local currentCash = player:FindFirstChild("DataFolder") and player.DataFolder:FindFirstChild("Currency") and player.DataFolder.Currency.Value or startCash
+                        if currentCash > startCash + 16000 then
+                            table.insert(playersWithIncreasedCash, {
+                                userId = player.UserId,
+                                startCash = startCash,
+                                endCash = currentCash
+                            })
+                            print("[DEBUG] Final check: Player " .. player.Name .. " cash increased: " .. startCash .. " -> " .. currentCash)
+                        end
+                    end
+                end
+                writePickingUpToFile(playersWithIncreasedCash)
+                final()
+                return
             end
 
-            log("Starting kick countdown...")
-            wait(time_to_wait or 30)
+                                game:GetService("ReplicatedStorage"):WaitForChild("MainEvent"):FireServer("Shout", "Finished dropping " .. tostring(money) .. ", for " .. tostring(name))
+
+            print("[DEBUG] Money drop completed")
+
+            local shoutMessage = "Kindly take a wallet-screenshot with our dropers and vouch. Thank you for being a valued customer."
+            for _ = 1, 15 do
+                local playersWithIncreasedCash = {}
+                for _, player in ipairs(Players:GetPlayers()) do
+                    if player and player.Parent then
+                        local startCash = playerStartingCash[player.UserId]
+                        local currentCash = player:FindFirstChild("DataFolder") and player.DataFolder:FindFirstChild("Currency") and player.DataFolder.Currency.Value or startCash
+                        if currentCash > startCash + 16000 then
+                            table.insert(playersWithIncreasedCash, {
+                                userId = player.UserId,
+                                startCash = startCash,
+                                endCash = currentCash
+                            })
+                            print("[DEBUG] Shout loop: Player " .. player.Name .. " cash increased: " .. startCash .. " -> " .. currentCash)
+                        end
+                    end
+                end
+                writePickingUpToFile(playersWithIncreasedCash)
+
+                game:GetService("ReplicatedStorage"):WaitForChild("MainEvent"):FireServer("Shout", shoutMessage)
+                print("[DEBUG] Fired Shout event with message: " .. shoutMessage)
+
+                local abc123 = "http://" .. server1
+                local success, response = pcall(function()
+                    return request({
+                        Url = abc123,
+                        Method = "GET"
+                    })
+                end)
+
+                local responseData = HttpService:JSONDecode(response.Body)
+                local stopthingy = responseData.stop or false
+
+                if stopthingy then
+                    local playersWithIncreasedCash = {}
+                    for _, player in ipairs(Players:GetPlayers()) do
+                        if player and player.Parent then
+                            local startCash = playerStartingCash[player.UserId]
+                            local currentCash = player:FindFirstChild("DataFolder") and player.DataFolder:FindFirstChild("Currency") and player.DataFolder.Currency.Value or startCash
+                            if currentCash > startCash + 16000 then
+                                table.insert(playersWithIncreasedCash, {
+                                    userId = player.UserId,
+                                    startCash = startCash,
+                                    endCash = currentCash
+                                })
+                                print("[DEBUG] Stop shout loop: Player " .. player.Name .. " cash increased: " .. startCash .. " -> " .. currentCash)
+                            end
+                        end
+                    end
+                    writePickingUpToFile(playersWithIncreasedCash)
+                    final()
+                    return
+                end
+                wait(2)
+            end
 
             local countdownTimes = {60, 30, 10, 5}
             for _, timeLeft in ipairs(countdownTimes) do
                 shout("Leave the game or you will be kicked in " .. timeLeft .. " seconds")
                 log("Kicking in " .. timeLeft .. "s")
+                local playersWithIncreasedCash = {}
+                for _, player in ipairs(Players:GetPlayers()) do
+                    if player and player.Parent then
+                        local startCash = playerStartingCash[player.UserId]
+                        local currentCash = player:FindFirstChild("DataFolder") and player.DataFolder:FindFirstChild("Currency") and player.DataFolder.Currency.Value or startCash
+                        if currentCash > startCash + 16000 then
+                            table.insert(playersWithIncreasedCash, {
+                                userId = player.UserId,
+                                startCash = startCash,
+                                endCash = currentCash
+                            })
+                            print("[DEBUG] Countdown loop: Player " .. player.Name .. " cash increased: " .. startCash .. " -> " .. currentCash)
+                        end
+                    end
+                end
+                writePickingUpToFile(playersWithIncreasedCash)
+
+                local abc123 = "http://" .. server1
+                local success, response = pcall(function()
+                    return request({
+                        Url = abc123,
+                        Method = "GET"
+                    })
+                end)
+
+                local responseData = HttpService:JSONDecode(response.Body)
+                local stopthingy = responseData.stop or false
+
+                if stopthingy then
+                    local playersWithIncreasedCash = {}
+                    for _, player in ipairs(Players:GetPlayers()) do
+                        if player and player.Parent then
+                            local startCash = playerStartingCash[player.UserId]
+                            local currentCash = player:FindFirstChild("DataFolder") and player.DataFolder:FindFirstChild("Currency") and player.DataFolder.Currency.Value or startCash
+                            if currentCash > startCash + 16000 then
+                                table.insert(playersWithIncreasedCash, {
+                                    userId = player.UserId,
+                                    startCash = startCash,
+                                    endCash = currentCash
+                                })
+                                print("[DEBUG] Stop countdown loop: Player " .. player.Name .. " cash increased: " .. startCash .. " -> " .. currentCash)
+                            end
+                        end
+                    end
+                    writePickingUpToFile(playersWithIncreasedCash)
+                    final()
+                    return
+                end
                 wait(10)
             end
 
             log("Kicking unprotected players...")
+            local playersWithIncreasedCash = {}
             for _, player in ipairs(Players:GetPlayers()) do
-                if not isProtectedPlayer(player.UserId) then
-                    kick(player)
+                if player and player.Parent then
+                    local startCash = playerStartingCash[player.UserId]
+                    local currentCash = player:FindFirstChild("DataFolder") and player.DataFolder:FindFirstChild("Currency") and player.DataFolder.Currency.Value or startCash
+                    if currentCash > startCash + 16000 then
+                        table.insert(playersWithIncreasedCash, {
+                            userId = player.UserId,
+                            startCash = startCash,
+                            endCash = currentCash
+                        })
+                        print("[DEBUG] Kick loop: Player " .. player.Name .. " cash increased: " .. startCash .. " -> " .. currentCash)
+                    end
                 end
             end
-            log("Ready for next drop.")
-            status(false)
-        end
-    end
+            writePickingUpToFile(playersWithIncreasedCash)
+            final()
 
-    local firstMessage, lastReceivedMessage = nil, nil
-    local function listenForResponse()
-        local success, response = pcall(function() return request({ Url = "http://" .. server1, Method = "GET" }) end)
-        if success and response and response.Success and response.Body then
-            local responseData = HttpService:JSONDecode(response.Body)
-            local flaskMessage = responseData.reply
-            if not firstMessage then firstMessage = flaskMessage
-            elseif flaskMessage ~= lastReceivedMessage then
-                lastReceivedMessage = flaskMessage
-                local firstWord, middleWord, lastWord = flaskMessage:match("^%S+"), flaskMessage:match("%S+%s*(%S+)%s+%S+$"), flaskMessage:match("%S+$")
-                if firstWord ~= "setting" and lastWord ~= "up" and flaskMessage ~= firstMessage then
-                    dropMoney(firstWord, middleWord)
-                end
+            for _, player in ipairs(Players:GetPlayers()) do
+                vipKick(player)
             end
         end
     end
@@ -672,7 +1161,7 @@ if PLAYER.UserId == PS_Owner then
     if PLAYER.Character and PLAYER.Character:FindFirstChild("HumanoidRootPart") then
         PLAYER.Character.HumanoidRootPart.CFrame = CFrame.new(-393.01, 35.75, -338)
     end
-    setfpscap(2)
+    setfpscap(30)
     settings().Rendering.QualityLevel = 1
     UserSettings().GameSettings.MasterVolume = 0
     RunService:Set3dRenderingEnabled(false)
@@ -682,57 +1171,194 @@ if PLAYER.UserId == PS_Owner then
     while true do listenForResponse(); wait(10) end
 else
     -- THIS SECTION IS FOR ALL OTHER ALTS
+    local function makeEverythingInvisible()
+        local allParts = game.Workspace:GetDescendants()
+        for _, part in ipairs(allParts) do
+            if part:IsA("BasePart") then
+                part.Transparency = 1
+            end
+        end
+    end
+
+    makeEverythingInvisible()
+    print("[DEBUG] makeEverythingInvisible executed for alt")
+
+    local feetPlatform = Instance.new("Part")
+    feetPlatform.Anchored = true
+    feetPlatform.Position = Vector3.new(0, 0, 0)
+    feetPlatform.Size = Vector3.new(5, 2, 5)
+    feetPlatform.Color = Color3.fromRGB(255, 255, 255)
+    feetPlatform.Transparency = 1
+
+    local floorPartFolder = Instance.new("Folder")
+    floorPartFolder.Name = "FloorParts"
+    floorPartFolder.Parent = workspace
+
+    local newPart = Instance.new("Part")
+    newPart.Anchored = true
+    newPart.Position = Vector3.new(-393.01, 31.75, -338)
+    newPart.Size = Vector3.new(5, 5, 5)
+    newPart.Color = Color3.fromRGB(255, 0, 0)
+    newPart.Parent = workspace
+    newPart.Transparency = 1
+
+    local spawnedParts = {newPart}
+
+    local function findPlayer(name)
+        if name then
+            if Players:FindFirstChild(name) then
+                return Players[name]
+            end
+            name = name:lower()
+            for _, player in ipairs(Players:GetPlayers()) do
+                if name == player.Name:lower():sub(1, #name) then
+                    return player
+                end
+            end
+        end
+        return nil
+    end
+
+    local firstMessage = nil
+
+    local function listenForResponse()
+        local abc123 = "http://" .. server1
+        local success, response = pcall(function()
+            return request({
+                Url = abc123,
+                Method = "GET"
+            })
+        end)
+        if success then
+            if response and response.Success and response.Body then
+                local responseData = HttpService:JSONDecode(response.Body)
+                local flaskMessage = responseData.reply
+                if not firstMessage then
+                    firstMessage = flaskMessage
+                else
+                    if flaskMessage ~= lastReceivedMessage then
+                        local firstWord = flaskMessage:match("^%S+")
+                        local middleWord = flaskMessage:match("%S+%s*(%S+)%s+%S+$")
+                        local lastWord = flaskMessage:match("%S+$")
+                        print("[DEBUG] Parsed message (alt) - First: " .. tostring(firstWord) .. ", Middle: " .. tostring(middleWord) .. ", Last: " .. tostring(lastWord))
+                        lastReceivedMessage = flaskMessage
+                        if firstWord ~= "setting" and lastWord ~= "up" then
+                            if flaskMessage ~= firstMessage then
+                                dropMoney(firstWord, middleWord)
+                            end
+                        end
+                    end
+                end
+            end
+        else
+            print("Error occurred while making the request to Flask.")
+        end
+    end
+
     function dropMoney(money, name)
+        print("[DEBUG] dropMoney (alt) called with money: " .. tostring(money) .. ", name: " .. tostring(name))
         local amountString = money
         local limit = tonumber(amountString)
-        local currencyPostFixes = {["k"] = 1000, ["m"] = 1000000, ["b"] = 1000000000}
         if not limit then
             for postFix, value in pairs(currencyPostFixes) do
                 if string.find(amountString, postFix) then
-                    limit = tonumber(string.gsub(amountString, postFix, "")) * value
+                    local rawNumberString = string.gsub(amountString, postFix, "")
+                    limit = tonumber(rawNumberString) * value
                     break
                 end
             end
         end
-        if limit then
-            log("Dropping...")
-            status(true)
-            local numberOfAltsInGame = #getgenv().alts
-            local targetdrop = limit / numberOfAltsInGame
-            local roundedTimestoDrop = math.ceil(targetdrop / 12750)
 
+        if limit then
+            local numberOfAltsInGame = countAltsInGame()
+            print(numberOfAltsInGame)
+            local targetdrop = limit / numberOfAltsInGame
+            print(targetdrop)
+            local timestodrop = targetdrop / 12750
+            print(timestodrop)
+            local roundedTimestoDrop = math.ceil(timestodrop)
+            print(roundedTimestoDrop)
+
+            pcall(function()
+                CHAT_CHANNEL:SendAsync("Started dropping " .. tostring(money) .. ", for " .. tostring(name))
+            end)
             for i = 1, roundedTimestoDrop do
                 MAIN_EVENT:FireServer("DropMoney", 15000)
+                print("[DEBUG] Fired DropMoney event (alt) with 15000")
+                local abc123 = "http://" .. server1
+                local success, response = pcall(function()
+                    return request({
+                        Url = abc123,
+                        Method = "GET"
+                    })
+                end)
+
+                local responseData = HttpService:JSONDecode(response.Body)
+                local stopthingy = responseData.stop or false
+                print("[DEBUG] Stop condition (alt): " .. tostring(stopthingy))
+
+                if stopthingy then
+                    break
+                end
                 wait(16.5)
             end
-            log("Drop finished.")
-            status(false)
+
+            dropToggle = false
+            local abc123 = "http://" .. server1
+            local success, response = pcall(function()
+                return request({
+                    Url = abc123,
+                    Method = "GET"
+                })
+            end)
+
+            local responseData = HttpService:JSONDecode(response.Body)
+            local stopthingy = responseData.stop or false
+
+            if stopthingy then
+                   pcall(function()
+                CHAT_CHANNEL:SendAsync("Stopped dropping " .. tostring(money) .. ", for " .. tostring(name), "All")
+                    end)
+                print("[DEBUG] Stopped money drop (alt) due to stop condition")
+                return
+            end
+               pcall(function()
+                CHAT_CHANNEL:SendAsync("Finished dropping " .. tostring(money) .. ", for " .. tostring(name), "All")
+                end)
+            print("[DEBUG] Money drop completed (alt)")
+            wait(30)
         end
     end
 
-    local firstMessage, lastReceivedMessage = nil, nil
-    local function listenForResponse()
-        local success, response = pcall(function() return request({ Url = "http://" .. server1, Method = "GET" }) end)
-        if success and response and response.Success and response.Body then
-            local responseData = HttpService:JSONDecode(response.Body)
-            local flaskMessage = responseData.reply
-            if not firstMessage then firstMessage = flaskMessage
-            elseif flaskMessage ~= lastReceivedMessage then
-                lastReceivedMessage = flaskMessage
-                local firstWord, middleWord, lastWord = flaskMessage:match("^%S+"), flaskMessage:match("%S+%s*(%S+)%s+%S+$"), flaskMessage:match("%S+$")
-                if firstWord ~= "setting" and lastWord ~= "up" and flaskMessage ~= firstMessage then
-                    dropMoney(firstWord, middleWord)
-                end
+    PLAYER.Idled:Connect(function()
+        print("[DEBUG] Anti-AFK (alt) triggered")
+        VirtualUser:Button2Down(Vector2.new(0,0), workspace.CurrentCamera.CFrame)
+        task.wait(1)
+        VirtualUser:Button2Up(Vector2.new(0,0), workspace.CurrentCamera.CFrame)
+    end)
+
+    local function teleport(targetPosition)
+        local character = PLAYER.Character
+        if character then
+            local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+            if humanoidRootPart then
+                humanoidRootPart.CFrame = CFrame.new(targetPosition)
             end
         end
     end
 
-    -- Setup for alts
     local function getAltNumber(userId)
-        for i, id in ipairs(getgenv().alts) do if userId == id then return i end end
-        return nil
+        local alts = getgenv().alts
+        for i, id in ipairs(alts) do
+            if userId == id then
+                return i
+            end
+        end
+        print("[DEBUG] getAltNumber (alt): No alt found")
+        return false
     end
-  local teleportPositions = {
+
+    local teleportPositions = {
         [1] = Vector3.new(-393.01, 36, -338),
         [2] = Vector3.new(-381.01, 36, -338),
         [3] = Vector3.new(-369.01, 36, -338),
@@ -773,18 +1399,19 @@ else
         [38] = Vector3.new(-405.01, 36, -286),
         [39] = Vector3.new(-405.01, 36, -273),
     }
-    local altNumber = getAltNumber(PLAYER.UserId)
-    local pos = (altNumber and teleportPositions[altNumber]) or Vector3.new(-381.01, 35.75, -286)
-    if PLAYER.Character and PLAYER.Character:FindFirstChild("HumanoidRootPart") then
-        PLAYER.Character.HumanoidRootPart.CFrame = CFrame.new(pos)
+
+    local function teleportBasedOnAltNumber(player)
+        local userId = PLAYER.UserId
+        local altNumber = getAltNumber(userId)
+        local position = teleportPositions[altNumber] or Vector3.new(-381.01, 35.75, -286)
+        teleport(position)
     end
+
+    teleportBasedOnAltNumber(PLAYER)
 
     setfpscap(2)
     settings().Rendering.QualityLevel = 1
     UserSettings().GameSettings.MasterVolume = 0
-    RunService:Set3dRenderingEnabled(false)
-    log("Alt Connected.")
-    status(false)
 
     while true do listenForResponse(); wait(10) end
 end
