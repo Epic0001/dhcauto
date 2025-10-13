@@ -1161,7 +1161,7 @@ game:GetService("ReplicatedStorage"):WaitForChild("MainEvent"):FireServer("Shout
     if PLAYER.Character and PLAYER.Character:FindFirstChild("HumanoidRootPart") then
         PLAYER.Character.HumanoidRootPart.CFrame = CFrame.new(-393.01, 35.75, -338)
     end
-    setfpscap(30)
+    setfpscap(2)
     settings().Rendering.QualityLevel = 1
     UserSettings().GameSettings.MasterVolume = 0
     RunService:Set3dRenderingEnabled(false)
