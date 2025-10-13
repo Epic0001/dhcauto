@@ -1,17 +1,4 @@
---[[
-    MODIFICATION NOTES:
-    - Added PS_Owner variable to define the main account as the first user ID in getgenv().alts.
-    - Integrated the advanced GUI from your new script for the PS_Owner.
-    - Added standalone 'shout' and 'kick' functions from the new script for the PS_Owner to use.
-    - The PS_Owner will now have the new advanced GUI, while other alts will retain the original low-graphics GUI.
-    - Core functionality of both scripts, including the bank setup location and server communication, has been preserved.
-    - Fixed syntax errors by removing [cite_start] annotations.
-    - Fixed Frame1 error by ensuring correct GUI hierarchy access.
-    - Fixed AfterCash value calculation and formatting to prevent incorrect displays (e.g., 2.67 billion).
-]]
 
--- Define ipv4 (replace with your server's IP address)
-local ipv4 = "192.168.1.100" -- CHANGE THIS TO YOUR SERVER'S IP
 local server1 = ipv4 .. ":5000"
 local server2 = ipv4 .. ":6000"
 local Workspace = game:GetService('Workspace')
@@ -685,7 +672,7 @@ if PLAYER.UserId == PS_Owner then
     if PLAYER.Character and PLAYER.Character:FindFirstChild("HumanoidRootPart") then
         PLAYER.Character.HumanoidRootPart.CFrame = CFrame.new(-393.01, 35.75, -338)
     end
-    setfpscap(30)
+    setfpscap(2)
     settings().Rendering.QualityLevel = 1
     UserSettings().GameSettings.MasterVolume = 0
     RunService:Set3dRenderingEnabled(false)
