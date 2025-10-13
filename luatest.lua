@@ -627,9 +627,9 @@ end
 
 if PLAYER.UserId ~= PS_Owner then
     makeEverythingInvisible()
-    setfpscap(30)
+    setfpscap(2)
 else
-    setfpscap(60)
+    setfpscap(2)
 end
 
 settings().Rendering.QualityLevel = 1
