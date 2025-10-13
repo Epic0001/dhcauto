@@ -1370,11 +1370,15 @@ local PLAYER_CASH = DATA_FOLDER and DATA_FOLDER:WaitForChild("Currency", 10)
             local stopthingy = responseData.stop or false
 
             if stopthingy then
-                Chat("Stopped dropping " .. tostring(money) .. ", for " .. tostring(name), "All")
+                  pcall(function()
+            CHAT_CHANNEL:SendAsync("Stopped dropping " .. tostring(money) .. ", for " .. tostring(name), "All")
+					end)
                 print("[DEBUG] Stopped money drop (alt) due to stop condition")
                 return
             end
-            Chat("Finished dropping " .. tostring(money) .. ", for " .. tostring(name), "All")
+             pcall(function()
+            CHAT_CHANNEL:SendAsync("Finished dropping " .. tostring(money) .. ", for " .. tostring(name), "All")
+				end)
             print("[DEBUG] Money drop completed (alt)")
             wait(30)
         end
