@@ -62,489 +62,480 @@ local Converted = {
     ["_LocalScript"] = Instance.new("LocalScript"),
 }
 
--- GUI Properties
-local function setupGUI()
-    local success, err = pcall(function()
-        local CoreGui = game:GetService("CoreGui")
-        Converted._ScreenGui.Parent = CoreGui
-        Converted._ScreenGui.IgnoreGuiInset = true
-        Converted._ScreenGui.Enabled = true
-        Converted._ScreenGui.ScreenInsets = Enum.ScreenInsets.DeviceSafeInsets
-        Converted._ScreenGui.Name = "Gui"
-        Converted._ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+Converted["_ScreenGui"].Parent = game.CoreGui
+Converted["_ScreenGui"].IgnoreGuiInset = true
+Converted["_ScreenGui"].Enabled = true
+Converted["_ScreenGui"].ScreenInsets = Enum.ScreenInsets.DeviceSafeInsets
+Converted["_ScreenGui"].Name = "Gui"
+Converted["_ScreenGui"].ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
-        Converted._Frame.Parent = Converted._ScreenGui
-        Converted._Frame.Size = UDim2.new(1, 0, 1, 0)
+Converted["_Frame"].Parent = Converted["_ScreenGui"]
+Converted["_Frame"].Size = UDim2.new(1, 0, 1, 0)
 
-        Converted._UIGradient.Color = ColorSequence.new{
-            ColorSequenceKeypoint.new(0, Color3.fromRGB(33, 33, 33)),
-            ColorSequenceKeypoint.new(1, Color3.fromRGB(45, 45, 45))
-        }
-        Converted._UIGradient.Rotation = -29
-        Converted._UIGradient.Parent = Converted._Frame
+Converted["_UIGradient"].Color = ColorSequence.new{
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(33, 33, 33)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(45, 45, 45))
+}
+Converted["_UIGradient"].Rotation = -29
+Converted["_UIGradient"].Parent = Converted["_Frame"]
 
-        Converted._UsernameFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        Converted._UsernameFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        Converted._UsernameFrame.BorderSizePixel = 0
-        Converted._UsernameFrame.Position = UDim2.new(0.320396513, 0, 0.130647853, 0)
-        Converted._UsernameFrame.Size = UDim2.new(0.358956933, 0, 0.0980766341, 0)
-        Converted._UsernameFrame.ZIndex = 2
-        Converted._UsernameFrame.Name = "UsernameFrame"
-        Converted._UsernameFrame.Parent = Converted._Frame
+Converted["_UsernameFrame"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_UsernameFrame"].BorderColor3 = Color3.fromRGB(0, 0, 0)
+Converted["_UsernameFrame"].BorderSizePixel = 0
+Converted["_UsernameFrame"].Position = UDim2.new(0.320396513, 0, 0.130647853, 0)
+Converted["_UsernameFrame"].Size = UDim2.new(0.358956933, 0, 0.0980766341, 0)
+Converted["_UsernameFrame"].ZIndex = 2
+Converted["_UsernameFrame"].Name = "UsernameFrame"
+Converted["_UsernameFrame"].Parent = Converted["_Frame"]
 
-        Converted._UICorner.CornerRadius = UDim.new(0.3, 0)
-        Converted._UICorner.Parent = Converted._UsernameFrame
+Converted["_UICorner"].CornerRadius = UDim.new(0.3, 0)
+Converted["_UICorner"].Parent = Converted["_UsernameFrame"]
 
-        Converted._UIGradient1.Color = ColorSequence.new{
-            ColorSequenceKeypoint.new(0, Color3.fromRGB(29, 29, 29)),
-            ColorSequenceKeypoint.new(1, Color3.fromRGB(25, 25, 25))
-        }
-        Converted._UIGradient1.Rotation = 81
-        Converted._UIGradient1.Parent = Converted._UsernameFrame
+Converted["_UIGradient1"].Color = ColorSequence.new{
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(29, 29, 29)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(25, 25, 25))
+}
+Converted["_UIGradient1"].Rotation = 81
+Converted["_UIGradient1"].Parent = Converted["_UsernameFrame"]
 
-        Converted._TextLabel.Font = Enum.Font.SourceSans
-        Converted._TextLabel.Text = "loading..."
-        Converted._TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-        Converted._TextLabel.TextScaled = true
-        Converted._TextLabel.TextSize = 14
-        Converted._TextLabel.TextWrapped = true
-        Converted._TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        Converted._TextLabel.BackgroundTransparency = 1
-        Converted._TextLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        Converted._TextLabel.BorderSizePixel = 0
-        Converted._TextLabel.Size = UDim2.new(1, 0, 1, 0)
-        Converted._TextLabel.Parent = Converted._UsernameFrame
+Converted["_TextLabel"].Font = Enum.Font.SourceSans
+Converted["_TextLabel"].Text = "loading..."
+Converted["_TextLabel"].TextColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_TextLabel"].TextScaled = true
+Converted["_TextLabel"].TextSize = 14
+Converted["_TextLabel"].TextWrapped = true
+Converted["_TextLabel"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_TextLabel"].BackgroundTransparency = 1
+Converted["_TextLabel"].BorderColor3 = Color3.fromRGB(0, 0, 0)
+Converted["_TextLabel"].BorderSizePixel = 0
+Converted["_TextLabel"].Size = UDim2.new(1, 0, 1, 0)
+Converted["_TextLabel"].Parent = Converted["_UsernameFrame"]
 
-        Converted._UserInfoFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        Converted._UserInfoFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        Converted._UserInfoFrame.BorderSizePixel = 0
-        Converted._UserInfoFrame.Position = UDim2.new(0.224984616, 0, 0.288347304, 0)
-        Converted._UserInfoFrame.Size = UDim2.new(0.26285246, 0, 0.420175701, 0)
-        Converted._UserInfoFrame.ZIndex = 2
-        Converted._UserInfoFrame.Name = "UserInfoFrame"
-        Converted._UserInfoFrame.Parent = Converted._Frame
+Converted["_UserInfoFrame"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_UserInfoFrame"].BorderColor3 = Color3.fromRGB(0, 0, 0)
+Converted["_UserInfoFrame"].BorderSizePixel = 0
+Converted["_UserInfoFrame"].Position = UDim2.new(0.224984616, 0, 0.288347304, 0)
+Converted["_UserInfoFrame"].Size = UDim2.new(0.26285246, 0, 0.420175701, 0)
+Converted["_UserInfoFrame"].ZIndex = 2
+Converted["_UserInfoFrame"].Name = "UserInfoFrame"
+Converted["_UserInfoFrame"].Parent = Converted["_Frame"]
 
-        Converted._UICorner1.CornerRadius = UDim.new(0.1, 0)
-        Converted._UICorner1.Parent = Converted._UserInfoFrame
+Converted["_UICorner1"].CornerRadius = UDim.new(0.1, 0)
+Converted["_UICorner1"].Parent = Converted["_UserInfoFrame"]
 
-        Converted._UIGradient2.Color = ColorSequence.new{
-            ColorSequenceKeypoint.new(0, Color3.fromRGB(43, 43, 43)),
-            ColorSequenceKeypoint.new(1, Color3.fromRGB(33, 33, 33))
-        }
-        Converted._UIGradient2.Rotation = 81
-        Converted._UIGradient2.Parent = Converted._UserInfoFrame
+Converted["_UIGradient2"].Color = ColorSequence.new{
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(43, 43, 43)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(33, 33, 33))
+}
+Converted["_UIGradient2"].Rotation = 81
+Converted["_UIGradient2"].Parent = Converted["_UserInfoFrame"]
 
-        Converted._Titles.BackgroundColor3 = Color3.fromRGB(29, 29, 29)
-        Converted._Titles.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        Converted._Titles.BorderSizePixel = 0
-        Converted._Titles.Position = UDim2.new(0, 0, 0, 0)
-        Converted._Titles.Size = UDim2.new(1, 0, 0.22862184, 0)
-        Converted._Titles.ZIndex = 2
-        Converted._Titles.Name = "Titles"
-        Converted._Titles.Parent = Converted._UserInfoFrame
+Converted["_Titles"].BackgroundColor3 = Color3.fromRGB(29, 29, 29)
+Converted["_Titles"].BorderColor3 = Color3.fromRGB(0, 0, 0)
+Converted["_Titles"].BorderSizePixel = 0
+Converted["_Titles"].Position = UDim2.new(0, 0, 0, 0)
+Converted["_Titles"].Size = UDim2.new(1, 0, 0.22862184, 0)
+Converted["_Titles"].ZIndex = 2
+Converted["_Titles"].Name = "Titles"
+Converted["_Titles"].Parent = Converted["_UserInfoFrame"]
 
-        Converted._UICorner2.CornerRadius = UDim.new(0.2, 0)
-        Converted._UICorner2.Parent = Converted._Titles
+Converted["_UICorner2"].CornerRadius = UDim.new(0.2, 0)
+Converted["_UICorner2"].Parent = Converted["_Titles"]
 
-        Converted._TextLabel1.Font = Enum.Font.SourceSansBold
-        Converted._TextLabel1.Text = "User Info"
-        Converted._TextLabel1.TextColor3 = Color3.fromRGB(255, 255, 255)
-        Converted._TextLabel1.TextScaled = true
-        Converted._TextLabel1.TextSize = 14
-        Converted._TextLabel1.TextWrapped = true
-        Converted._TextLabel1.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        Converted._TextLabel1.BackgroundTransparency = 1
-        Converted._TextLabel1.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        Converted._TextLabel1.BorderSizePixel = 0
-        Converted._TextLabel1.Position = UDim2.new(0.0178518556, 0, 0.0580206998, 0)
-        Converted._TextLabel1.Size = UDim2.new(0.305774331, 0, 0.509256303, 0)
-        Converted._TextLabel1.Parent = Converted._Titles
+Converted["_TextLabel1"].Font = Enum.Font.SourceSansBold
+Converted["_TextLabel1"].Text = "User Info"
+Converted["_TextLabel1"].TextColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_TextLabel1"].TextScaled = true
+Converted["_TextLabel1"].TextSize = 14
+Converted["_TextLabel1"].TextWrapped = true
+Converted["_TextLabel1"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_TextLabel1"].BackgroundTransparency = 1
+Converted["_TextLabel1"].BorderColor3 = Color3.fromRGB(0, 0, 0)
+Converted["_TextLabel1"].BorderSizePixel = 0
+Converted["_TextLabel1"].Position = UDim2.new(0.0178518556, 0, 0.0580206998, 0)
+Converted["_TextLabel1"].Size = UDim2.new(0.305774331, 0, 0.509256303, 0)
+Converted["_TextLabel1"].Parent = Converted["_Titles"]
 
-        Converted._TextLabel2.Font = Enum.Font.SourceSansBold
-        Converted._TextLabel2.Text = "Accounts Info"
-        Converted._TextLabel2.TextColor3 = Color3.fromRGB(115, 115, 115)
-        Converted._TextLabel2.TextScaled = true
-        Converted._TextLabel2.TextSize = 14
-        Converted._TextLabel2.TextWrapped = true
-        Converted._TextLabel2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        Converted._TextLabel2.BackgroundTransparency = 1
-        Converted._TextLabel2.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        Converted._TextLabel2.BorderSizePixel = 0
-        Converted._TextLabel2.Position = UDim2.new(0.015868444, 0, 0.571381271, 0)
-        Converted._TextLabel2.Size = UDim2.new(0.373804033, 0, 0.364196956, 0)
-        Converted._TextLabel2.Parent = Converted._Titles
+Converted["_TextLabel2"].Font = Enum.Font.SourceSansBold
+Converted["_TextLabel2"].Text = "Accounts Info"
+Converted["_TextLabel2"].TextColor3 = Color3.fromRGB(115, 115, 115)
+Converted["_TextLabel2"].TextScaled = true
+Converted["_TextLabel2"].TextSize = 14
+Converted["_TextLabel2"].TextWrapped = true
+Converted["_TextLabel2"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_TextLabel2"].BackgroundTransparency = 1
+Converted["_TextLabel2"].BorderColor3 = Color3.fromRGB(0, 0, 0)
+Converted["_TextLabel2"].BorderSizePixel = 0
+Converted["_TextLabel2"].Position = UDim2.new(0.015868444, 0, 0.571381271, 0)
+Converted["_TextLabel2"].Size = UDim2.new(0.373804033, 0, 0.364196956, 0)
+Converted["_TextLabel2"].Parent = Converted["_Titles"]
 
-        Converted._MainInfo.Font = Enum.Font.SourceSansBold
-        Converted._MainInfo.Text = "Main Info:"
-        Converted._MainInfo.TextColor3 = Color3.fromRGB(255, 255, 255)
-        Converted._MainInfo.TextScaled = true
-        Converted._MainInfo.TextSize = 14
-        Converted._MainInfo.TextWrapped = true
-        Converted._MainInfo.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        Converted._MainInfo.BackgroundTransparency = 1
-        Converted._MainInfo.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        Converted._MainInfo.BorderSizePixel = 0
-        Converted._MainInfo.Position = UDim2.new(0.0147080319, 0, 0.230908513, 0)
-        Converted._MainInfo.Size = UDim2.new(0.362676412, 0, 0.14310436, 0)
-        Converted._MainInfo.Name = "MainInfo"
-        Converted._MainInfo.Parent = Converted._UserInfoFrame
+Converted["_MainInfo"].Font = Enum.Font.SourceSansBold
+Converted["_MainInfo"].Text = "Main Info:"
+Converted["_MainInfo"].TextColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_MainInfo"].TextScaled = true
+Converted["_MainInfo"].TextSize = 14
+Converted["_MainInfo"].TextWrapped = true
+Converted["_MainInfo"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_MainInfo"].BackgroundTransparency = 1
+Converted["_MainInfo"].BorderColor3 = Color3.fromRGB(0, 0, 0)
+Converted["_MainInfo"].BorderSizePixel = 0
+Converted["_MainInfo"].Position = UDim2.new(0.0147080319, 0, 0.230908513, 0)
+Converted["_MainInfo"].Size = UDim2.new(0.362676412, 0, 0.14310436, 0)
+Converted["_MainInfo"].Name = "MainInfo"
+Converted["_MainInfo"].Parent = Converted["_UserInfoFrame"]
 
-        Converted._userid.Font = Enum.Font.SourceSansBold
-        Converted._userid.Text = "User ID:"
-        Converted._userid.TextColor3 = Color3.fromRGB(255, 255, 255)
-        Converted._userid.TextScaled = true
-        Converted._userid.TextSize = 14
-        Converted._userid.TextWrapped = true
-        Converted._userid.TextXAlignment = Enum.TextXAlignment.Left
-        Converted._userid.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        Converted._userid.BackgroundTransparency = 1
-        Converted._userid.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        Converted._userid.BorderSizePixel = 0
-        Converted._userid.Position = UDim2.new(0.0436378382, 0, 0.362490952, 0)
-        Converted._userid.Size = UDim2.new(0.912724257, 0, 0.0787154138, 0)
-        Converted._userid.Name = "userid"
-        Converted._userid.Parent = Converted._UserInfoFrame
+Converted["_userid"].Font = Enum.Font.SourceSansBold
+Converted["_userid"].Text = "User ID:"
+Converted["_userid"].TextColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_userid"].TextScaled = true
+Converted["_userid"].TextSize = 14
+Converted["_userid"].TextWrapped = true
+Converted["_userid"].TextXAlignment = Enum.TextXAlignment.Left
+Converted["_userid"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_userid"].BackgroundTransparency = 1
+Converted["_userid"].BorderColor3 = Color3.fromRGB(0, 0, 0)
+Converted["_userid"].BorderSizePixel = 0
+Converted["_userid"].Position = UDim2.new(0.0436378382, 0, 0.362490952, 0)
+Converted["_userid"].Size = UDim2.new(0.912724257, 0, 0.0787154138, 0)
+Converted["_userid"].Name = "userid"
+Converted["_userid"].Parent = Converted["_UserInfoFrame"]
 
-        Converted._DisplayName.Font = Enum.Font.SourceSansBold
-        Converted._DisplayName.Text = "Display Name:"
-        Converted._DisplayName.TextColor3 = Color3.fromRGB(255, 255, 255)
-        Converted._DisplayName.TextScaled = true
-        Converted._DisplayName.TextSize = 14
-        Converted._DisplayName.TextWrapped = true
-        Converted._DisplayName.TextXAlignment = Enum.TextXAlignment.Left
-        Converted._DisplayName.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        Converted._DisplayName.BackgroundTransparency = 1
-        Converted._DisplayName.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        Converted._DisplayName.BorderSizePixel = 0
-        Converted._DisplayName.Position = UDim2.new(0.0436378382, 0, 0.44197005, 0)
-        Converted._DisplayName.Size = UDim2.new(0.912724257, 0, 0.0787154138, 0)
-        Converted._DisplayName.Name = "DisplayName"
-        Converted._DisplayName.Parent = Converted._UserInfoFrame
+Converted["_Display Name"].Font = Enum.Font.SourceSansBold
+Converted["_Display Name"].Text = "Display Name:"
+Converted["_Display Name"].TextColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_Display Name"].TextScaled = true
+Converted["_Display Name"].TextSize = 14
+Converted["_Display Name"].TextWrapped = true
+Converted["_Display Name"].TextXAlignment = Enum.TextXAlignment.Left
+Converted["_Display Name"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_Display Name"].BackgroundTransparency = 1
+Converted["_Display Name"].BorderColor3 = Color3.fromRGB(0, 0, 0)
+Converted["_Display Name"].BorderSizePixel = 0
+Converted["_Display Name"].Position = UDim2.new(0.0436378382, 0, 0.44197005, 0)
+Converted["_Display Name"].Size = UDim2.new(0.912724257, 0, 0.0787154138, 0)
+Converted["_Display Name"].Name = "Display Name"
+Converted["_UserInfoFrame"].Parent = Converted["_Frame"]
 
-        Converted._Username.Font = Enum.Font.SourceSansBold
-        Converted._Username.Text = "Username:"
-        Converted._Username.TextColor3 = Color3.fromRGB(255, 255, 255)
-        Converted._Username.TextScaled = true
-        Converted._Username.TextSize = 14
-        Converted._Username.TextWrapped = true
-        Converted._Username.TextXAlignment = Enum.TextXAlignment.Left
-        Converted._Username.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        Converted._Username.BackgroundTransparency = 1
-        Converted._Username.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        Converted._Username.BorderSizePixel = 0
-        Converted._Username.Position = UDim2.new(0.0436378382, 0, 0.519241273, 0)
-        Converted._Username.Size = UDim2.new(0.912724257, 0, 0.0787154138, 0)
-        Converted._Username.Name = "Username"
-        Converted._Username.Parent = Converted._UserInfoFrame
+Converted["_Username"].Font = Enum.Font.SourceSansBold
+Converted["_Username"].Text = "Username:"
+Converted["_Username"].TextColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_Username"].TextScaled = true
+Converted["_Username"].TextSize = 14
+Converted["_Username"].TextWrapped = true
+Converted["_Username"].TextXAlignment = Enum.TextXAlignment.Left
+Converted["_Username"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_Username"].BackgroundTransparency = 1
+Converted["_Username"].BorderColor3 = Color3.fromRGB(0, 0, 0)
+Converted["_Username"].BorderSizePixel = 0
+Converted["_Username"].Position = UDim2.new(0.0436378382, 0, 0.519241273, 0)
+Converted["_Username"].Size = UDim2.new(0.912724257, 0, 0.0787154138, 0)
+Converted["_Username"].Name = "Username"
+Converted["_Username"].Parent = Converted["_UserInfoFrame"]
 
-        Converted._ExtraInfo.Font = Enum.Font.SourceSansBold
-        Converted._ExtraInfo.Text = "Extra Info:"
-        Converted._ExtraInfo.TextColor3 = Color3.fromRGB(255, 255, 255)
-        Converted._ExtraInfo.TextScaled = true
-        Converted._ExtraInfo.TextSize = 14
-        Converted._ExtraInfo.TextWrapped = true
-        Converted._ExtraInfo.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        Converted._ExtraInfo.BackgroundTransparency = 1
-        Converted._ExtraInfo.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        Converted._ExtraInfo.BorderSizePixel = 0
-        Converted._ExtraInfo.Position = UDim2.new(0.0166915655, 0, 0.597395241, 0)
-        Converted._ExtraInfo.Size = UDim2.new(0.362676412, 0, 0.14310436, 0)
-        Converted._ExtraInfo.Name = "ExtraInfo"
-        Converted._ExtraInfo.Parent = Converted._UserInfoFrame
+Converted["_ExtraInfo"].Font = Enum.Font.SourceSansBold
+Converted["_ExtraInfo"].Text = "Extra Info:"
+Converted["_ExtraInfo"].TextColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_ExtraInfo"].TextScaled = true
+Converted["_ExtraInfo"].TextSize = 14
+Converted["_ExtraInfo"].TextWrapped = true
+Converted["_ExtraInfo"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_ExtraInfo"].BackgroundTransparency = 1
+Converted["_ExtraInfo"].BorderColor3 = Color3.fromRGB(0, 0, 0)
+Converted["_ExtraInfo"].BorderSizePixel = 0
+Converted["_ExtraInfo"].Position = UDim2.new(0.0166915655, 0, 0.597395241, 0)
+Converted["_ExtraInfo"].Size = UDim2.new(0.362676412, 0, 0.14310436, 0)
+Converted["_ExtraInfo"].Name = "ExtraInfo"
+Converted["_ExtraInfo"].Parent = Converted["_UserInfoFrame"]
 
-        Converted._AccountAge.Font = Enum.Font.SourceSansBold
-        Converted._AccountAge.Text = "Age: 0"
-        Converted._AccountAge.TextColor3 = Color3.fromRGB(255, 255, 255)
-        Converted._AccountAge.TextScaled = true
-        Converted._AccountAge.TextSize = 14
-        Converted._AccountAge.TextWrapped = true
-        Converted._AccountAge.TextXAlignment = Enum.TextXAlignment.Left
-        Converted._AccountAge.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        Converted._AccountAge.BackgroundTransparency = 1
-        Converted._AccountAge.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        Converted._AccountAge.BorderSizePixel = 0
-        Converted._AccountAge.Position = UDim2.new(0.0436378382, 0, 0.74001652, 0)
-        Converted._AccountAge.Size = UDim2.new(0.912724257, 0, 0.0787154138, 0)
-        Converted._AccountAge.Name = "AccountAge"
-        Converted._AccountAge.Parent = Converted._UserInfoFrame
+Converted["_AccountAge"].Font = Enum.Font.SourceSansBold
+Converted["_AccountAge"].Text = "Age: 15"
+Converted["_AccountAge"].TextColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_AccountAge"].TextScaled = true
+Converted["_AccountAge"].TextSize = 14
+Converted["_AccountAge"].TextWrapped = true
+Converted["_AccountAge"].TextXAlignment = Enum.TextXAlignment.Left
+Converted["_AccountAge"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_AccountAge"].BackgroundTransparency = 1
+Converted["_AccountAge"].BorderColor3 = Color3.fromRGB(0, 0, 0)
+Converted["_AccountAge"].BorderSizePixel = 0
+Converted["_AccountAge"].Position = UDim2.new(0.0436378382, 0, 0.74001652, 0)
+Converted["_AccountAge"].Size = UDim2.new(0.912724257, 0, 0.0787154138, 0)
+Converted["_AccountAge"].Name = "AccountAge"
+Converted["_AccountAge"].Parent = Converted["_UserInfoFrame"]
 
-        Converted._BackDrop.BackgroundColor3 = Color3.fromRGB(26, 26, 26)
-        Converted._BackDrop.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        Converted._BackDrop.BorderSizePixel = 0
-        Converted._BackDrop.Position = UDim2.new(0.203336805, 0, 0.256957352, 0)
-        Converted._BackDrop.Size = UDim2.new(0.592387259, 0, 0.483644336, 0)
-        Converted._BackDrop.Name = "BackDrop"
-        Converted._BackDrop.Parent = Converted._Frame
+Converted["_BackDrop"].BackgroundColor3 = Color3.fromRGB(26, 26, 26)
+Converted["_BackDrop"].BorderColor3 = Color3.fromRGB(0, 0, 0)
+Converted["_BackDrop"].BorderSizePixel = 0
+Converted["_BackDrop"].Position = UDim2.new(0.203336805, 0, 0.256957352, 0)
+Converted["_BackDrop"].Size = UDim2.new(0.592387259, 0, 0.483644336, 0)
+Converted["_BackDrop"].Name = "BackDrop"
+Converted["_BackDrop"].Parent = Converted["_Frame"]
 
-        Converted._UICorner3.CornerRadius = UDim.new(0.07, 0)
-        Converted._UICorner3.Parent = Converted._BackDrop
+Converted["_UICorner3"].CornerRadius = UDim.new(0.07, 0)
+Converted["_UICorner3"].Parent = Converted["_BackDrop"]
 
-        Converted._StatisticsFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        Converted._StatisticsFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        Converted._StatisticsFrame.BorderSizePixel = 0
-        Converted._StatisticsFrame.Position = UDim2.new(0.511220336, 0, 0.289274961, 0)
-        Converted._StatisticsFrame.Size = UDim2.new(0.26285246, 0, 0.420175701, 0)
-        Converted._StatisticsFrame.ZIndex = 2
-        Converted._StatisticsFrame.Name = "StatisticsFrame"
-        Converted._StatisticsFrame.Parent = Converted._Frame
+Converted["_StatisticsFrame"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_StatisticsFrame"].BorderColor3 = Color3.fromRGB(0, 0, 0)
+Converted["_StatisticsFrame"].BorderSizePixel = 0
+Converted["_StatisticsFrame"].Position = UDim2.new(0.511220336, 0, 0.289274961, 0)
+Converted["_StatisticsFrame"].Size = UDim2.new(0.26285246, 0, 0.420175701, 0)
+Converted["_StatisticsFrame"].ZIndex = 2
+Converted["_StatisticsFrame"].Name = "StatisticsFrame"
+Converted["_StatisticsFrame"].Parent = Converted["_Frame"]
 
-        Converted._UICorner4.CornerRadius = UDim.new(0.1, 0)
-        Converted._UICorner4.Parent = Converted._StatisticsFrame
+Converted["_UICorner4"].CornerRadius = UDim.new(0.1, 0)
+Converted["_UICorner4"].Parent = Converted["_StatisticsFrame"]
 
-        Converted._UIGradient3.Color = ColorSequence.new{
-            ColorSequenceKeypoint.new(0, Color3.fromRGB(43, 43, 43)),
-            ColorSequenceKeypoint.new(1, Color3.fromRGB(33, 33, 33))
-        }
-        Converted._UIGradient3.Rotation = 81
-        Converted._UIGradient3.Parent = Converted._StatisticsFrame
+Converted["_UIGradient3"].Color = ColorSequence.new{
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(43, 43, 43)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(33, 33, 33))
+}
+Converted["_UIGradient3"].Rotation = 81
+Converted["_UIGradient3"].Parent = Converted["_StatisticsFrame"]
 
-        Converted._Titles1.BackgroundColor3 = Color3.fromRGB(29, 29, 29)
-        Converted._Titles1.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        Converted._Titles1.BorderSizePixel = 0
-        Converted._Titles1.Position = UDim2.new(0, 0, 0, 0)
-        Converted._Titles1.Size = UDim2.new(1, 0, 0.22862184, 0)
-        Converted._Titles1.ZIndex = 2
-        Converted._Titles1.Name = "Titles"
-        Converted._Titles1.Parent = Converted._StatisticsFrame
+Converted["_Titles1"].BackgroundColor3 = Color3.fromRGB(29, 29, 29)
+Converted["_Titles1"].BorderColor3 = Color3.fromRGB(0, 0, 0)
+Converted["_Titles1"].BorderSizePixel = 0
+Converted["_Titles1"].Position = UDim2.new(0, 0, 0, 0)
+Converted["_Titles1"].Size = UDim2.new(1, 0, 0.22862184, 0)
+Converted["_Titles1"].ZIndex = 2
+Converted["_Titles1"].Name = "Titles"
+Converted["_Titles1"].Parent = Converted["_StatisticsFrame"]
 
-        Converted._UICorner5.CornerRadius = UDim.new(0.2, 0)
-        Converted._UICorner5.Parent = Converted._Titles1
+Converted["_UICorner5"].CornerRadius = UDim.new(0.2, 0)
+Converted["_UICorner5"].Parent = Converted["_Titles1"]
 
-        Converted._TextLabel3.Font = Enum.Font.SourceSansBold
-        Converted._TextLabel3.Text = "Statistics"
-        Converted._TextLabel3.TextColor3 = Color3.fromRGB(255, 255, 255)
-        Converted._TextLabel3.TextScaled = true
-        Converted._TextLabel3.TextSize = 14
-        Converted._TextLabel3.TextWrapped = true
-        Converted._TextLabel3.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        Converted._TextLabel3.BackgroundTransparency = 1
-        Converted._TextLabel3.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        Converted._TextLabel3.BorderSizePixel = 0
-        Converted._TextLabel3.Position = UDim2.new(0.0178518556, 0, 0.0580206998, 0)
-        Converted._TextLabel3.Size = UDim2.new(0.305774331, 0, 0.509256303, 0)
-        Converted._TextLabel3.Parent = Converted._Titles1
+Converted["_TextLabel3"].Font = Enum.Font.SourceSansBold
+Converted["_TextLabel3"].Text = "Statistics"
+Converted["_TextLabel3"].TextColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_TextLabel3"].TextScaled = true
+Converted["_TextLabel3"].TextSize = 14
+Converted["_TextLabel3"].TextWrapped = true
+Converted["_TextLabel3"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_TextLabel3"].BackgroundTransparency = 1
+Converted["_TextLabel3"].BorderColor3 = Color3.fromRGB(0, 0, 0)
+Converted["_TextLabel3"].BorderSizePixel = 0
+Converted["_TextLabel3"].Position = UDim2.new(0.0178518556, 0, 0.0580206998, 0)
+Converted["_TextLabel3"].Size = UDim2.new(0.305774331, 0, 0.509256303, 0)
+Converted["_TextLabel3"].Parent = Converted["_Titles1"]
 
-        Converted._TextLabel4.Font = Enum.Font.SourceSansBold
-        Converted._TextLabel4.Text = "View alts statistics"
-        Converted._TextLabel4.TextColor3 = Color3.fromRGB(115, 115, 115)
-        Converted._TextLabel4.TextScaled = true
-        Converted._TextLabel4.TextSize = 14
-        Converted._TextLabel4.TextWrapped = true
-        Converted._TextLabel4.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        Converted._TextLabel4.BackgroundTransparency = 1
-        Converted._TextLabel4.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        Converted._TextLabel4.BorderSizePixel = 0
-        Converted._TextLabel4.Position = UDim2.new(0.0158685036, 0, 0.571381211, 0)
-        Converted._TextLabel4.Size = UDim2.new(0.431602597, 0, 0.364196926, 0)
-        Converted._TextLabel4.Parent = Converted._Titles1
+Converted["_TextLabel4"].Font = Enum.Font.SourceSansBold
+Converted["_TextLabel4"].Text = "View alts statistics"
+Converted["_TextLabel4"].TextColor3 = Color3.fromRGB(115, 115, 115)
+Converted["_TextLabel4"].TextScaled = true
+Converted["_TextLabel4"].TextSize = 14
+Converted["_TextLabel4"].TextWrapped = true
+Converted["_TextLabel4"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_TextLabel4"].BackgroundTransparency = 1
+Converted["_TextLabel4"].BorderColor3 = Color3.fromRGB(0, 0, 0)
+Converted["_TextLabel4"].BorderSizePixel = 0
+Converted["_TextLabel4"].Position = UDim2.new(0.0158685036, 0, 0.571381211, 0)
+Converted["_TextLabel4"].Size = UDim2.new(0.431602597, 0, 0.364196926, 0)
+Converted["_TextLabel4"].Parent = Converted["_Titles1"]
 
-        Converted._Statistics.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        Converted._Statistics.BackgroundTransparency = 1
-        Converted._Statistics.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        Converted._Statistics.BorderSizePixel = 0
-        Converted._Statistics.Position = UDim2.new(0, 0, 0.228621662, 0)
-        Converted._Statistics.Size = UDim2.new(1, 0, 0.771378338, 0)
-        Converted._Statistics.Name = "Statistics"
-        Converted._Statistics.Parent = Converted._StatisticsFrame
+Converted["_Statistics"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_Statistics"].BackgroundTransparency = 1
+Converted["_Statistics"].BorderColor3 = Color3.fromRGB(0, 0, 0)
+Converted["_Statistics"].BorderSizePixel = 0
+Converted["_Statistics"].Position = UDim2.new(0, 0, 0.228621662, 0)
+Converted["_Statistics"].Size = UDim2.new(1, 0, 0.771378338, 0)
+Converted["_Statistics"].Name = "Statistics"
+Converted["_Statistics"].Parent = Converted["_StatisticsFrame"]
 
-        Converted._TextLabel5.Font = Enum.Font.SourceSansBold
-        Converted._TextLabel5.Text = "Stock: (Before/After tax)"
-        Converted._TextLabel5.TextColor3 = Color3.fromRGB(255, 255, 255)
-        Converted._TextLabel5.TextScaled = true
-        Converted._TextLabel5.TextSize = 14
-        Converted._TextLabel5.TextWrapped = true
-        Converted._TextLabel5.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        Converted._TextLabel5.BackgroundTransparency = 1
-        Converted._TextLabel5.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        Converted._TextLabel5.BorderSizePixel = 0
-        Converted._TextLabel5.Position = UDim2.new(0.0158683825, 0, 0.0228966977, 0)
-        Converted._TextLabel5.Size = UDim2.new(0.84034276, 0, 0.14310436, 0)
-        Converted._TextLabel5.Parent = Converted._Statistics
+Converted["_TextLabel5"].Font = Enum.Font.SourceSansBold
+Converted["_TextLabel5"].Text = "Stock: (Before/After tax)"
+Converted["_TextLabel5"].TextColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_TextLabel5"].TextScaled = true
+Converted["_TextLabel5"].TextSize = 14
+Converted["_TextLabel5"].TextWrapped = true
+Converted["_TextLabel5"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_TextLabel5"].BackgroundTransparency = 1
+Converted["_TextLabel5"].BorderColor3 = Color3.fromRGB(0, 0, 0)
+Converted["_TextLabel5"].BorderSizePixel = 0
+Converted["_TextLabel5"].Position = UDim2.new(0.0158683825, 0, 0.0228966977, 0)
+Converted["_TextLabel5"].Size = UDim2.new(0.84034276, 0, 0.14310436, 0)
+Converted["_TextLabel5"].Parent = Converted["_Statistics"]
 
-        Converted._TextLabel6.Font = Enum.Font.SourceSansBold
-        Converted._TextLabel6.Text = "Extra Info:"
-        Converted._TextLabel6.TextColor3 = Color3.fromRGB(255, 255, 255)
-        Converted._TextLabel6.TextScaled = true
-        Converted._TextLabel6.TextSize = 14
-        Converted._TextLabel6.TextWrapped = true
-        Converted._TextLabel6.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        Converted._TextLabel6.BackgroundTransparency = 1
-        Converted._TextLabel6.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        Converted._TextLabel6.BorderSizePixel = 0
-        Converted._TextLabel6.Position = UDim2.new(0.0158686247, 0, 0.420726836, 0)
-        Converted._TextLabel6.Size = UDim2.new(0.431602418, 0, 0.161935195, 0)
-        Converted._TextLabel6.Parent = Converted._Statistics
+Converted["_TextLabel6"].Font = Enum.Font.SourceSansBold
+Converted["_TextLabel6"].Text = "Extra Info:"
+Converted["_TextLabel6"].TextColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_TextLabel6"].TextScaled = true
+Converted["_TextLabel6"].TextSize = 14
+Converted["_TextLabel6"].TextWrapped = true
+Converted["_TextLabel6"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_TextLabel6"].BackgroundTransparency = 1
+Converted["_TextLabel6"].BorderColor3 = Color3.fromRGB(0, 0, 0)
+Converted["_TextLabel6"].BorderSizePixel = 0
+Converted["_TextLabel6"].Position = UDim2.new(0.0158686247, 0, 0.420726836, 0)
+Converted["_TextLabel6"].Size = UDim2.new(0.431602418, 0, 0.161935195, 0)
+Converted["_TextLabel6"].Parent = Converted["_Statistics"]
 
-        Converted._BeforeCash.Font = Enum.Font.SourceSansBold
-        Converted._BeforeCash.Text = "Before Tax: $0"
-        Converted._BeforeCash.TextColor3 = Color3.fromRGB(23, 193, 0)
-        Converted._BeforeCash.TextScaled = true
-        Converted._BeforeCash.TextSize = 14
-        Converted._BeforeCash.TextWrapped = true
-        Converted._BeforeCash.TextXAlignment = Enum.TextXAlignment.Left
-        Converted._BeforeCash.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        Converted._BeforeCash.BackgroundTransparency = 1
-        Converted._BeforeCash.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        Converted._BeforeCash.BorderSizePixel = 0
-        Converted._BeforeCash.Position = UDim2.new(0.0872755572, 0, 0.166001067, 0)
-        Converted._BeforeCash.Size = UDim2.new(0.912724257, 0, 0.108759314, 0)
-        Converted._BeforeCash.Name = "BeforeCash"
-        Converted._BeforeCash.Parent = Converted._Statistics
+Converted["_BeforeCash"].Font = Enum.Font.SourceSansBold
+Converted["_BeforeCash"].Text = "Loading..."
+Converted["_BeforeCash"].TextColor3 = Color3.fromRGB(23, 193, 0)
+Converted["_BeforeCash"].TextScaled = true
+Converted["_BeforeCash"].TextSize = 14
+Converted["_BeforeCash"].TextWrapped = true
+Converted["_BeforeCash"].TextXAlignment = Enum.TextXAlignment.Left
+Converted["_BeforeCash"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_BeforeCash"].BackgroundTransparency = 1
+Converted["_BeforeCash"].BorderColor3 = Color3.fromRGB(0, 0, 0)
+Converted["_BeforeCash"].BorderSizePixel = 0
+Converted["_BeforeCash"].Position = UDim2.new(0.0872755572, 0, 0.166001067, 0)
+Converted["_BeforeCash"].Size = UDim2.new(0.912724257, 0, 0.108759314, 0)
+Converted["_BeforeCash"].Name = "BeforeCash"
+Converted["_BeforeCash"].Parent = Converted["_Statistics"]
 
-        Converted._AfterCash.Font = Enum.Font.SourceSansBold
-        Converted._AfterCash.Text = "After Tax: $0"
-        Converted._AfterCash.TextColor3 = Color3.fromRGB(125, 125, 125)
-        Converted._AfterCash.TextScaled = true
-        Converted._AfterCash.TextSize = 14
-        Converted._AfterCash.TextWrapped = true
-        Converted._AfterCash.TextXAlignment = Enum.TextXAlignment.Left
-        Converted._AfterCash.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        Converted._AfterCash.BackgroundTransparency = 1
-        Converted._AfterCash.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        Converted._AfterCash.BorderSizePixel = 0
-        Converted._AfterCash.Position = UDim2.new(0.0872755572, 0, 0.274760365, 0)
-        Converted._AfterCash.Size = UDim2.new(0.912724495, 0, 0.108134635, 0)
-        Converted._AfterCash.Name = "AfterCash"
-        Converted._AfterCash.Parent = Converted._Statistics
+Converted["_AfterCash"].Font = Enum.Font.SourceSansBold
+Converted["_AfterCash"].Text = "Loading..."
+Converted["_AfterCash"].TextColor3 = Color3.fromRGB(125, 125, 125)
+Converted["_AfterCash"].TextScaled = true
+Converted["_AfterCash"].TextSize = 14
+Converted["_AfterCash"].TextWrapped = true
+Converted["_AfterCash"].TextXAlignment = Enum.TextXAlignment.Left
+Converted["_AfterCash"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_AfterCash"].BackgroundTransparency = 1
+Converted["_AfterCash"].BorderColor3 = Color3.fromRGB(0, 0, 0)
+Converted["_AfterCash"].BorderSizePixel = 0
+Converted["_AfterCash"].Position = UDim2.new(0.0872755572, 0, 0.274760365, 0)
+Converted["_AfterCash"].Size = UDim2.new(0.912724495, 0, 0.108134635, 0)
+Converted["_AfterCash"].Name = "AfterCash"
+Converted["_AfterCash"].Parent = Converted["_Statistics"]
 
-        Converted._Bounty.Font = Enum.Font.SourceSansBold
-        Converted._Bounty.Text = "Bounty: "
-        Converted._Bounty.TextColor3 = Color3.fromRGB(255, 255, 255)
-        Converted._Bounty.TextScaled = true
-        Converted._Bounty.TextSize = 14
-        Converted._Bounty.TextWrapped = true
-        Converted._Bounty.TextXAlignment = Enum.TextXAlignment.Left
-        Converted._Bounty.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        Converted._Bounty.BackgroundTransparency = 1
-        Converted._Bounty.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        Converted._Bounty.BorderSizePixel = 0
-        Converted._Bounty.Position = UDim2.new(0.0297531094, 0, 0.581003726, 0)
-        Converted._Bounty.Size = UDim2.new(0.912724257, 0, 0.113520786, 0)
-        Converted._Bounty.Name = "Bounty"
-        Converted._Bounty.Parent = Converted._Statistics
+Converted["_Bounty"].Font = Enum.Font.SourceSansBold
+Converted["_Bounty"].Text = "Bounty: "
+Converted["_Bounty"].TextColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_Bounty"].TextScaled = true
+Converted["_Bounty"].TextSize = 14
+Converted["_Bounty"].TextWrapped = true
+Converted["_Bounty"].TextXAlignment = Enum.TextXAlignment.Left
+Converted["_Bounty"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_Bounty"].BackgroundTransparency = 1
+Converted["_Bounty"].BorderColor3 = Color3.fromRGB(0, 0, 0)
+Converted["_Bounty"].BorderSizePixel = 0
+Converted["_Bounty"].Position = UDim2.new(0.0297531094, 0, 0.581003726, 0)
+Converted["_Bounty"].Size = UDim2.new(0.912724257, 0, 0.113520786, 0)
+Converted["_Bounty"].Name = "Bounty"
+Converted["_Bounty"].Parent = Converted["_Statistics"]
 
-        Converted._TimeInServer.Font = Enum.Font.SourceSansBold
-        Converted._TimeInServer.Text = "Time in server:"
-        Converted._TimeInServer.TextColor3 = Color3.fromRGB(255, 255, 255)
-        Converted._TimeInServer.TextScaled = true
-        Converted._TimeInServer.TextSize = 14
-        Converted._TimeInServer.TextWrapped = true
-        Converted._TimeInServer.TextXAlignment = Enum.TextXAlignment.Left
-        Converted._TimeInServer.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        Converted._TimeInServer.BackgroundTransparency = 1
-        Converted._TimeInServer.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        Converted._TimeInServer.BorderSizePixel = 0
-        Converted._TimeInServer.Position = UDim2.new(0.0436378382, 0, 0.801384449, 0)
-        Converted._TimeInServer.Size = UDim2.new(0.912724257, 0, 0.108759314, 0)
-        Converted._TimeInServer.Name = "TimeInServer"
-        Converted._TimeInServer.Parent = Converted._Statistics
+Converted["_Time in server"].Font = Enum.Font.SourceSansBold
+Converted["_Time in server"].Text = "Time in server:"
+Converted["_Time in server"].TextColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_Time in server"].TextScaled = true
+Converted["_Time in server"].TextSize = 14
+Converted["_Time in server"].TextWrapped = true
+Converted["_Time in server"].TextXAlignment = Enum.TextXAlignment.Left
+Converted["_Time in server"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_Time in server"].BackgroundTransparency = 1
+Converted["_Time in server"].BorderColor3 = Color3.fromRGB(0, 0, 0)
+Converted["_Time in server"].BorderSizePixel = 0
+Converted["_Time in server"].Position = UDim2.new(0.0436378382, 0, 0.801384449, 0)
+Converted["_Time in server"].Size = UDim2.new(0.912724257, 0, 0.108759314, 0)
+Converted["_Time in server"].Name = "Time in server"
+Converted["_Time in server"].Parent = Converted["_Statistics"]
 
-        Converted._BountyText.Font = Enum.Font.SourceSansBold
-        Converted._BountyText.Text = "BountyText"
-        Converted._BountyText.TextColor3 = Color3.fromRGB(193, 193, 193)
-        Converted._BountyText.TextScaled = true
-        Converted._BountyText.TextSize = 14
-        Converted._BountyText.TextWrapped = true
-        Converted._BountyText.TextXAlignment = Enum.TextXAlignment.Left
-        Converted._BountyText.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        Converted._BountyText.BackgroundTransparency = 1
-        Converted._BountyText.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        Converted._BountyText.BorderSizePixel = 0
-        Converted._BountyText.Position = UDim2.new(0.0694237649, 0, 0.692625105, 0)
-        Converted._BountyText.Size = UDim2.new(0.912724257, 0, 0.108759314, 0)
-        Converted._BountyText.Name = "BountyText"
-        Converted._BountyText.Parent = Converted._Statistics
+Converted["_BountyText"].Font = Enum.Font.SourceSansBold
+Converted["_BountyText"].Text = "BountyText"
+Converted["_BountyText"].TextColor3 = Color3.fromRGB(193, 193, 193)
+Converted["_BountyText"].TextScaled = true
+Converted["_BountyText"].TextSize = 14
+Converted["_BountyText"].TextWrapped = true
+Converted["_BountyText"].TextXAlignment = Enum.TextXAlignment.Left
+Converted["_BountyText"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_BountyText"].BackgroundTransparency = 1
+Converted["_BountyText"].BorderColor3 = Color3.fromRGB(0, 0, 0)
+Converted["_BountyText"].BorderSizePixel = 0
+Converted["_BountyText"].Position = UDim2.new(0.0694237649, 0, 0.692625105, 0)
+Converted["_BountyText"].Size = UDim2.new(0.912724257, 0, 0.108759314, 0)
+Converted["_BountyText"].Name = "BountyText"
+Converted["_BountyText"].Parent = Converted["_Statistics"]
 
-        Converted._StatusFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        Converted._StatusFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        Converted._StatusFrame.BorderSizePixel = 0
-        Converted._StatusFrame.Position = UDim2.new(0.326131701, 0, 0.762373269, 0)
-        Converted._StatusFrame.Size = UDim2.new(0.0814162493, 0, 0.0605340637, 0)
-        Converted._StatusFrame.ZIndex = 2
-        Converted._StatusFrame.Name = "StatusFrame"
-        Converted._StatusFrame.Parent = Converted._Frame
+Converted["_StatusFrame"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_StatusFrame"].BorderColor3 = Color3.fromRGB(0, 0, 0)
+Converted["_StatusFrame"].BorderSizePixel = 0
+Converted["_StatusFrame"].Position = UDim2.new(0.326131701, 0, 0.762373269, 0)
+Converted["_StatusFrame"].Size = UDim2.new(0.0814162493, 0, 0.0605340637, 0)
+Converted["_StatusFrame"].ZIndex = 2
+Converted["_StatusFrame"].Name = "StatusFrame"
+Converted["_StatusFrame"].Parent = Converted["_Frame"]
 
-        Converted._UICorner6.CornerRadius = UDim.new(0.3, 0)
-        Converted._UICorner6.Parent = Converted._StatusFrame
+Converted["_UICorner6"].CornerRadius = UDim.new(0.3, 0)
+Converted["_UICorner6"].Parent = Converted["_StatusFrame"]
 
-        Converted._UIGradient4.Color = ColorSequence.new{
-            ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 255, 0)),
-            ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 200, 0))
-        }
-        Converted._UIGradient4.Rotation = 81
-        Converted._UIGradient4.Parent = Converted._StatusFrame
+Converted["_UIGradient4"].Color = ColorSequence.new{
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 255, 0)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 200, 0))
+}
+Converted["_UIGradient4"].Rotation = 81
+Converted["_UIGradient4"].Parent = Converted["_StatusFrame"]
 
-        Converted._TextLabel7.Font = Enum.Font.SourceSansBold
-        Converted._TextLabel7.Text = "Connected"
-        Converted._TextLabel7.TextColor3 = Color3.fromRGB(255, 255, 255)
-        Converted._TextLabel7.TextScaled = true
-        Converted._TextLabel7.TextSize = 14
-        Converted._TextLabel7.TextWrapped = true
-        Converted._TextLabel7.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        Converted._TextLabel7.BackgroundTransparency = 1
-        Converted._TextLabel7.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        Converted._TextLabel7.BorderSizePixel = 0
-        Converted._TextLabel7.Size = UDim2.new(1, 0, 1, 0)
-        Converted._TextLabel7.Parent = Converted._StatusFrame
+Converted["_TextLabel7"].Font = Enum.Font.SourceSansBold
+Converted["_TextLabel7"].Text = "Connected"
+Converted["_TextLabel7"].TextColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_TextLabel7"].TextScaled = true
+Converted["_TextLabel7"].TextSize = 14
+Converted["_TextLabel7"].TextWrapped = true
+Converted["_TextLabel7"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_TextLabel7"].BackgroundTransparency = 1
+Converted["_TextLabel7"].BorderColor3 = Color3.fromRGB(0, 0, 0)
+Converted["_TextLabel7"].BorderSizePixel = 0
+Converted["_TextLabel7"].Size = UDim2.new(1, 0, 1, 0)
+Converted["_TextLabel7"].Parent = Converted["_StatusFrame"]
 
-        Converted._Frame1.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-        Converted._Frame1.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        Converted._Frame1.BorderSizePixel = 0
-        Converted._Frame1.Position = UDim2.new(0.326131701, 0, 0.821907341, 0)
-        Converted._Frame1.Size = UDim2.new(0.0814162493, 0, 0.00301870318, 0)
-        Converted._Frame1.ZIndex = 2
-        Converted._Frame1.Parent = Converted._Frame
+Converted["_Frame1"].BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Converted["_Frame1"].BorderColor3 = Color3.fromRGB(0, 0, 0)
+Converted["_Frame1"].BorderSizePixel = 0
+Converted["_Frame1"].Position = UDim2.new(0.326131701, 0, 0.821907341, 0)
+Converted["_Frame1"].Size = UDim2.new(0.0814162493, 0, 0.00301870318, 0)
+Converted["_Frame1"].ZIndex = 2
+Converted["_Frame1"].Parent = Converted["_Frame"]
 
-        Converted._UICorner7.CornerRadius = UDim.new(0.3, 0)
-        Converted._UICorner7.Parent = Converted._Frame1
+Converted["_UICorner7"].CornerRadius = UDim.new(0.3, 0)
+Converted["_UICorner7"].Parent = Converted["_Frame1"]
 
-        Converted._LogFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        Converted._LogFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        Converted._LogFrame.BorderSizePixel = 0
-        Converted._LogFrame.Position = UDim2.new(0.326131701, 0, 0.828944385, 0)
-        Converted._LogFrame.Size = UDim2.new(0.0814162493, 0, 0.0605340637, 0)
-        Converted._LogFrame.ZIndex = 2
-        Converted._LogFrame.Name = "LogFrame"
-        Converted._LogFrame.Parent = Converted._Frame
+Converted["_LogFrame"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_LogFrame"].BorderColor3 = Color3.fromRGB(0, 0, 0)
+Converted["_LogFrame"].BorderSizePixel = 0
+Converted["_LogFrame"].Position = UDim2.new(0.326131701, 0, 0.828944385, 0)
+Converted["_LogFrame"].Size = UDim2.new(0.0814162493, 0, 0.0605340637, 0)
+Converted["_LogFrame"].ZIndex = 2
+Converted["_LogFrame"].Name = "LogFrame"
+Converted["_LogFrame"].Parent = Converted["_Frame"]
 
-        Converted._UICorner8.CornerRadius = UDim.new(0.3, 0)
-        Converted._UICorner8.Parent = Converted._LogFrame
+Converted["_UICorner8"].CornerRadius = UDim.new(0.3, 0)
+Converted["_UICorner8"].Parent = Converted["_LogFrame"]
 
-        Converted._UIGradient5.Color = ColorSequence.new{
-            ColorSequenceKeypoint.new(0, Color3.fromRGB(43, 43, 43)),
-            ColorSequenceKeypoint.new(1, Color3.fromRGB(33, 33, 33))
-        }
-        Converted._UIGradient5.Rotation = 81
-        Converted._UIGradient5.Parent = Converted._LogFrame
+Converted["_UIGradient5"].Color = ColorSequence.new{
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(43, 43, 43)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(33, 33, 33))
+}
+Converted["_UIGradient5"].Rotation = 81
+Converted["_UIGradient5"].Parent = Converted["_LogFrame"]
 
-        Converted._TextLabel8.Font = Enum.Font.SourceSansBold
-        Converted._TextLabel8.Text = "Log: "
-        Converted._TextLabel8.TextColor3 = Color3.fromRGB(255, 255, 255)
-        Converted._TextLabel8.TextScaled = true
-        Converted._TextLabel8.TextSize = 14
-        Converted._TextLabel8.TextWrapped = true
-        Converted._TextLabel8.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        Converted._TextLabel8.BackgroundTransparency = 1
-        Converted._TextLabel8.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        Converted._TextLabel8.BorderSizePixel = 0
-        Converted._TextLabel8.Size = UDim2.new(1, 0, 1, 0)
-        Converted._TextLabel8.Parent = Converted._LogFrame
+Converted["_TextLabel8"].Font = Enum.Font.SourceSansBold
+Converted["_TextLabel8"].Text = "Log: "
+Converted["_TextLabel8"].TextColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_TextLabel8"].TextScaled = true
+Converted["_TextLabel8"].TextSize = 14
+Converted["_TextLabel8"].TextWrapped = true
+Converted["_TextLabel8"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Converted["_TextLabel8"].BackgroundTransparency = 1
+Converted["_TextLabel8"].BorderColor3 = Color3.fromRGB(0, 0, 0)
+Converted["_TextLabel8"].BorderSizePixel = 0
+Converted["_TextLabel8"].Size = UDim2.new(1, 0, 1, 0)
+Converted["_TextLabel8"].Parent = Converted["_LogFrame"]
 
-        Converted._BackDrop2.BackgroundColor3 = Color3.fromRGB(26, 26, 26)
-        Converted._BackDrop2.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        Converted._BackDrop2.BorderSizePixel = 0
-        Converted._BackDrop2.Position = UDim2.new(0.304483891, 0, 0.7976017, 0)
-        Converted._BackDrop2.Size = UDim2.new(0.124711983, 0, 0.0939341336, 0)
-        Converted._BackDrop2.Name = "BackDrop2"
-        Converted._BackDrop2.Parent = Converted._Frame
+Converted["_BackDrop2"].BackgroundColor3 = Color3.fromRGB(26, 26, 26)
+Converted["_BackDrop2"].BorderColor3 = Color3.fromRGB(0, 0, 0)
+Converted["_BackDrop2"].BorderSizePixel = 0
+Converted["_BackDrop2"].Position = UDim2.new(0.304483891, 0, 0.7976017, 0)
+Converted["_BackDrop2"].Size = UDim2.new(0.124711983, 0, 0.0939341336, 0)
+Converted["_BackDrop2"].Name = "BackDrop2"
+Converted["_BackDrop2"].Parent = Converted["_Frame"]
 
-        Converted._UICorner9.CornerRadius = UDim.new(0.3, 0)
-        Converted._UICorner9.Parent = Converted._BackDrop2
-    end)
-    if not success then
-        warn("[DEBUG] setupGUI Error: " .. tostring(err))
-    end
-end
+Converted["_UICorner9"].CornerRadius = UDim.new(0.3, 0)
+Converted["_UICorner9"].Parent = Converted["_BackDrop2"]
 
 -- Services and Variables
 local HttpService = game:GetService("HttpService")
@@ -559,9 +550,11 @@ local DATA_FOLDER = PLAYER:WaitForChild("DataFolder", 10)
 local PLAYER_CASH = DATA_FOLDER and DATA_FOLDER:WaitForChild("Currency", 10)
 local INFORMATION = DATA_FOLDER and DATA_FOLDER:WaitForChild("Information")
 local INVENTORY = DATA_FOLDER and DATA_FOLDER:WaitForChild("Inventory")
+local PLAYER_CREW = INFORMATION and INFORMATION:FindFirstChild("Crew")
 local ORIGINAL_CASH_AMOUNT = PLAYER_CASH and PLAYER_CASH.Value or 0
 local CASHIERS = workspace:WaitForChild("Cashiers", 10)
 local IGNORED = workspace:WaitForChild("Ignored", 10)
+local PLAYERS_FOLDER = workspace:WaitForChild("Players", 10)
 local ITEMS_DROP = IGNORED and IGNORED:WaitForChild("ItemsDrop", 10)
 local SHOP = IGNORED and IGNORED:WaitForChild("Shop", 10)
 local SPAWN = IGNORED and IGNORED:WaitForChild("Spawn", 10)
@@ -569,6 +562,10 @@ local LIGHTS = workspace:WaitForChild("Lights", 10)
 local MAP = workspace:WaitForChild("MAP", 10)
 local MAIN_EVENT = ReplicatedStorage:WaitForChild("MainEvent", 10)
 
+local PLAYER_GUI = PLAYER:WaitForChild("PlayerGui", 10)
+local CORE_GUI = game.CoreGui
+
+-- Config variables
 local hideCash = true
 
 -- Format cash value for GUI
@@ -586,27 +583,27 @@ end
 -- GUI Updates
 local function updateGUI()
     local success, err = pcall(function()
-        Converted._TextLabel.Text = PLAYER.Name
-        Converted._userid.Text = "User ID: " .. PLAYER.UserId
-        Converted._DisplayName.Text = "Display Name: " .. PLAYER.DisplayName
-        Converted._Username.Text = "Username: " .. PLAYER.Name
-        Converted._AccountAge.Text = "Age: " .. math.floor(PLAYER.AccountAge / 365) .. " years"
+        Converted["_TextLabel"].Text = PLAYER.Name
+        Converted["_userid"].Text = "User ID: " .. PLAYER.UserId
+        Converted["_Display Name"].Text = "Display Name: " .. PLAYER.DisplayName
+        Converted["_Username"].Text = "Username: " .. PLAYER.Name
+        Converted["_AccountAge"].Text = "Age: " .. math.floor(PLAYER.AccountAge / 365) .. " years"
         if PLAYER_CASH then
-            Converted._BeforeCash.Text = "Before Tax: " .. formatCash(PLAYER_CASH.Value)
-            Converted._AfterCash.Text = "After Tax: " .. formatCash(math.floor(PLAYER_CASH.Value * 0.85))
+            Converted["_BeforeCash"].Text = "Before Tax: " .. formatCash(PLAYER_CASH.Value)
+            Converted["_AfterCash"].Text = "After Tax: " .. formatCash(math.floor(PLAYER_CASH.Value * 0.85))
         else
-            Converted._BeforeCash.Text = "Before Tax: $0"
-            Converted._AfterCash.Text = "After Tax: $0"
+            Converted["_BeforeCash"].Text = "Before Tax: $0"
+            Converted["_AfterCash"].Text = "After Tax: $0"
         end
     end)
     if not success then
-        warn("[DEBUG] updateGUI Error: " .. tostring(err))
+        warn("[DEBUG] GUI Update Error: " .. tostring(err))
     end
 end
-
--- Initialize GUI
-setupGUI()
+Converted["_LocalScript"].Parent = Converted["_ScreenGui"]
+Converted["_LocalScript"].Enabled = true
 updateGUI()
+
 if PLAYER_CASH then
     PLAYER_CASH:GetPropertyChangedSignal("Value"):Connect(updateGUI)
 end
@@ -614,14 +611,15 @@ end
 -- Low Graphics for Alts
 local function makeEverythingInvisible()
     local success, err = pcall(function()
-        for _, part in ipairs(workspace:GetDescendants()) do
+        local allParts = game.Workspace:GetDescendants()
+        for _, part in ipairs(allParts) do
             if part:IsA("BasePart") then
                 part.Transparency = 1
             end
         end
     end)
     if not success then
-        warn("[DEBUG] makeEverythingInvisible Error: " .. tostring(err))
+        warn("[DEBUG] Low Graphics Error: " .. tostring(err))
     end
 end
 
@@ -631,6 +629,8 @@ if PLAYER.UserId ~= PS_Owner then
 else
     setfpscap(2)
 end
+
+
 
 settings().Rendering.QualityLevel = 1
 UserSettings().GameSettings.MasterVolume = 0
