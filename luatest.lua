@@ -1,65 +1,65 @@
-local ipv4 = "127.0.0.1" -- Replace with actual IPv4 if needed
-local server1 = ipv4 .. ":5000"
-local server2 = ipv4 .. ":6000"
 
 if getgenv().scriptinject == true then error("Alt control Script is already executed") end
 getgenv().scriptinject = true
 
--- GUI Construction (from original, with minor updates)
+-- Set PS_Owner to the first alt
+local PS_Owner = getgenv().alts[1] -- 6177522902 is the owner
+
+-- GUI Construction (unchanged)
 local Converted = {
     ["_ScreenGui"] = Instance.new("ScreenGui");
-	["_Frame"] = Instance.new("Frame");
-	["_UIGradient"] = Instance.new("UIGradient");
-	["_UsernameFrame"] = Instance.new("Frame");
-	["_UICorner"] = Instance.new("UICorner");
-	["_UIGradient1"] = Instance.new("UIGradient");
-	["_TextLabel"] = Instance.new("TextLabel");
-	["_UserInfoFrame"] = Instance.new("Frame");
-	["_UICorner1"] = Instance.new("UICorner");
-	["_UIGradient2"] = Instance.new("UIGradient");
-	["_Titles"] = Instance.new("Frame");
-	["_UICorner2"] = Instance.new("UICorner");
-	["_TextLabel1"] = Instance.new("TextLabel");
-	["_TextLabel2"] = Instance.new("TextLabel");
-	["_MainInfo"] = Instance.new("TextLabel");
-	["_userid"] = Instance.new("TextLabel");
-	["_Display Name"] = Instance.new("TextLabel");
-	["_Username"] = Instance.new("TextLabel");
-	["_ExtraInfo"] = Instance.new("TextLabel");
-	["_AccountAge"] = Instance.new("TextLabel");
-	["_BackDrop"] = Instance.new("Frame");
-	["_UICorner3"] = Instance.new("UICorner");
-	["_StatisticsFrame"] = Instance.new("Frame");
-	["_UICorner4"] = Instance.new("UICorner");
-	["_UIGradient3"] = Instance.new("UIGradient");
-	["_Titles1"] = Instance.new("Frame");
-	["_UICorner5"] = Instance.new("UICorner");
-	["_TextLabel3"] = Instance.new("TextLabel");
-	["_TextLabel4"] = Instance.new("TextLabel");
-	["_Statistics"] = Instance.new("Frame");
-	["_TextLabel5"] = Instance.new("TextLabel");
-	["_TextLabel6"] = Instance.new("TextLabel");
-	["_BeforeCash"] = Instance.new("TextLabel");
-	["_AfterCash"] = Instance.new("TextLabel");
-	["_Bounty"] = Instance.new("TextLabel");
-	["_Time in server"] = Instance.new("TextLabel");
-	["_BountyText"] = Instance.new("TextLabel");
-	["_StatusFrame"] = Instance.new("Frame");
-	["_UICorner6"] = Instance.new("UICorner");
-	["_UIGradient4"] = Instance.new("UIGradient");
-	["_TextLabel7"] = Instance.new("TextLabel");
-	["_Frame1"] = Instance.new("Frame");
-	["_UICorner7"] = Instance.new("UICorner");
-	["_LogFrame"] = Instance.new("Frame");
-	["_UICorner8"] = Instance.new("UICorner");
-	["_UIGradient5"] = Instance.new("UIGradient");
-	["_TextLabel8"] = Instance.new("TextLabel");
-	["_BackDrop2"] = Instance.new("Frame");
-	["_UICorner9"] = Instance.new("UICorner");
-	["_LocalScript"] = Instance.new("LocalScript");
+    ["_Frame"] = Instance.new("Frame");
+    ["_UIGradient"] = Instance.new("UIGradient");
+    ["_UsernameFrame"] = Instance.new("Frame");
+    ["_UICorner"] = Instance.new("UICorner");
+    ["_UIGradient1"] = Instance.new("UIGradient");
+    ["_TextLabel"] = Instance.new("TextLabel");
+    ["_UserInfoFrame"] = Instance.new("Frame");
+    ["_UICorner1"] = Instance.new("UICorner");
+    ["_UIGradient2"] = Instance.new("UIGradient");
+    ["_Titles"] = Instance.new("Frame");
+    ["_UICorner2"] = Instance.new("UICorner");
+    ["_TextLabel1"] = Instance.new("TextLabel");
+    ["_TextLabel2"] = Instance.new("TextLabel");
+    ["_MainInfo"] = Instance.new("TextLabel");
+    ["_userid"] = Instance.new("TextLabel");
+    ["_Display Name"] = Instance.new("TextLabel");
+    ["_Username"] = Instance.new("TextLabel");
+    ["_ExtraInfo"] = Instance.new("TextLabel");
+    ["_AccountAge"] = Instance.new("TextLabel");
+    ["_BackDrop"] = Instance.new("Frame");
+    ["_UICorner3"] = Instance.new("UICorner");
+    ["_StatisticsFrame"] = Instance.new("Frame");
+    ["_UICorner4"] = Instance.new("UICorner");
+    ["_UIGradient3"] = Instance.new("UIGradient");
+    ["_Titles1"] = Instance.new("Frame");
+    ["_UICorner5"] = Instance.new("UICorner");
+    ["_TextLabel3"] = Instance.new("TextLabel");
+    ["_TextLabel4"] = Instance.new("TextLabel");
+    ["_Statistics"] = Instance.new("Frame");
+    ["_TextLabel5"] = Instance.new("TextLabel");
+    ["_TextLabel6"] = Instance.new("TextLabel");
+    ["_BeforeCash"] = Instance.new("TextLabel");
+    ["_AfterCash"] = Instance.new("TextLabel");
+    ["_Bounty"] = Instance.new("TextLabel");
+    ["_Time in server"] = Instance.new("TextLabel");
+    ["_BountyText"] = Instance.new("TextLabel");
+    ["_StatusFrame"] = Instance.new("Frame");
+    ["_UICorner6"] = Instance.new("UICorner");
+    ["_UIGradient4"] = Instance.new("UIGradient");
+    ["_TextLabel7"] = Instance.new("TextLabel");
+    ["_Frame1"] = Instance.new("Frame");
+    ["_UICorner7"] = Instance.new("UICorner");
+    ["_LogFrame"] = Instance.new("Frame");
+    ["_UICorner8"] = Instance.new("UICorner");
+    ["_UIGradient5"] = Instance.new("UIGradient");
+    ["_TextLabel8"] = Instance.new("TextLabel");
+    ["_BackDrop2"] = Instance.new("Frame");
+    ["_UICorner9"] = Instance.new("UICorner");
+    ["_LocalScript"] = Instance.new("LocalScript");
 }
 
--- Properties (unchanged from original)
+-- Properties (unchanged)
 Converted["_ScreenGui"].Parent = game.CoreGui
 Converted["_ScreenGui"]["IgnoreGuiInset"] = true;
 Converted["_ScreenGui"].Enabled = true;
@@ -71,8 +71,8 @@ Converted["_Frame"].Parent = Converted["_ScreenGui"]
 Converted["_Frame"].Size = UDim2.new(1, 0, 1, 0)
 
 Converted["_UIGradient"].Color = ColorSequence.new{
-	ColorSequenceKeypoint.new(0, Color3.fromRGB(33.00000183284283, 33.00000183284283, 33.00000183284283)),
-	ColorSequenceKeypoint.new(1, Color3.fromRGB(45.00000111758709, 45.00000111758709, 45.00000111758709))
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(33.00000183284283, 33.00000183284283, 33.00000183284283)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(45.00000111758709, 45.00000111758709, 45.00000111758709))
 }
 Converted["_UIGradient"].Rotation = -29
 Converted["_UIGradient"].Parent = Converted["_Frame"]
@@ -90,8 +90,8 @@ Converted["_UICorner"].CornerRadius = UDim.new(0.300000012, 0)
 Converted["_UICorner"].Parent = Converted["_UsernameFrame"]
 
 Converted["_UIGradient1"].Color = ColorSequence.new{
-	ColorSequenceKeypoint.new(0, Color3.fromRGB(29.000000171363354, 29.000000171363354, 29.000000171363354)),
-	ColorSequenceKeypoint.new(1, Color3.fromRGB(25.000000409781933, 25.000000409781933, 25.000000409781933))
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(29.000000171363354, 29.000000171363354, 29.000000171363354)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(25.000000409781933, 25.000000409781933, 25.000000409781933))
 }
 Converted["_UIGradient1"].Rotation = 81
 Converted["_UIGradient1"].Parent = Converted["_UsernameFrame"]
@@ -122,8 +122,8 @@ Converted["_UICorner1"].CornerRadius = UDim.new(0.100000001, 0)
 Converted["_UICorner1"].Parent = Converted["_UserInfoFrame"]
 
 Converted["_UIGradient2"].Color = ColorSequence.new{
-	ColorSequenceKeypoint.new(0, Color3.fromRGB(43.00000123679638, 43.00000123679638, 43.00000123679638)),
-	ColorSequenceKeypoint.new(1, Color3.fromRGB(33.00000183284283, 33.00000183284283, 33.00000183284283))
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(43.00000123679638, 43.00000123679638, 43.00000123679638)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(33.00000183284283, 33.00000183284283, 33.00000183284283))
 }
 Converted["_UIGradient2"].Rotation = 81
 Converted["_UIGradient2"].Parent = Converted["_UserInfoFrame"]
@@ -286,8 +286,8 @@ Converted["_UICorner4"].CornerRadius = UDim.new(0.100000001, 0)
 Converted["_UICorner4"].Parent = Converted["_StatisticsFrame"]
 
 Converted["_UIGradient3"].Color = ColorSequence.new{
-	ColorSequenceKeypoint.new(0, Color3.fromRGB(43.00000123679638, 43.00000123679638, 43.00000123679638)),
-	ColorSequenceKeypoint.new(1, Color3.fromRGB(33.00000183284283, 33.00000183284283, 33.00000183284283))
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(43.00000123679638, 43.00000123679638, 43.00000123679638)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(33.00000183284283, 33.00000183284283, 33.00000183284283))
 }
 Converted["_UIGradient3"].Rotation = 81
 Converted["_UIGradient3"].Parent = Converted["_StatisticsFrame"]
@@ -462,8 +462,8 @@ Converted["_UICorner6"].CornerRadius = UDim.new(0.300000012, 0)
 Converted["_UICorner6"].Parent = Converted["_StatusFrame"]
 
 Converted["_UIGradient4"].Color = ColorSequence.new{
-	ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 255, 0)),
-	ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 200, 0))
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 255, 0)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 200, 0))
 }
 Converted["_UIGradient4"].Rotation = 81
 Converted["_UIGradient4"].Parent = Converted["_StatusFrame"]
@@ -505,8 +505,8 @@ Converted["_UICorner8"].CornerRadius = UDim.new(0.300000012, 0)
 Converted["_UICorner8"].Parent = Converted["_LogFrame"]
 
 Converted["_UIGradient5"].Color = ColorSequence.new{
-	ColorSequenceKeypoint.new(0, Color3.fromRGB(43.00000123679638, 43.00000123679638, 43.00000123679638)),
-	ColorSequenceKeypoint.new(1, Color3.fromRGB(33.00000183284283, 33.00000183284283, 33.00000183284283))
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(43.00000123679638, 43.00000123679638, 43.00000123679638)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(33.00000183284283, 33.00000183284283, 33.00000183284283))
 }
 Converted["_UIGradient5"].Rotation = 81
 Converted["_UIGradient5"].Parent = Converted["_LogFrame"]
@@ -535,18 +535,19 @@ Converted["_BackDrop2"].Parent = Converted["_Frame"]
 Converted["_UICorner9"].CornerRadius = UDim.new(0.300000012, 0)
 Converted["_UICorner9"].Parent = Converted["_BackDrop2"]
 
--- LocalScript for GUI updates (simplified, add logic as needed)
+-- LocalScript for GUI updates
 local function updateGUI()
-    -- Update username, stats, etc. from player data
     Converted["_TextLabel"].Text = game.Players.LocalPlayer.Name
-    -- Add more updates here
+    Converted["_userid"].Text = "User ID: " .. game.Players.LocalPlayer.UserId
+    Converted["_Display Name"].Text = "Display Name: " .. game.Players.LocalPlayer.DisplayName
+    Converted["_Username"].Text = "Username: " .. game.Players.LocalPlayer.Name
+    Converted["_AccountAge"].Text = "Age: " .. math.floor(game.Players.LocalPlayer.AccountAge / 365) .. " years"
 end
 Converted["_LocalScript"].Parent = Converted["_ScreenGui"]
 Converted["_LocalScript"].Enabled = true
--- Script code for LocalScript
 updateGUI()
 
--- Services and Variables (merged from both)
+-- Services and Variables
 local HttpService = game:GetService("HttpService")
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -564,7 +565,7 @@ local INFORMATION = DATA_FOLDER:WaitForChild("Information")
 local INVENTORY = DATA_FOLDER:WaitForChild("Inventory")
 local PLAYER_CREW = INFORMATION:FindFirstChild("Crew")
 
-local ORIGINAL_CASH_AMOUNT = PLAYER_CASH.Value
+local ORIGINAL_CASH_AMOUNT = PLAYER_CASH and PLAYER_CASH.Value or 0
 local CASHIERS = workspace:WaitForChild("Cashiers")
 local IGNORED = workspace:WaitForChild("Ignored")
 local PLAYERS_FOLDER = workspace:WaitForChild("Players")
@@ -579,18 +580,14 @@ local MAIN_EVENT = ReplicatedStorage:WaitForChild("MainEvent")
 local PLAYER_GUI = PLAYER:WaitForChild("PlayerGui")
 local CORE_GUI = game.CoreGui
 
--- Alt list (from original)
-getgenv().alts = {} -- Populate as needed
-
--- Config variables (merged)
+-- Config variables
 local hideCash = true
 local cash_aura = false
 local cash_drop = false
-local pre_drop = 1000000 -- Example value
-local PS_Owner = PLAYER.UserId -- Assume main is owner
+local pre_drop = 1000000
 local Setup = 0 -- 0 for bank, 1 for club
 
--- Low Graphics (merged from both)
+-- Low Graphics
 local function makeEverythingInvisible()
     local allParts = game.Workspace:GetDescendants()
     for _, part in ipairs(allParts) do
@@ -609,15 +606,11 @@ settings().Rendering.QualityLevel = 1
 UserSettings().GameSettings.MasterVolume = 0
 RunService:Set3dRenderingEnabled(false)
 
--- Remove sky and atmosphere (from new)
+-- Remove sky and atmosphere
 local sky = Lighting:FindFirstChildOfClass("Sky")
-if sky then
-    sky:Destroy()
-end
+if sky then sky:Destroy() end
 local atmosphere = Lighting:FindFirstChildOfClass("Atmosphere")
-if atmosphere then
-    atmosphere:Destroy()
-end
+if atmosphere then atmosphere:Destroy() end
 Lighting.Ambient = Color3.fromRGB(255, 255, 255)
 Lighting.OutdoorAmbient = Color3.fromRGB(255, 255, 255)
 Lighting.Brightness = 0
@@ -646,8 +639,8 @@ for _, instance in workspace.Ignored:GetChildren() do
     end
 end
 
--- Hide Cash (from both)
-if hideCash == true then
+-- Hide Cash
+if hideCash then
     for _, v in pairs(IGNORED.Drop:GetChildren()) do
         if v:IsA("Part") then
             v:WaitForChild("Decal"):Destroy()
@@ -678,7 +671,7 @@ IGNORED.Drop.ChildAdded:Connect(function(child)
     end
 end)
 
--- Anti-AFK (from both)
+-- Anti-AFK
 PLAYER.Idled:Connect(function()
     print("[DEBUG] Anti-AFK triggered")
     VirtualUser:Button2Down(Vector2.new(0,0), workspace.CurrentCamera.CFrame)
@@ -686,7 +679,7 @@ PLAYER.Idled:Connect(function()
     VirtualUser:Button2Up(Vector2.new(0,0), workspace.CurrentCamera.CFrame)
 end)
 
--- Teleport Functions (merged, keeping bank TP)
+-- Teleport Functions
 local teleportThread
 local teleporting = false
 
@@ -715,14 +708,12 @@ local function stopTeleport()
     teleporting = false
 end
 
-local teleportTask
-
 local function teleport2(position)
     teleporting = false
     task.wait()
 
     teleporting = true
-    teleportTask = task.spawn(function()
+    teleportThread = task.spawn(function()
         while teleporting do
             task.wait()
             pcall(function()
@@ -741,7 +732,7 @@ local function teleport2(position)
     loadedAnimation:Play()
 end
 
--- Bank TP positions (kept from original)
+-- Bank TP positions
 local teleportPositions = {
     [1] = Vector3.new(-393.01, 36, -338),
     [2] = Vector3.new(-381.01, 36, -338),
@@ -784,10 +775,9 @@ local teleportPositions = {
     [39] = Vector3.new(-405.01, 36, -273),
 }
 
--- Club TP (from new)
+-- Club TP
 local function teleportToClub(altNumber)
     local CLUB_POSITION = Vector3.new(-291, 5, -405)
-
     local offsetX = 0
     local offsetZ = 0
 
@@ -804,10 +794,9 @@ local function teleportToClub(altNumber)
     teleport2(CFrame.new(CLUB_POSITION + Vector3.new(offsetZ, 0, offsetX)))
 end
 
--- Get Alt Number (from original)
+-- Get Alt Number
 function getAltNumber(userId)
-    local alts = getgenv().alts
-    for i, id in ipairs(alts) do
+    for i, id in ipairs(getgenv().alts) do
         if userId == id then
             print("[DEBUG] getAltNumber: Found alt number " .. i)
             return i
@@ -817,24 +806,30 @@ function getAltNumber(userId)
     return false
 end
 
--- VIP Commands (updated from new)
+-- VIP Commands
 local function kick(player)
+    if table.find(getgenv().dont_kick, player.UserId) then
+        print("[DEBUG] Cannot kick player " .. player.Name .. " (in dont_kick list)")
+        return
+    end
     MAIN_EVENT:FireServer("VIP_CMD", "Kick", player)
-    print("kicked player")
+    print("[DEBUG] Kicked player " .. player.Name)
 end
 
 local function summon(player)
     MAIN_EVENT:FireServer("VIP_CMD", "Summon", player)
+    print("[DEBUG] Summoned player " .. player.Name)
 end
 
--- Chats/Shouts (from new, updated)
+-- Chats/Shouts
 local function shout(message)
     pcall(function()
         MAIN_EVENT:FireServer("Shout", message)
+        print("[DEBUG] Shouted: " .. message)
     end)
 end
 
--- Cash Functions (merged)
+-- Cash Functions
 local currencyPostFixes = {
     ["k"] = 1000,
     ["m"] = 1000000,
@@ -845,20 +840,17 @@ local function cashToInt(stringValue)
     local noDollarSign = string.sub(stringValue, 2, #stringValue)
     local noComma = string.gsub(noDollarSign, ",", "")
     local toInt = tonumber(noComma)
-    
     return toInt
 end
 
 local function countFloorCash()
     local totalFloorCashAmount = 0
-
-    for _,v in pairs(workspace.Ignored.Drop:GetChildren()) do
+    for _, v in pairs(workspace.Ignored.Drop:GetChildren()) do
         if v:IsA("Part") then
             local amount = cashToInt(v.BillboardGui.TextLabel.Text)
             totalFloorCashAmount += amount
         end
     end
-
     return totalFloorCashAmount
 end
 
@@ -868,10 +860,8 @@ local function dropMoneyIfNeeded()
 
     while true do
         task.wait(15.5)
-
         if cash_aura then
             print("[DEBUG] Cash Aura active")
-
             local teleportCooldown = 0
             local COOLDOWN_TIME = 2.5
             local CLICK_DISTANCE = 11
@@ -884,7 +874,6 @@ local function dropMoneyIfNeeded()
                 for _, v in ipairs(drops) do
                     if v:IsA("Part") then
                         local dist = PLAYER:DistanceFromCharacter(v.Position)
-
                         if dist <= CLICK_DISTANCE then
                             table.insert(nearbyDrops, v)
                         else
@@ -907,12 +896,12 @@ local function dropMoneyIfNeeded()
                         teleportCooldown = tick()
                     end
                 end
-
                 task.wait(0.1)
             end
         else
             if countFloorCash() < pre_drop and isPlayerNearPosition(PLAYER, centerPosition, MAX_DISTANCE) then
                 MAIN_EVENT:FireServer("DropMoney", 15000)
+                print("[DEBUG] Dropped money due to low floor cash")
             end
         end
     end
@@ -920,8 +909,8 @@ end
 
 task.spawn(dropMoneyIfNeeded)
 
--- Player Tracking (adapted from new, local version without API)
-local trackedPlayers = {} -- Local table for player data
+-- Player Tracking
+local trackedPlayers = {}
 
 local function is_bot(userId)
     for _, id in ipairs(getgenv().alts) do
@@ -933,9 +922,7 @@ local function is_bot(userId)
 end
 
 local function is_whitelisted_user(userId)
-    -- Local whitelist, add IDs as needed
-    local whitelist = {PS_Owner} -- Example
-    for _, id in ipairs(whitelist) do
+    for _, id in ipairs(getgenv().dont_kick) do
         if id == userId then
             return true
         end
@@ -968,7 +955,7 @@ local function Track(user, DHC_bought, spentCash, startCash)
         local amount = DHC_bought - spentCash
         local need = start + amount
         if tonumber(target:WaitForChild("DataFolder"):WaitForChild("Currency").Value) >= need then
-            print("player already reached goal")
+            print("[DEBUG] Player " .. user .. " already reached goal")
             track_kick(target)
             return
         end
@@ -988,7 +975,6 @@ local function Track(user, DHC_bought, spentCash, startCash)
             local target = Players:FindFirstChild(user)
             if target then
                 new = tonumber(target:WaitForChild("DataFolder"):WaitForChild("Currency").Value)
-                
                 if last_cash_value == 0 and new > 0 then
                     last_cash_value = new
                 elseif last_cash_value > 0 then
@@ -998,7 +984,6 @@ local function Track(user, DHC_bought, spentCash, startCash)
                     end
                     last_cash_value = new > 0 and new or 0
                 end
-                
                 if os.time() - last_sent_time >= 20 then
                     local fields = {
                         goal_cash = need - CASH_SPENT,
@@ -1011,7 +996,7 @@ local function Track(user, DHC_bought, spentCash, startCash)
                 end
             end
         until new + CASH_SPENT >= need or target == nil
-    
+
         if new + CASH_SPENT >= need then
             local fields = {
                 goal_cash = need - CASH_SPENT,
@@ -1021,13 +1006,13 @@ local function Track(user, DHC_bought, spentCash, startCash)
                 processed = true
             }
             updatePlayerData(target.UserId, fields)
-            track_kick(target)               
+            track_kick(target)
         end
-        print("finished tracking")
+        print("[DEBUG] Finished tracking " .. user)
     end)
-    
+
     if not success then
-        print("Error in Track function: " .. errorMessage)
+        print("[DEBUG] Error in Track function: " .. errorMessage)
     end
 end
 
@@ -1035,10 +1020,8 @@ local function isPlayerNearPosition(player, position, maxDistance)
     if not player or not player.Character or not player.Character:FindFirstChild("HumanoidRootPart") then
         return false
     end
-    
     local playerPos = player.Character.HumanoidRootPart.Position
     local distance = (playerPos - position).Magnitude
-    
     return distance <= maxDistance
 end
 
@@ -1052,6 +1035,11 @@ local function isOwnerInGame()
 end
 
 local function track_kick(target)
+    if is_whitelisted_user(target.UserId) then
+        print("[DEBUG] Cannot kick " .. target.Name .. " (in dont_kick list)")
+        return
+    end
+
     local vault_Position = CFrame.new(-664, -37, -284)
     local centerPosition = CFrame.new(-263.755, -13.117, -378.038)
     local MAX_ALLOWED_DISTANCE = 50
@@ -1101,7 +1089,7 @@ local function track_kick(target)
     end)
 end
 
--- Music (from new)
+-- Music
 local song_ids = {
     136409279011083,
     70734926325783,
@@ -1126,37 +1114,35 @@ local current_song_index = 1
 local function play_song(song_id)
     local backpack = PLAYER:WaitForChild("Backpack")
     local boombox = backpack:FindFirstChild("[Boombox]")
-    
+
     if not boombox then
         local character = PLAYER.Character or PLAYER.CharacterAdded:Wait()
         boombox = character:FindFirstChild("[Boombox]")
     end
-    
+
     if not boombox then
-        warn("Boombox not found in backpack or character")
+        warn("[DEBUG] Boombox not found in backpack or character")
         return false
     end
-    
+
     if boombox.Parent == backpack then
         local humanoid = (PLAYER.Character or PLAYER.CharacterAdded:Wait()):WaitForChild("Humanoid")
         humanoid:EquipTool(boombox)
         task.wait(0.1)
     end
-    
+
     local args = {
         "Boombox",
         song_id
     }
     MAIN_EVENT:FireServer(unpack(args))
-    
+    print("[DEBUG] Played song ID: " .. song_id)
     return true
 end
 
 local function play_next_song()
     if #song_ids == 0 then return end
-    
     local success = play_song(song_ids[current_song_index])
-    
     if success then
         current_song_index = current_song_index % #song_ids + 1
         task.wait(120)
@@ -1164,22 +1150,22 @@ local function play_next_song()
     end
 end
 
--- Code Redeemer (from both)
+-- Code Redeemer
 task.spawn(function()
     pcall(function()
         local api = loadstring(game:HttpGet('https://raw.githubusercontent.com/furryboy1/dh-code-redeemer/refs/heads/main/codes.lua'))()
-
         for _, v in pairs(api.codes) do
             task.wait(api.rate)
             MAIN_EVENT:FireServer('EnterPromoCode', v)
+            print("[DEBUG] Redeemed code: " .. v)
         end
     end)
 end)
 
--- Anti-Idle (from both)
+-- Anti-Idle
 local GC = getconnections
 if GC then
-    for i,v in pairs(GC(Players.LocalPlayer.Idled)) do
+    for i, v in pairs(GC(Players.LocalPlayer.Idled)) do
         if v["Disable"] then
             v["Disable"](v)
         elseif v["Disconnect"] then
@@ -1188,7 +1174,7 @@ if GC then
     end
 end
 
--- Main/Alt Logic (merged)
+-- Main/Alt Logic
 local firstMessage = nil
 local lastReceivedMessage = ""
 
@@ -1205,13 +1191,10 @@ local function listenForResponse()
         if response and response.Success and response.Body then
             local responseData = HttpService:JSONDecode(response.Body)
             local flaskMessage = responseData.reply
-          
             if not firstMessage then
                 firstMessage = flaskMessage
-         
             else
                 if flaskMessage ~= lastReceivedMessage then
-                
                     local firstWord = flaskMessage:match("^%S+")
                     local middleWord = flaskMessage:match("%S+%s*(%S+)%s+%S+$")
                     local lastWord = flaskMessage:match("%S+$")
@@ -1226,38 +1209,37 @@ local function listenForResponse()
             end
         end
     else
-        print("Error occurred while making the request to Flask server.")
+        print("[DEBUG] Error occurred while making request to Flask server")
     end
 end
 
 function dropMoney(money, name)
     print("[DEBUG] dropMoney called with money: " .. tostring(money) .. ", name: " .. tostring(name))
-	local amountString = money
-	local limit = tonumber(amountString)
-	if not limit then
-    	for postFix, value in pairs(currencyPostFixes) do
-        	if string.find(amountString, postFix) then
-            	local rawNumberString = string.gsub(amountString, postFix, "")
-            	limit = tonumber(rawNumberString) * value
-            	break
-        	end
-    	end
-	end
+    local amountString = money
+    local limit = tonumber(amountString)
+    if not limit then
+        for postFix, value in pairs(currencyPostFixes) do
+            if string.find(amountString, postFix) then
+                local rawNumberString = string.gsub(amountString, postFix, "")
+                limit = tonumber(rawNumberString) * value
+                break
+            end
+        end
+    end
 
     if limit then
-        numberOfAltsInGame = countAltsInGame()
-		print(numberOfAltsInGame)
-        targetdrop = limit / numberOfAltsInGame
-		print(targetdrop)
-        timestodrop = targetdrop / 12750
-		print(timestodrop)
-        roundedTimestoDrop = math.ceil(timestodrop)
-		print(roundedTimestoDrop)
-		
+        local numberOfAltsInGame = countAltsInGame()
+        print("[DEBUG] Number of alts in game: " .. numberOfAltsInGame)
+        local targetdrop = limit / numberOfAltsInGame
+        print("[DEBUG] Target drop per alt: " .. targetdrop)
+        local timestodrop = targetdrop / 12750
+        print("[DEBUG] Times to drop: " .. timestodrop)
+        local roundedTimestoDrop = math.ceil(timestodrop)
+        print("[DEBUG] Rounded times to drop: " .. roundedTimestoDrop)
+
         shout("Started dropping " .. tostring(money) .. ", for " .. tostring(name))
 
         for i = 1, roundedTimestoDrop do
-      
             MAIN_EVENT:FireServer("DropMoney", 15000)
             print("[DEBUG] Fired DropMoney event with 15000")
             local request = http_request or request or HttpPost or syn.request
@@ -1279,7 +1261,6 @@ function dropMoney(money, name)
             wait(16.5)
         end
 
-        dropToggle = false
         local request = http_request or request or HttpPost or syn.request
         local abc123 = "http://" .. server1
         local success, response = pcall(function()
@@ -1305,12 +1286,12 @@ end
 
 function countAltsInGame()
     local count = 0
-    for _, altID in ipairs(alts) do
+    for _, altID in ipairs(getgenv().alts) do
         if Players:GetPlayerByUserId(altID) then
-            count += 1
+            count = count + 1
         end
     end
-   return count
+    return count
 end
 
 if PLAYER.UserId == PS_Owner then
@@ -1325,15 +1306,15 @@ if PLAYER.UserId == PS_Owner then
     local function onPlayerAdded(player)
         repeat
             task.wait(0.1)
-        until player.Character and player.Character:FindFirstChild("FULLY_LOADED_CHAR") ~= nil   
-        
+        until player.Character and player.Character:FindFirstChild("FULLY_LOADED_CHAR") ~= nil
+
         if is_bot(player.UserId) then
             if player ~= PLAYER and player.Character then
                 player.Character:Destroy()
             end
             return
         end
-        
+
         if not cash_drop then
             local playerData = getPlayerData(player.UserId)
             if playerData then
@@ -1346,13 +1327,11 @@ if PLAYER.UserId == PS_Owner then
                 task.wait(1)
             else
                 task.wait(3)
-                if not is_bot(player.UserId) then
-                    if not is_whitelisted_user(player.UserId) then
-                        track_kick(player)
-                    else
-                        summon(player)
-                    end
-                end 
+                if not is_bot(player.UserId) and not is_whitelisted_user(player.UserId) then
+                    track_kick(player)
+                else
+                    summon(player)
+                end
             end
         else
             summon(player)
@@ -1405,7 +1384,7 @@ else
         player.CharacterAdded:Connect(function()
             pcall(function()
                 removeCharacter(player)
-            end)        
+            end)
         end)
     end)
 
@@ -1422,7 +1401,7 @@ else
     local userId = PLAYER.UserId
     local altNumber = getAltNumber(userId)
     local position = teleportPositions[altNumber] or Vector3.new(-381.01, 35.75, -286)
-    
+
     if Setup == 1 then
         teleportToClub(altNumber)
     else
