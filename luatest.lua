@@ -1,70 +1,65 @@
 
-if getgenv().scriptinject then
-    error("Alt control script is already executed")
-end
-getgenv().scriptinject = true
-
--- Access externally defined variables
-local alts = getgenv().alts
-local dont_kick = getgenv().dont_kick 
-local ipv4 = getgenv().ipv4 
 local server1 = ipv4 .. ":5000"
 local server2 = ipv4 .. ":6000"
 
+if getgenv().scriptinject == true then error("Alt control Script is already executed") end
+getgenv().scriptinject = true
+
 -- Set PS_Owner to the first alt
-local PS_Owner = alts[1]
+local PS_Owner = getgenv().alts[1] -- 6177522902 is the owner
 
 -- GUI Construction
 local Converted = {
-    _ScreenGui = Instance.new("ScreenGui"),
-    _Frame = Instance.new("Frame"),
-    _UIGradient = Instance.new("UIGradient"),
-    _UsernameFrame = Instance.new("Frame"),
-    _UICorner = Instance.new("UICorner"),
-    _UIGradient1 = Instance.new("UIGradient"),
-    _TextLabel = Instance.new("TextLabel"),
-    _UserInfoFrame = Instance.new("Frame"),
-    _UICorner1 = Instance.new("UICorner"),
-    _UIGradient2 = Instance.new("UIGradient"),
-    _Titles = Instance.new("Frame"),
-    _UICorner2 = Instance.new("UICorner"),
-    _TextLabel1 = Instance.new("TextLabel"),
-    _TextLabel2 = Instance.new("TextLabel"),
-    _MainInfo = Instance.new("TextLabel"),
-    _userid = Instance.new("TextLabel"),
-    _DisplayName = Instance.new("TextLabel"),
-    _Username = Instance.new("TextLabel"),
-    _ExtraInfo = Instance.new("TextLabel"),
-    _AccountAge = Instance.new("TextLabel"),
-    _BackDrop = Instance.new("Frame"),
-    _UICorner3 = Instance.new("UICorner"),
-    _StatisticsFrame = Instance.new("Frame"),
-    _UICorner4 = Instance.new("UICorner"),
-    _UIGradient3 = Instance.new("UIGradient"),
-    _Titles1 = Instance.new("Frame"),
-    _UICorner5 = Instance.new("UICorner"),
-    _TextLabel3 = Instance.new("TextLabel"),
-    _TextLabel4 = Instance.new("TextLabel"),
-    _Statistics = Instance.new("Frame"),
-    _TextLabel5 = Instance.new("TextLabel"),
-    _TextLabel6 = Instance.new("TextLabel"),
-    _BeforeCash = Instance.new("TextLabel"),
-    _AfterCash = Instance.new("TextLabel"),
-    _Bounty = Instance.new("TextLabel"),
-    _TimeInServer = Instance.new("TextLabel"),
-    _BountyText = Instance.new("TextLabel"),
-    _StatusFrame = Instance.new("Frame"),
-    _UICorner6 = Instance.new("UICorner"),
-    _UIGradient4 = Instance.new("UIGradient"),
-    _TextLabel7 = Instance.new("TextLabel"),
-    _Frame1 = Instance.new("Frame"),
-    _UICorner7 = Instance.new("UICorner"),
-    _LogFrame = Instance.new("Frame"),
-    _UICorner8 = Instance.new("UICorner"),
-    _UIGradient5 = Instance.new("UIGradient"),
-    _TextLabel8 = Instance.new("TextLabel"),
-    _BackDrop2 = Instance.new("Frame"),
-    _UICorner9 = Instance.new("UICorner"),
+    ["_ScreenGui"] = Instance.new("ScreenGui"),
+    ["_Frame"] = Instance.new("Frame"),
+    ["_UIGradient"] = Instance.new("UIGradient"),
+    ["_UsernameFrame"] = Instance.new("Frame"),
+    ["_UICorner"] = Instance.new("UICorner"),
+    ["_UIGradient1"] = Instance.new("UIGradient"),
+    ["_TextLabel"] = Instance.new("TextLabel"),
+    ["_UserInfoFrame"] = Instance.new("Frame"),
+    ["_UICorner1"] = Instance.new("UICorner"),
+    ["_UIGradient2"] = Instance.new("UIGradient"),
+    ["_Titles"] = Instance.new("Frame"),
+    ["_UICorner2"] = Instance.new("UICorner"),
+    ["_TextLabel1"] = Instance.new("TextLabel"),
+    ["_TextLabel2"] = Instance.new("TextLabel"),
+    ["_MainInfo"] = Instance.new("TextLabel"),
+    ["_userid"] = Instance.new("TextLabel"),
+    ["_Display Name"] = Instance.new("TextLabel"),
+    ["_Username"] = Instance.new("TextLabel"),
+    ["_ExtraInfo"] = Instance.new("TextLabel"),
+    ["_AccountAge"] = Instance.new("TextLabel"),
+    ["_BackDrop"] = Instance.new("Frame"),
+    ["_UICorner3"] = Instance.new("UICorner"),
+    ["_StatisticsFrame"] = Instance.new("Frame"),
+    ["_UICorner4"] = Instance.new("UICorner"),
+    ["_UIGradient3"] = Instance.new("UIGradient"),
+    ["_Titles1"] = Instance.new("Frame"),
+    ["_UICorner5"] = Instance.new("UICorner"),
+    ["_TextLabel3"] = Instance.new("TextLabel"),
+    ["_TextLabel4"] = Instance.new("TextLabel"),
+    ["_Statistics"] = Instance.new("Frame"),
+    ["_TextLabel5"] = Instance.new("TextLabel"),
+    ["_TextLabel6"] = Instance.new("TextLabel"),
+    ["_BeforeCash"] = Instance.new("TextLabel"),
+    ["_AfterCash"] = Instance.new("TextLabel"),
+    ["_Bounty"] = Instance.new("TextLabel"),
+    ["_Time in server"] = Instance.new("TextLabel"),
+    ["_BountyText"] = Instance.new("TextLabel"),
+    ["_StatusFrame"] = Instance.new("Frame"),
+    ["_UICorner6"] = Instance.new("UICorner"),
+    ["_UIGradient4"] = Instance.new("UIGradient"),
+    ["_TextLabel7"] = Instance.new("TextLabel"),
+    ["_Frame1"] = Instance.new("Frame"),
+    ["_UICorner7"] = Instance.new("UICorner"),
+    ["_LogFrame"] = Instance.new("Frame"),
+    ["_UICorner8"] = Instance.new("UICorner"),
+    ["_UIGradient5"] = Instance.new("UIGradient"),
+    ["_TextLabel8"] = Instance.new("TextLabel"),
+    ["_BackDrop2"] = Instance.new("Frame"),
+    ["_UICorner9"] = Instance.new("UICorner"),
+    ["_LocalScript"] = Instance.new("LocalScript"),
 }
 
 -- GUI Properties
