@@ -97,10 +97,6 @@ local REQUIRED_CHAR_PARTS = {
 }
 
 
-Terrain.WaterWaveSize = 0
-Terrain.WaterWaveSpeed = 0
-Terrain.WaterReflectance = 0
-Terrain.WaterTransparency = 0
 
 Lighting.GlobalShadows = false
 Lighting.FogEnd = 9e9
