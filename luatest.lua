@@ -621,7 +621,7 @@ local PLAYER_CASH = DATA_FOLDER and DATA_FOLDER:WaitForChild("Currency", 10)
                         end
                     end
                 end
-                writePickingUpToFile(playersWithIncreasedCash)
+                (playersWithIncreasedCash)
                 wait(16.5)
             end
 
@@ -653,7 +653,7 @@ local PLAYER_CASH = DATA_FOLDER and DATA_FOLDER:WaitForChild("Currency", 10)
                         end
                     end
                 end
-                writePickingUpToFile(playersWithIncreasedCash)
+                (playersWithIncreasedCash)
                 final()
                 return
             end
@@ -678,7 +678,7 @@ local PLAYER_CASH = DATA_FOLDER and DATA_FOLDER:WaitForChild("Currency", 10)
                         end
                     end
                 end
-                writePickingUpToFile(playersWithIncreasedCash)
+                (playersWithIncreasedCash)
 
                 game:GetService("ReplicatedStorage"):WaitForChild("MainEvent"):FireServer("Shout", shoutMessage)
                 print("[DEBUG] Fired Shout event with message: " .. shoutMessage)
@@ -711,7 +711,7 @@ local PLAYER_CASH = DATA_FOLDER and DATA_FOLDER:WaitForChild("Currency", 10)
                             end
                         end
                     end
-                    writePickingUpToFile(playersWithIncreasedCash)
+                    (playersWithIncreasedCash)
                     final()
                     return
                 end
@@ -740,7 +740,7 @@ local PLAYER_CASH = DATA_FOLDER and DATA_FOLDER:WaitForChild("Currency", 10)
                         end
                     end
                 end
-                writePickingUpToFile(playersWithIncreasedCash)
+                (playersWithIncreasedCash)
 
                 local request = http_request or request or HttpPost or syn.request
                 local abc123 = "http://" .. server1
@@ -770,13 +770,13 @@ local PLAYER_CASH = DATA_FOLDER and DATA_FOLDER:WaitForChild("Currency", 10)
                             end
                         end
                     end
-                    writePickingUpToFile(playersWithIncreasedCash)
+                    (playersWithIncreasedCash)
                     final()
                     return
                 end
                 wait(10)
             end
-            writePickingUpToFile(playersWithIncreasedCash)
+            (playersWithIncreasedCash)
             final()
 
             for _, player in ipairs(Players:GetPlayers()) do
@@ -899,8 +899,8 @@ local PLAYER_CASH = DATA_FOLDER and DATA_FOLDER:WaitForChild("Currency", 10)
         end
     end
 
-    function writePickingUpToFile(playerData)
-        print("[DEBUG] writePickingUpToFile called with playerData: " .. tostring(#playerData) .. " entries")
+    function (playerData)
+        print("[DEBUG]  called with playerData: " .. tostring(#playerData) .. " entries")
         local flaskServerURL = "http://" .. server2 .. "/write-pickingup"
         local success, response = pcall(function()
             return request({
@@ -1326,9 +1326,14 @@ local PLAYER_CASH = DATA_FOLDER and DATA_FOLDER:WaitForChild("Currency", 10)
 
         if limit then
             numberOfAltsInGame = countAltsInGame()
+			print(numberOfAltsInGame)
             targetdrop = limit / numberOfAltsInGame
+			print(targetdrop)
             timestodrop = targetdrop / 12750
+			print(timestodrop)
             roundedTimestoDrop = math.ceil(timestodrop)
+			print(roundedTimestoDrop)
+			
             Chat("Started dropping " .. tostring(money) .. ", for " .. tostring(name), "All")
             for i = 1, roundedTimestoDrop do
           
