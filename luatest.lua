@@ -1,4 +1,17 @@
+--[[
+    MODIFICATION NOTES:
+    - Added PS_Owner variable to define the main account as the first user ID in getgenv().alts.
+    - Integrated the advanced GUI from your new script for the PS_Owner.
+    - Added standalone 'shout' and 'kick' functions from the new script for the PS_Owner to use.
+    - The PS_Owner will now have the new advanced GUI, while other alts will retain the original low-graphics GUI.
+    - Core functionality of both scripts, including the bank setup location and server communication, has been preserved.
+    - Fixed syntax errors by removing [cite_start] annotations.
+    - Fixed Frame1 error by ensuring correct GUI hierarchy access.
+    - Fixed AfterCash value calculation and formatting to prevent incorrect displays (e.g., 2.67 billion).
+]]
 
+-- Define ipv4 (replace with your server's IP address)
+local ipv4 = "192.168.1.100" -- CHANGE THIS TO YOUR SERVER'S IP
 local server1 = ipv4 .. ":5000"
 local server2 = ipv4 .. ":6000"
 local Workspace = game:GetService('Workspace')
@@ -30,7 +43,7 @@ local DATA_FOLDER = PLAYER:WaitForChild("DataFolder", 10)
 local PLAYER_CASH = DATA_FOLDER and DATA_FOLDER:WaitForChild("Currency", 10)
 local INVENTORY = DATA_FOLDER:WaitForChild("Inventory")
 local INFORMATION = DATA_FOLDER:WaitForChild("Information")
-local ORIGINAL_CASH_AMOUNT = PLAYER_CASH.Value
+local ORIGINAL_CASH_AMOUNT = PLAYER_CASH and PLAYER_CASH.Value or 0
 local IGNORED = workspace:WaitForChild("Ignored")
 local ATMS = workspace:WaitForChild("Cashiers")
 local PLAYERS_FOLDER = workspace:WaitForChild("Players")
@@ -204,11 +217,11 @@ local Converted = {
 
 -- Properties for the new GUI
 Converted["_ScreenGui"].Parent = game.CoreGui
-Converted["_ScreenGui"]["IgnoreGuiInset"] = true
+Converted["_ScreenGui"].IgnoreGuiInset = true
 Converted["_ScreenGui"].Enabled = true
-Converted["_ScreenGui"]["ScreenInsets"] = Enum.ScreenInsets.DeviceSafeInsets
-Converted["_ScreenGui"]["Name"] = [[Gui]]
-Converted["_ScreenGui"]["ZIndexBehavior"] = Enum.ZIndexBehavior.Sibling -- [cite: 11]
+Converted["_ScreenGui"].ScreenInsets = Enum.ScreenInsets.DeviceSafeInsets
+Converted["_ScreenGui"].Name = "Gui"
+Converted["_ScreenGui"].ZIndexBehavior = Enum.ZIndexBehavior.Sibling -- [cite: 11]
 
 Converted["_Frame"].Parent = Converted["_ScreenGui"]
 Converted["_Frame"].Size = UDim2.new(1, 0, 1, 0)
@@ -443,6 +456,7 @@ Converted["_TextLabel7"].Parent = Converted["_StatusFrame"]
 Converted["_Frame1"].BackgroundColor3 = Color3.fromRGB(255, 0, 4)
 Converted["_Frame1"].Position = UDim2.new(0.640, 0, 0.168, 0)
 Converted["_Frame1"].Size = UDim2.new(0.274, 0, 0.676, 0)
+Converted["_Frame1"].Name = "Frame1" -- Ensure explicit naming
 Converted["_Frame1"].Parent = Converted["_StatusFrame"]
 
 Converted["_UICorner7"].CornerRadius = UDim.new(0.5, 0)
@@ -475,8 +489,12 @@ Converted["_TextLabel8"].Parent = Converted["_LogFrame"]
 -- NEW: GUI Update Logic from newscript.txt
 local function YMCHG_fake_script()
     local function format(number)
-        number = tostring(number)
-        return number:reverse():gsub("...", "%0,", math.floor((#number - 1) / 3)):reverse()
+        if not number or type(number) ~= "number" or number < 0 then
+            return "0"
+        end
+        number = math.floor(number) -- Ensure integer
+        local str = tostring(number)
+        return str:reverse():gsub("...", "%0,", math.floor((#str - 1) / 3)):reverse()
     end
 
     local function hms_format(Int)
@@ -508,29 +526,43 @@ local function YMCHG_fake_script()
 
     task.spawn(function()
         while task.wait(0.1) do
-            pcall(function() stockbeforetext.Text = "$" .. format(DATA_FOLDER.Currency.Value) end)
-        end
-    end)
-
-    task.spawn(function()
-        while task.wait(0.1) do
             pcall(function()
-                local taxAmount = DATA_FOLDER.Currency.Value * 0.30 -- [cite: 25]
-                local fullamount = DATA_FOLDER.Currency.Value - taxAmount
-                stockaftertext.Text = "$" .. format(tonumber(fullamount))
+                if DATA_FOLDER and DATA_FOLDER.Currency then
+                    stockbeforetext.Text = "$" .. format(DATA_FOLDER.Currency.Value)
+                else
+                    stockbeforetext.Text = "$0"
+                end
             end)
         end
     end)
 
     task.spawn(function()
         while task.wait(0.1) do
-            pcall(function() timeinservertext.Text = "Time In Server: " .. tostring(convert_to_hms(math.floor(tick() - timeelapsed))) end)
+            pcall(function()
+                if DATA_FOLDER and DATA_FOLDER.Currency and type(DATA_FOLDER.Currency.Value) == "number" and DATA_FOLDER.Currency.Value >= 0 then
+                    local taxAmount = DATA_FOLDER.Currency.Value * 0.30
+                    local fullamount = DATA_FOLDER.Currency.Value - taxAmount
+                    stockaftertext.Text = "$" .. format(fullamount)
+                else
+                    stockaftertext.Text = "$0"
+                end
+            end)
         end
     end)
 
     task.spawn(function()
         while task.wait(0.1) do
-            pcall(function() bountytext.Text = "Bounty: " .. tostring(PLAYER:WaitForChild("leaderstats").Wanted.Value) end)
+            pcall(function()
+                timeinservertext.Text = "Time In Server: " .. tostring(convert_to_hms(math.floor(tick() - timeelapsed)))
+            end)
+        end
+    end)
+
+    task.spawn(function()
+        while task.wait(0.1) do
+            pcall(function()
+                bountytext.Text = "Bounty: " .. tostring(PLAYER:WaitForChild("leaderstats").Wanted.Value)
+            end)
         end
     end)
 end
@@ -539,15 +571,23 @@ coroutine.wrap(YMCHG_fake_script)()
 -- NEW: GUI Helper functions for status and logging
 local mainframe = Converted["_Frame"]
 local function status(status)
-    if status == true then
-        mainframe.StatusFrame.Frame1.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+    if mainframe.StatusFrame and mainframe.StatusFrame:FindFirstChild("Frame1") then
+        if status == true then
+            mainframe.StatusFrame.Frame1.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+        else
+            mainframe.StatusFrame.Frame1.BackgroundColor3 = Color3.fromRGB(255, 0, 4) -- [cite: 26]
+        end
     else
-        mainframe.StatusFrame.Frame1.BackgroundColor3 = Color3.fromRGB(255, 0, 4) -- [cite: 26]
+        print("Error: Frame1 not found in StatusFrame")
     end
 end
 
 local function log(msg)
-    mainframe.LogFrame.TextLabel.Text = msg
+    if mainframe.LogFrame and mainframe.LogFrame.TextLabel then
+        mainframe.LogFrame.TextLabel.Text = msg
+    else
+        print("Log: " .. msg)
+    end
 end
 
 -- PRESERVED: Low GFX GUI from old script (can be run alongside the new one)
@@ -583,7 +623,6 @@ if PLAYER.UserId == PS_Owner then
 
         if limit then
             status(true)
-            -- CHANGE 2: Replaced Chat() with log() for GUI updates
             log("Dropping " .. tostring(money) .. " for " .. name)
 
             local numberOfAltsInGame = #getgenv().alts
@@ -609,7 +648,7 @@ if PLAYER.UserId == PS_Owner then
             local countdownTimes = {60, 30, 10, 5}
             for _, timeLeft in ipairs(countdownTimes) do
                 shout("Leave the game or you will be kicked in " .. timeLeft .. " seconds")
-                log("Kicking in " .. timeLeft .. "s") -- Also logs the countdown
+                log("Kicking in " .. timeLeft .. "s")
                 wait(10)
             end
 
@@ -643,7 +682,9 @@ if PLAYER.UserId == PS_Owner then
 
     -- Setup for PS_Owner
     MAIN_EVENT:FireServer("RoleplayModeChange")
-    PLAYER.Character.HumanoidRootPart.CFrame = CFrame.new(-393.01, 35.75, -338)
+    if PLAYER.Character and PLAYER.Character:FindFirstChild("HumanoidRootPart") then
+        PLAYER.Character.HumanoidRootPart.CFrame = CFrame.new(-393.01, 35.75, -338)
+    end
     setfpscap(30)
     settings().Rendering.QualityLevel = 1
     UserSettings().GameSettings.MasterVolume = 0
@@ -667,13 +708,12 @@ else
             end
         end
         if limit then
-            log("Dropping...") -- Alts now update their own GUI
+            log("Dropping...")
             status(true)
             local numberOfAltsInGame = #getgenv().alts
             local targetdrop = limit / numberOfAltsInGame
             local roundedTimestoDrop = math.ceil(targetdrop / 12750)
 
-            -- CHANGE 2: Removed chat messages from alts
             for i = 1, roundedTimestoDrop do
                 MAIN_EVENT:FireServer("DropMoney", 15000)
                 wait(16.5)
@@ -705,7 +745,7 @@ else
         for i, id in ipairs(getgenv().alts) do if userId == id then return i end end
         return nil
     end
- local teleportPositions = {
+  local teleportPositions = {
         [1] = Vector3.new(-393.01, 36, -338),
         [2] = Vector3.new(-381.01, 36, -338),
         [3] = Vector3.new(-369.01, 36, -338),
@@ -746,10 +786,11 @@ else
         [38] = Vector3.new(-405.01, 36, -286),
         [39] = Vector3.new(-405.01, 36, -273),
     }
-    
     local altNumber = getAltNumber(PLAYER.UserId)
     local pos = (altNumber and teleportPositions[altNumber]) or Vector3.new(-381.01, 35.75, -286)
-    PLAYER.Character.HumanoidRootPart.CFrame = CFrame.new(pos)
+    if PLAYER.Character and PLAYER.Character:FindFirstChild("HumanoidRootPart") then
+        PLAYER.Character.HumanoidRootPart.CFrame = CFrame.new(pos)
+    end
 
     setfpscap(2)
     settings().Rendering.QualityLevel = 1
