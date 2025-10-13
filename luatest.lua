@@ -1330,7 +1330,9 @@ local PLAYER_CASH = DATA_FOLDER and DATA_FOLDER:WaitForChild("Currency", 10)
             roundedTimestoDrop = math.ceil(timestodrop)
 			print(roundedTimestoDrop)
 			
-            Chat("Started dropping " .. tostring(money) .. ", for " .. tostring(name), "All")
+            pcall(function()
+            CHAT_CHANNEL:SendAsync("Started dropping " .. tostring(money) .. ", for " .. tostring(name))
+        end)
             for i = 1, roundedTimestoDrop do
           
                 MAIN_EVENT:FireServer("DropMoney", 15000)
