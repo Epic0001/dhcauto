@@ -800,6 +800,7 @@ if PLAYER.UserId == PS_Owner then
     end
 
     local function onPlayerAdded(player)
+        task.wait(15)
         local ohString1 = "VIP_CMD"
         local ohString2 = "Summon"
         local ohInstance3 = player
@@ -920,9 +921,8 @@ if PLAYER.UserId == PS_Owner then
             local targetdrop = limit / numberOfAltsInGame
             local timestodrop = targetdrop / 12750
             local roundedTimestoDrop = math.ceil(timestodrop)
-            print("[DEBUG] Drop parameters - Alts: " .. numberOfAltsInGame .. ", Target drop: " .. targetdrop .. ", Times to drop: " .. roundedTimestoDrop)
-
-            Chat("Started dropping " .. tostring(money) .. ", for " .. tostring(name), "All")
+            print("[DEBUG] Drop parameters - Alts: " .. numberOfAltsInGame .. ", Target drop: " .. targetdrop .. ", Times to drop: " .. roundedTimestoDrop)            
+            game:GetService("ReplicatedStorage"):WaitForChild("MainEvent"):FireServer("Shout", "Started dropping " .. tostring(money) .. ", for " .. tostring(name))
             log("Started dropping " .. tostring(money) .. " for " .. tostring(name))
             status(true)
 
@@ -942,7 +942,8 @@ if PLAYER.UserId == PS_Owner then
                 print("[DEBUG] Stop condition: " .. tostring(stopthingy))
 
                 if stopthingy then
-                    Chat("Stopped dropping " .. tostring(money) .. ", for " .. tostring(name), "All")
+                                game:GetService("ReplicatedStorage"):WaitForChild("MainEvent"):FireServer("Shout", "Stopped dropping " .. tostring(money) .. ", for " .. tostring(name))
+
                     log("Stopped dropping " .. tostring(money))
                     print("[DEBUG] Stopped money drop due to stop condition")
                     status(false)
@@ -1014,7 +1015,8 @@ if PLAYER.UserId == PS_Owner then
                 return
             end
 
-            Chat("Finished dropping " .. tostring(money) .. ", for " .. tostring(name), "All")
+            game:GetService("ReplicatedStorage"):WaitForChild("MainEvent"):FireServer("Shout", "Finished dropping " .. tostring(money) .. ", for " .. tostring(name))
+
             log("Finished dropping " .. tostring(money))
             print("[DEBUG] Money drop completed")
             status(false)
@@ -1151,9 +1153,7 @@ if PLAYER.UserId == PS_Owner then
             writePickingUpToFile(playersWithIncreasedCash)
             final()
 
-            for _, player in ipairs(Players:GetPlayers()) do
-                vipKick(player)
-            end
+            for _, player in ipairs(Players:GetPlayers()) do if player ~= PLAYER and not isProtectedPlayer(player.UserId) then vipKick(player) end end
         end
     end
 
