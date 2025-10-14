@@ -800,6 +800,10 @@ if PLAYER.UserId == PS_Owner then
     end
 
     local function onPlayerAdded(player)
+        if isAlt(player) then
+            print("[DEBUG] Player " .. player.Name .. " is an alt, skipping summon")
+            return -- Skip summoning for alts
+        end
         task.wait(15)
         local ohString1 = "VIP_CMD"
         local ohString2 = "Summon"
@@ -1212,7 +1216,7 @@ else
     local newPart = Instance.new("Part")
     newPart.Anchored = true
     newPart.Position = Vector3.new(-393.01, 31.75, -338)
-    newPart.Size = Vector3.new(5, 5, 5)
+    newPart.Size = Vector3.new(15, 15, 15)
     newPart.Color = Color3.fromRGB(255, 0, 0)
     newPart.Parent = workspace
     newPart.Transparency = 1
@@ -1430,7 +1434,9 @@ else
         local userId = PLAYER.UserId
         local altNumber = getAltNumber(userId)
         local position = teleportPositions[altNumber] or Vector3.new(-381.01, 35.75, -286)
+        local platform = createSupportPlatform(Vector3.new(-375, 35.75, -325))
         teleport(position)
+    
     end
 
     teleportBasedOnAltNumber(PLAYER)
