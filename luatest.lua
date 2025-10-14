@@ -1,4 +1,15 @@
+--[[
+    MODIFICATION NOTES:
+    - Fixed teleportation for PS_Owner by adding a wait for character load.
+    - Moved currencyPostFixes definition inside dropMoney to ensure it’s always available.
+    - Added nil check for currencyPostFixes with fallback to prevent errors.
+    - Preserved dropMoney function and server communication logic (listenForResponse, amountleft, altscash, writePickingUpToFile, final) from luatest (3).lua.
+    - Kept the advanced GUI and PS_Owner/alt logic structure.
+    - Added debug logging to track currencyPostFixes issues.
+]]
 
+-- Define ipv4 (replace with your server's IP address)
+local ipv4 = "192.168.1.100" -- CHANGE THIS TO YOUR SERVER'S IP
 local server1 = ipv4 .. ":5000"
 local server2 = ipv4 .. ":6000"
 local Workspace = game:GetService('Workspace')
@@ -24,7 +35,7 @@ local mainModule = require(ReplicatedStorage:WaitForChild("MainModule"))
 
 -- Consts
 local PLAYER = Players.LocalPlayer
-local PS_Owner = getgenv().alts[1] -- NEW: Designate the first alt as the PS_Owner [cite: 101]
+local PS_Owner = getgenv().alts[1] -- Designate the first alt as the PS_Owner
 local MOUSE = PLAYER:GetMouse()
 local DATA_FOLDER = PLAYER:WaitForChild("DataFolder", 10)
 local PLAYER_CASH = DATA_FOLDER and DATA_FOLDER:WaitForChild("Currency", 10)
@@ -50,17 +61,6 @@ if not success or not CHAT_CHANNEL then
     CHAT_CHANNEL = { SendAsync = function(message) end } -- Fallback: Skip chat
 end
 
--- NEW: Added shout function from the new script
-local function shout(message)
-    game:GetService("ReplicatedStorage"):WaitForChild("MainEvent"):FireServer("Shout", message)
-end
-
--- NEW: Added kick function from the new script [cite: 56]
-local function kick(player)
-    game:GetService("ReplicatedStorage"):WaitForChild("MainEvent"):FireServer("VIP_CMD", "Kick", player)
-    print("kicked player: " .. player.Name)
-end
-
 local REQUIRED_ITEMS = {
     ["[Knife] - $159"] = 2,
     ["[Revolver] - $1379"] = 1,
@@ -76,7 +76,7 @@ local REQUIRED_CHAR_PARTS = {
     ["Head"] = true,
 }
 
--- Graphics optimization from old script
+-- Graphics optimization
 Lighting.GlobalShadows = false
 Lighting.FogEnd = 9e9
 Lighting.Brightness = 0
@@ -150,51 +150,52 @@ for _, v in ipairs(game:GetService("Workspace"):GetDescendants()) do
     end
 end
 
+-- GUI Setup (same as previous)
 local Converted = {
-    ["_ScreenGui"] = Instance.new("ScreenGui"), -- [cite: 1]
-    ["_Frame"] = Instance.new("Frame"), -- [cite: 2]
+    ["_ScreenGui"] = Instance.new("ScreenGui"),
+    ["_Frame"] = Instance.new("Frame"),
     ["_UIGradient"] = Instance.new("UIGradient"),
     ["_UsernameFrame"] = Instance.new("Frame"),
     ["_UICorner"] = Instance.new("UICorner"),
     ["_UIGradient1"] = Instance.new("UIGradient"),
     ["_TextLabel"] = Instance.new("TextLabel"),
-    ["_UserInfoFrame"] = Instance.new("Frame"), -- [cite: 3]
+    ["_UserInfoFrame"] = Instance.new("Frame"),
     ["_UICorner1"] = Instance.new("UICorner"),
     ["_UIGradient2"] = Instance.new("UIGradient"),
     ["_Titles"] = Instance.new("Frame"),
     ["_UICorner2"] = Instance.new("UICorner"),
     ["_TextLabel1"] = Instance.new("TextLabel"),
-    ["_TextLabel2"] = Instance.new("TextLabel"), -- [cite: 4]
+    ["_TextLabel2"] = Instance.new("TextLabel"),
     ["_MainInfo"] = Instance.new("TextLabel"),
     ["_userid"] = Instance.new("TextLabel"),
     ["_Display Name"] = Instance.new("TextLabel"),
     ["_Username"] = Instance.new("TextLabel"),
     ["_ExtraInfo"] = Instance.new("TextLabel"),
-    ["_AccountAge"] = Instance.new("TextLabel"), -- [cite: 5]
+    ["_AccountAge"] = Instance.new("TextLabel"),
     ["_BackDrop"] = Instance.new("Frame"),
     ["_UICorner3"] = Instance.new("UICorner"),
     ["_StatisticsFrame"] = Instance.new("Frame"),
     ["_UICorner4"] = Instance.new("UICorner"),
     ["_UIGradient3"] = Instance.new("UIGradient"),
-    ["_Titles1"] = Instance.new("Frame"), -- [cite: 6]
+    ["_Titles1"] = Instance.new("Frame"),
     ["_UICorner5"] = Instance.new("UICorner"),
     ["_TextLabel3"] = Instance.new("TextLabel"),
     ["_TextLabel4"] = Instance.new("TextLabel"),
     ["_Statistics"] = Instance.new("Frame"),
     ["_TextLabel5"] = Instance.new("TextLabel"),
-    ["_TextLabel6"] = Instance.new("TextLabel"), -- [cite: 7]
+    ["_TextLabel6"] = Instance.new("TextLabel"),
     ["_BeforeCash"] = Instance.new("TextLabel"),
     ["_AfterCash"] = Instance.new("TextLabel"),
     ["_Bounty"] = Instance.new("TextLabel"),
     ["_Time in server"] = Instance.new("TextLabel"),
     ["_BountyText"] = Instance.new("TextLabel"),
-    ["_StatusFrame"] = Instance.new("Frame"), -- [cite: 8]
+    ["_StatusFrame"] = Instance.new("Frame"),
     ["_UICorner6"] = Instance.new("UICorner"),
     ["_UIGradient4"] = Instance.new("UIGradient"),
     ["_TextLabel7"] = Instance.new("TextLabel"),
     ["_Frame1"] = Instance.new("Frame"),
     ["_UICorner7"] = Instance.new("UICorner"),
-    ["_LogFrame"] = Instance.new("Frame"), -- [cite: 9]
+    ["_LogFrame"] = Instance.new("Frame"),
     ["_UICorner8"] = Instance.new("UICorner"),
     ["_UIGradient5"] = Instance.new("UIGradient"),
     ["_TextLabel8"] = Instance.new("TextLabel"),
@@ -202,13 +203,13 @@ local Converted = {
     ["_UICorner9"] = Instance.new("UICorner"),
 }
 
--- Properties for the new GUI
+-- GUI Properties (unchanged)
 Converted["_ScreenGui"].Parent = game.CoreGui
 Converted["_ScreenGui"].IgnoreGuiInset = true
 Converted["_ScreenGui"].Enabled = true
 Converted["_ScreenGui"].ScreenInsets = Enum.ScreenInsets.DeviceSafeInsets
 Converted["_ScreenGui"].Name = "Gui"
-Converted["_ScreenGui"].ZIndexBehavior = Enum.ZIndexBehavior.Sibling -- [cite: 11]
+Converted["_ScreenGui"].ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 Converted["_Frame"].Parent = Converted["_ScreenGui"]
 Converted["_Frame"].Size = UDim2.new(1, 0, 1, 0)
@@ -239,7 +240,7 @@ Converted["_TextLabel"].Size = UDim2.new(1, 0, 1, 0)
 Converted["_TextLabel"].BackgroundTransparency = 1
 Converted["_TextLabel"].Parent = Converted["_UsernameFrame"]
 
-Converted["_UserInfoFrame"].BackgroundColor3 = Color3.fromRGB(255, 255, 255) -- [cite: 12]
+Converted["_UserInfoFrame"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Converted["_UserInfoFrame"].Position = UDim2.new(0.224, 0, 0.288, 0)
 Converted["_UserInfoFrame"].Size = UDim2.new(0.262, 0, 0.420, 0)
 Converted["_UserInfoFrame"].ZIndex = 2
@@ -267,7 +268,7 @@ Converted["_TextLabel1"].Text = "User Info"
 Converted["_TextLabel1"].TextColor3 = Color3.fromRGB(255, 255, 255)
 Converted["_TextLabel1"].TextScaled = true
 Converted["_TextLabel1"].BackgroundTransparency = 1
-Converted["_TextLabel1"].Position = UDim2.new(0.017, 0, 0.058, 0) -- [cite: 13]
+Converted["_TextLabel1"].Position = UDim2.new(0.017, 0, 0.058, 0)
 Converted["_TextLabel1"].Size = UDim2.new(0.305, 0, 0.509, 0)
 Converted["_TextLabel1"].Parent = Converted["_Titles"]
 
@@ -282,7 +283,7 @@ Converted["_TextLabel2"].Parent = Converted["_Titles"]
 
 Converted["_userid"].Font = Enum.Font.SourceSansBold
 Converted["_userid"].Text = "User ID:"
-Converted["_userid"].TextColor3 = Color3.fromRGB(255, 255, 255) -- [cite: 14]
+Converted["_userid"].TextColor3 = Color3.fromRGB(255, 255, 255)
 Converted["_userid"].TextScaled = true
 Converted["_userid"].TextXAlignment = Enum.TextXAlignment.Left
 Converted["_userid"].BackgroundTransparency = 1
@@ -304,7 +305,7 @@ Converted["_Display Name"].Parent = Converted["_UserInfoFrame"]
 
 Converted["_Username"].Font = Enum.Font.SourceSansBold
 Converted["_Username"].Text = "Username:"
-Converted["_Username"].TextColor3 = Color3.fromRGB(255, 255, 255) -- [cite: 15]
+Converted["_Username"].TextColor3 = Color3.fromRGB(255, 255, 255)
 Converted["_Username"].TextScaled = true
 Converted["_Username"].TextXAlignment = Enum.TextXAlignment.Left
 Converted["_Username"].BackgroundTransparency = 1
@@ -319,7 +320,7 @@ Converted["_AccountAge"].TextColor3 = Color3.fromRGB(255, 255, 255)
 Converted["_AccountAge"].TextScaled = true
 Converted["_AccountAge"].TextXAlignment = Enum.TextXAlignment.Left
 Converted["_AccountAge"].BackgroundTransparency = 1
-Converted["_AccountAge"].BorderColor3 = Color3.fromRGB(0, 0, 0) -- [cite: 16]
+Converted["_AccountAge"].BorderColor3 = Color3.fromRGB(0, 0, 0)
 Converted["_AccountAge"].Position = UDim2.new(0.043, 0, 0.740, 0)
 Converted["_AccountAge"].Size = UDim2.new(0.912, 0, 0.078, 0)
 Converted["_AccountAge"].Name = "AccountAge"
@@ -340,7 +341,7 @@ Converted["_UIGradient3"].Rotation = 81
 Converted["_UIGradient3"].Parent = Converted["_StatisticsFrame"]
 
 Converted["_Titles1"].BackgroundColor3 = Color3.fromRGB(29, 29, 29)
-Converted["_Titles1"].BorderSizePixel = 0 -- [cite: 17]
+Converted["_Titles1"].BorderSizePixel = 0
 Converted["_Titles1"].Size = UDim2.new(1, 0, 0.228, 0)
 Converted["_Titles1"].ZIndex = 2
 Converted["_Titles1"].Name = "Titles"
@@ -365,7 +366,7 @@ Converted["_TextLabel4"].TextScaled = true
 Converted["_TextLabel4"].BackgroundTransparency = 1
 Converted["_TextLabel4"].Position = UDim2.new(0.015, 0, 0.571, 0)
 Converted["_TextLabel4"].Size = UDim2.new(0.431, 0, 0.364, 0)
-Converted["_TextLabel4"].Parent = Converted["_Titles1"] -- [cite: 18]
+Converted["_TextLabel4"].Parent = Converted["_Titles1"]
 
 Converted["_Statistics"].BackgroundTransparency = 1
 Converted["_Statistics"].Position = UDim2.new(0, 0, 0.228, 0)
@@ -414,7 +415,7 @@ Converted["_Time in server"].TextXAlignment = Enum.TextXAlignment.Left
 Converted["_Time in server"].BackgroundTransparency = 1
 Converted["_Time in server"].Position = UDim2.new(0.043, 0, 0.801, 0)
 Converted["_Time in server"].Size = UDim2.new(0.912, 0, 0.108, 0)
-Converted["_Time in server"].Name = "Time in server" -- [cite: 21]
+Converted["_Time in server"].Name = "Time in server"
 Converted["_Time in server"].Parent = Converted["_Statistics"]
 
 Converted["_StatusFrame"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -433,7 +434,7 @@ Converted["_UIGradient4"].Parent = Converted["_StatusFrame"]
 
 Converted["_TextLabel7"].Font = Enum.Font.SourceSansBold
 Converted["_TextLabel7"].Text = "Status:"
-Converted["_TextLabel7"].TextColor3 = Color3.fromRGB(255, 255, 255) -- [cite: 22]
+Converted["_TextLabel7"].TextColor3 = Color3.fromRGB(255, 255, 255)
 Converted["_TextLabel7"].TextScaled = true
 Converted["_TextLabel7"].BackgroundTransparency = 1
 Converted["_TextLabel7"].Position = UDim2.new(0.087, 0, 0.257, 0)
@@ -443,7 +444,7 @@ Converted["_TextLabel7"].Parent = Converted["_StatusFrame"]
 Converted["_Frame1"].BackgroundColor3 = Color3.fromRGB(255, 0, 4)
 Converted["_Frame1"].Position = UDim2.new(0.640, 0, 0.168, 0)
 Converted["_Frame1"].Size = UDim2.new(0.274, 0, 0.676, 0)
-Converted["_Frame1"].Name = "Frame1" -- Ensure explicit naming
+Converted["_Frame1"].Name = "Frame1"
 Converted["_Frame1"].Parent = Converted["_StatusFrame"]
 
 Converted["_UICorner7"].CornerRadius = UDim.new(0.5, 0)
@@ -461,7 +462,7 @@ Converted["_UICorner8"].Parent = Converted["_LogFrame"]
 
 Converted["_UIGradient5"].Color = ColorSequence.new{ColorSequenceKeypoint.new(0, Color3.fromRGB(43, 43, 43)), ColorSequenceKeypoint.new(1, Color3.fromRGB(33, 33, 33))}
 Converted["_UIGradient5"].Rotation = 81
-Converted["_UIGradient5"].Parent = Converted["_LogFrame"] -- [cite: 23]
+Converted["_UIGradient5"].Parent = Converted["_LogFrame"]
 
 Converted["_TextLabel8"].Font = Enum.Font.SourceSansBold
 Converted["_TextLabel8"].Text = "Loading..."
@@ -473,13 +474,13 @@ Converted["_TextLabel8"].Position = UDim2.new(0.029, 0, 0.241, 0)
 Converted["_TextLabel8"].Size = UDim2.new(0.948, 0, 0.509, 0)
 Converted["_TextLabel8"].Parent = Converted["_LogFrame"]
 
--- NEW: GUI Update Logic from newscript.txt
+-- GUI Update Logic
 local function YMCHG_fake_script()
     local function format(number)
         if not number or type(number) ~= "number" or number < 0 then
             return "0"
         end
-        number = math.floor(number) -- Ensure integer
+        number = math.floor(number)
         local str = tostring(number)
         return str:reverse():gsub("...", "%0,", math.floor((#str - 1) / 3)):reverse()
     end
@@ -489,7 +490,7 @@ local function YMCHG_fake_script()
     end
 
     local function convert_to_hms(seconds)
-        local minutes = (seconds - seconds % 60) / 60 -- [cite: 24]
+        local minutes = (seconds - seconds % 60) / 60
         seconds = seconds - minutes * 60
         local hours = (minutes - minutes % 60) / 60
         minutes = minutes - hours * 60
@@ -499,7 +500,6 @@ local function YMCHG_fake_script()
     local timeelapsed = tick()
     local mainframe = Converted["_Frame"]
 
-    -- Update labels
     mainframe.UsernameFrame.TextLabel.Text = game.Players.LocalPlayer.Name
     mainframe.UserInfoFrame.userid.Text = "User ID: " .. game.Players.LocalPlayer.UserId
     mainframe.UserInfoFrame["Display Name"].Text = "Display Name: " .. game.Players.LocalPlayer.DisplayName
@@ -528,7 +528,7 @@ local function YMCHG_fake_script()
             pcall(function()
                 if DATA_FOLDER and DATA_FOLDER.Currency and type(DATA_FOLDER.Currency.Value) == "number" and DATA_FOLDER.Currency.Value >= 0 then
                     local taxAmount = DATA_FOLDER.Currency.Value * 0.30
-                    local fullamount = DATA_FOLDER.Currency.Value - taxAmount
+                    local fullamount = math.floor(DATA_FOLDER.Currency.Value - taxAmount) -- Fixed to ensure integer
                     stockaftertext.Text = "$" .. format(fullamount)
                 else
                     stockaftertext.Text = "$0"
@@ -555,14 +555,13 @@ local function YMCHG_fake_script()
 end
 coroutine.wrap(YMCHG_fake_script)()
 
--- NEW: GUI Helper functions for status and logging
 local mainframe = Converted["_Frame"]
 local function status(status)
     if mainframe.StatusFrame and mainframe.StatusFrame:FindFirstChild("Frame1") then
         if status == true then
             mainframe.StatusFrame.Frame1.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
         else
-            mainframe.StatusFrame.Frame1.BackgroundColor3 = Color3.fromRGB(255, 0, 4) -- [cite: 26]
+            mainframe.StatusFrame.Frame1.BackgroundColor3 = Color3.fromRGB(255, 0, 4)
         end
     else
         print("Error: Frame1 not found in StatusFrame")
@@ -577,16 +576,15 @@ local function log(msg)
     end
 end
 
--- PRESERVED: Low GFX GUI from old script (can be run alongside the new one)
 local function shout(message)
     MAIN_EVENT:FireServer("Shout", message)
 end
+
 local function kick(player)
     MAIN_EVENT:FireServer("VIP_CMD", "Kick", player)
-    log("Kicked: " .. player.Name) -- MODIFIED: Also logs the kick action
+    log("Kicked: " .. player.Name)
 end
 
--- Integrated functions from luatest (3).lua for drop logic and server communication
 local function Chat(text)
     pcall(function()
         local channel = TextChatService.TextChannels:FindFirstChild("RBXGeneral")
@@ -676,7 +674,7 @@ local function altscash()
             Method = "POST",
             Headers = {
                 ["Content-Type"] = "application/json",
-                ["Content-Length"] = #json_data
+                ["Content-Length"] = tostring(#json_data)
             },
             Body = json_data
         })
@@ -744,15 +742,27 @@ local function vipKick(player)
     end
 end
 
-local currencyPostFixes = {
-    ["k"] = 1000,
-    ["m"] = 1000000,
-    ["b"] = 1000000000,
-}
+local function isProtectedPlayer(userId)
+    print("[DEBUG] isProtectedPlayer called with userId: " .. tostring(userId))
+    for _, id in ipairs(getgenv().alts) do
+        if userId == id then
+            print("[DEBUG] isProtectedPlayer: User is an alt")
+            return true
+        end
+    end
+    for _, id in ipairs(getgenv().dont_kick or {}) do
+        if userId == id then
+            print("[DEBUG] isProtectedPlayer: User is in dont_kick list")
+            return true
+        end
+    end
+    print("[DEBUG] isProtectedPlayer: User is not protected")
+    return false
+end
 
 -- Main logic split
 if PLAYER.UserId == PS_Owner then
-    -- THIS SECTION IS FOR THE PS_OWNER (FIRST ALT)
+    -- PS_OWNER SECTION
     local function makeEverythingInvisible()
         local allParts = game.Workspace:GetDescendants()
         for _, part in ipairs(allParts) do
@@ -823,7 +833,7 @@ if PLAYER.UserId == PS_Owner then
         end
     end
 
-    for part, originalMaterial in pairs(LOW_GFX_PARTS) do
+    for part, originalMaterial in pairs(LOW_GFX_PARTS or {}) do
         part.Material = Enum.Material.SmoothPlastic
         if count < 1200 then
             count += 1
@@ -879,26 +889,21 @@ if PLAYER.UserId == PS_Owner then
         end
     end
 
-    local function isProtectedPlayer(userId)
-        print("[DEBUG] isProtectedPlayer called with userId: " .. tostring(userId))
-        for _, id in ipairs(getgenv().alts) do
-            if userId == id then
-                print("[DEBUG] isProtectedPlayer: User is an alt")
-                return true
-            end
-        end
-        for _, id in ipairs(getgenv().dont_kick) do
-            if userId == id then
-                print("[DEBUG] isProtectedPlayer: User is in dont_kick list")
-                return true
-            end
-        end
-        print("[DEBUG] isProtectedPlayer: User is not protected")
-        return false
-    end
-
     function dropMoney(money, name)
         print("[DEBUG] dropMoney called with money: " .. tostring(money) .. ", name: " .. tostring(name))
+        local currencyPostFixes = { -- Moved inside to ensure definition
+            ["k"] = 1000,
+            ["m"] = 1000000,
+            ["b"] = 1000000000,
+        }
+        if not currencyPostFixes then
+            print("[ERROR] currencyPostFixes is nil in dropMoney")
+            currencyPostFixes = { -- Fallback
+                ["k"] = 1000,
+                ["m"] = 1000000,
+                ["b"] = 1000000000,
+            }
+        end
         local amountString = money
         local limit = tonumber(amountString)
         print("[DEBUG] Initial limit: " .. tostring(limit))
@@ -927,8 +932,10 @@ if PLAYER.UserId == PS_Owner then
             local timestodrop = targetdrop / 12750
             local roundedTimestoDrop = math.ceil(timestodrop)
             print("[DEBUG] Drop parameters - Alts: " .. numberOfAltsInGame .. ", Target drop: " .. targetdrop .. ", Times to drop: " .. roundedTimestoDrop)
-game:GetService("ReplicatedStorage"):WaitForChild("MainEvent"):FireServer("Shout", "Started dropping " .. tostring(money) .. ", for " .. tostring(name))
 
+            Chat("Started dropping " .. tostring(money) .. ", for " .. tostring(name), "All")
+            log("Started dropping " .. tostring(money) .. " for " .. tostring(name))
+            status(true)
 
             local currentValue = 0
             for i = 1, roundedTimestoDrop do
@@ -946,9 +953,10 @@ game:GetService("ReplicatedStorage"):WaitForChild("MainEvent"):FireServer("Shout
                 print("[DEBUG] Stop condition: " .. tostring(stopthingy))
 
                 if stopthingy then
-                 
-                    game:GetService("ReplicatedStorage"):WaitForChild("MainEvent"):FireServer("Shout", "Stopped dropping " .. tostring(money) .. ", for " .. tostring(name))
+                    Chat("Stopped dropping " .. tostring(money) .. ", for " .. tostring(name), "All")
+                    log("Stopped dropping " .. tostring(money))
                     print("[DEBUG] Stopped money drop due to stop condition")
+                    status(false)
                     break
                 end
 
@@ -1013,12 +1021,14 @@ game:GetService("ReplicatedStorage"):WaitForChild("MainEvent"):FireServer("Shout
                 end
                 writePickingUpToFile(playersWithIncreasedCash)
                 final()
+                status(false)
                 return
             end
 
-                                game:GetService("ReplicatedStorage"):WaitForChild("MainEvent"):FireServer("Shout", "Finished dropping " .. tostring(money) .. ", for " .. tostring(name))
-
+            Chat("Finished dropping " .. tostring(money) .. ", for " .. tostring(name), "All")
+            log("Finished dropping " .. tostring(money))
             print("[DEBUG] Money drop completed")
+            status(false)
 
             local shoutMessage = "Kindly take a wallet-screenshot with our dropers and vouch. Thank you for being a valued customer."
             for _ = 1, 15 do
@@ -1071,6 +1081,7 @@ game:GetService("ReplicatedStorage"):WaitForChild("MainEvent"):FireServer("Shout
                     end
                     writePickingUpToFile(playersWithIncreasedCash)
                     final()
+                    status(false)
                     return
                 end
                 wait(2)
@@ -1126,6 +1137,7 @@ game:GetService("ReplicatedStorage"):WaitForChild("MainEvent"):FireServer("Shout
                     end
                     writePickingUpToFile(playersWithIncreasedCash)
                     final()
+                    status(false)
                     return
                 end
                 wait(10)
@@ -1156,11 +1168,22 @@ game:GetService("ReplicatedStorage"):WaitForChild("MainEvent"):FireServer("Shout
         end
     end
 
+    -- Improved teleport function
+    local function teleport(targetPosition)
+        local character = PLAYER.Character or PLAYER.CharacterAdded:Wait()
+        local humanoidRootPart = character:WaitForChild("HumanoidRootPart", 10)
+        if humanoidRootPart then
+            humanoidRootPart.CFrame = CFrame.new(targetPosition)
+            print("[DEBUG] Teleported to: " .. tostring(targetPosition))
+        else
+            print("[ERROR] Failed to find HumanoidRootPart for teleport")
+        end
+    end
+
     -- Setup for PS_Owner
     MAIN_EVENT:FireServer("RoleplayModeChange")
-    if PLAYER.Character and PLAYER.Character:FindFirstChild("HumanoidRootPart") then
-        PLAYER.Character.HumanoidRootPart.CFrame = CFrame.new(-393.01, 35.75, -338)
-    end
+    teleport(Vector3.new(-393.01, 36, -338))
+   
     setfpscap(2)
     settings().Rendering.QualityLevel = 1
     UserSettings().GameSettings.MasterVolume = 0
@@ -1168,9 +1191,12 @@ game:GetService("ReplicatedStorage"):WaitForChild("MainEvent"):FireServer("Shout
     log("PS Owner Connected.")
     status(false)
 
-    while true do listenForResponse(); wait(10) end
+    while true do
+        listenForResponse()
+        wait(10)
+    end
 else
-    -- THIS SECTION IS FOR ALL OTHER ALTS
+    -- ALT SECTION
     local function makeEverythingInvisible()
         local allParts = game.Workspace:GetDescendants()
         for _, part in ipairs(allParts) do
@@ -1220,6 +1246,7 @@ else
     end
 
     local firstMessage = nil
+    local lastReceivedMessage = nil
 
     local function listenForResponse()
         local abc123 = "http://" .. server1
@@ -1257,6 +1284,19 @@ else
 
     function dropMoney(money, name)
         print("[DEBUG] dropMoney (alt) called with money: " .. tostring(money) .. ", name: " .. tostring(name))
+        local currencyPostFixes = { -- Moved inside to ensure definition
+            ["k"] = 1000,
+            ["m"] = 1000000,
+            ["b"] = 1000000000,
+        }
+        if not currencyPostFixes then
+            print("[ERROR] currencyPostFixes is nil in dropMoney (alt)")
+            currencyPostFixes = { -- Fallback
+                ["k"] = 1000,
+                ["m"] = 1000000,
+                ["b"] = 1000000000,
+            }
+        end
         local amountString = money
         local limit = tonumber(amountString)
         if not limit then
@@ -1316,15 +1356,11 @@ else
             local stopthingy = responseData.stop or false
 
             if stopthingy then
-                   pcall(function()
-                CHAT_CHANNEL:SendAsync("Stopped dropping " .. tostring(money) .. ", for " .. tostring(name), "All")
-                    end)
+                Chat("Stopped dropping " .. tostring(money) .. ", for " .. tostring(name), "All")
                 print("[DEBUG] Stopped money drop (alt) due to stop condition")
                 return
             end
-               pcall(function()
-                CHAT_CHANNEL:SendAsync("Finished dropping " .. tostring(money) .. ", for " .. tostring(name), "All")
-                end)
+            Chat("Finished dropping " .. tostring(money) .. ", for " .. tostring(name), "All")
             print("[DEBUG] Money drop completed (alt)")
             wait(30)
         end
@@ -1338,12 +1374,13 @@ else
     end)
 
     local function teleport(targetPosition)
-        local character = PLAYER.Character
-        if character then
-            local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
-            if humanoidRootPart then
-                humanoidRootPart.CFrame = CFrame.new(targetPosition)
-            end
+        local character = PLAYER.Character or PLAYER.CharacterAdded:Wait()
+        local humanoidRootPart = character:WaitForChild("HumanoidRootPart", 10)
+        if humanoidRootPart then
+            humanoidRootPart.CFrame = CFrame.new(targetPosition)
+            print("[DEBUG] Teleported to: " .. tostring(targetPosition))
+        else
+            print("[ERROR] Failed to find HumanoidRootPart for teleport")
         end
     end
 
@@ -1413,5 +1450,8 @@ else
     settings().Rendering.QualityLevel = 1
     UserSettings().GameSettings.MasterVolume = 0
 
-    while true do listenForResponse(); wait(10) end
+    while true do
+        listenForResponse()
+        wait(10)
+    end
 end
