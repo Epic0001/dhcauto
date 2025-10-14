@@ -1226,7 +1226,7 @@ UserSettings().GameSettings.SavedQualityLevel = 0
     MAIN_EVENT:FireServer("RoleplayModeChange")
     teleport(Vector3.new(-393.01, 36, -338))
    
-    setfpscap(2)
+    setfpscap(3)
     settings().Rendering.QualityLevel = 1
     UserSettings().GameSettings.MasterVolume = 0
     RunService:Set3dRenderingEnabled(false)
@@ -1544,7 +1544,7 @@ UserSettings().GameSettings.SavedQualityLevel = 0
 
     teleportBasedOnAltNumber(PLAYER)
 
-    setfpscap(2)
+    setfpscap(3)
     settings().Rendering.QualityLevel = 1
     UserSettings().GameSettings.MasterVolume = 0
 
