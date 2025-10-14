@@ -1434,7 +1434,6 @@ else
         local userId = PLAYER.UserId
         local altNumber = getAltNumber(userId)
         local position = teleportPositions[altNumber] or Vector3.new(-381.01, 35.75, -286)
-        local platform = createSupportPlatform(Vector3.new(-375, 35.75, -325))
         teleport(position)
     
     end
