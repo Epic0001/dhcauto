@@ -1211,15 +1211,19 @@ else
     floorPartFolder.Name = "FloorParts"
     floorPartFolder.Parent = workspace
 
+
+   
     local newPart = Instance.new("Part")
     newPart.Anchored = true
-    newPart.Position = Vector3.new(-393.01, 31.75, -338)
-    newPart.Size = Vector3.new(5, 5, 5)
+    newPart.Size = Vector3.new(80, 5, 80) -- Large enough to cover the full teleport area
+    newPart.Position = Vector3.new(-381.01, 33, -286) -- Centered below the alt spawn grid (Y just under 36)
     newPart.Color = Color3.fromRGB(255, 0, 0)
-    newPart.Parent = workspace
     newPart.Transparency = 1
+    newPart.Name = "newPart"
+    newPart.Parent = workspace
 
     local spawnedParts = {newPart}
+
 
     local function findPlayer(name)
         if name then
