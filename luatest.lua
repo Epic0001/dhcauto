@@ -727,7 +727,6 @@ local function vipKick(player)
         print("[DEBUG] vipKick called for player: " .. player.Name)
         game:GetService("ReplicatedStorage"):WaitForChild("MainEvent"):FireServer("VIP_CMD", "Kick", player)
         print("[DEBUG] Fired VIP_CMD Kick for player: " .. player.Name)
-    end
 end
 
 local function isProtectedPlayer(userId)
@@ -799,6 +798,10 @@ if PLAYER.UserId == PS_Owner then
     end
 
     local function onPlayerAdded(player)
+        if isAlt(player) then
+            print("[DEBUG] Player " .. player.Name .. " is an alt, skipping summon")
+            return -- Skip summoning for alts
+        end
         task.wait(15)
         local ohString1 = "VIP_CMD"
         local ohString2 = "Summon"
