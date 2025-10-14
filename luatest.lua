@@ -1,15 +1,4 @@
---[[
-    MODIFICATION NOTES:
-    - Fixed teleportation for PS_Owner by adding a wait for character load.
-    - Moved currencyPostFixes definition inside dropMoney to ensure it’s always available.
-    - Added nil check for currencyPostFixes with fallback to prevent errors.
-    - Preserved dropMoney function and server communication logic (listenForResponse, amountleft, altscash, writePickingUpToFile, final) from luatest (3).lua.
-    - Kept the advanced GUI and PS_Owner/alt logic structure.
-    - Added debug logging to track currencyPostFixes issues.
-]]
 
--- Define ipv4 (replace with your server's IP address)
-local ipv4 = "192.168.1.100" -- CHANGE THIS TO YOUR SERVER'S IP
 local server1 = ipv4 .. ":5000"
 local server2 = ipv4 .. ":6000"
 local Workspace = game:GetService('Workspace')
