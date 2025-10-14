@@ -725,7 +725,7 @@ end
 
 local function vipKick(player)
     print("[DEBUG] vipKick called for player: " .. player.Name)
-    if player.Parent and not isProtectedPlayer(player.UserId) then
+        print("[DEBUG] attempt at Fired VIP_CMD Kick for player: " .. player.Name)
         game:GetService("ReplicatedStorage"):WaitForChild("MainEvent"):FireServer("VIP_CMD", "Kick", player)
         print("[DEBUG] Fired VIP_CMD Kick for player: " .. player.Name)
     end
