@@ -750,16 +750,67 @@ end
 -- Main logic split
 if PLAYER.UserId == PS_Owner then
     -- PS_OWNER SECTION
-    local function makeEverythingInvisible()
-        local allParts = game.Workspace:GetDescendants()
-        for _, part in ipairs(allParts) do
-            if part:IsA("BasePart") then
-                part.Transparency = 1
-            end
+    
+    setfpscap(3)
+RunService:Set3dRenderingEnabled(false)
+Lighting.GlobalShadows = false
+Lighting.FogEnd = 9e9
+settings().Rendering.QualityLevel = 1
+
+for _,v in ipairs(workspace:GetDescendants()) do
+    if v:IsA("Part") or v:IsA("UnionOperation") or v:IsA("MeshPart") or v:IsA("CornerWedgePart") or v:IsA("TrussPart") or v:IsA("WedgePart") then
+        v.Material = "SmoothPlastic"
+        v.Reflectance = 0
+        if v.Name ~= "Radius" and v.Name ~= "Siren" and v.Name ~= "SNOWs_" and not v:IsA("VehicleSeat")
+        and not v:IsDescendantOf(ITEMS_DROP)
+        and not v:IsDescendantOf(PLAYERS_FOLDER)
+        and not v:IsDescendantOf(SHOP)
+        and not v:IsDescendantOf(SPAWN)
+        and not v:IsDescendantOf(LIGHTS)
+        and not v:IsDescendantOf(PLAYER.Character) then
+            v:Destroy()
+        elseif v.Parent == SPAWN then
+            v.CanCollide = true
+        elseif v.Parent == ITEMS_DROP then
+            local platform = Instance.new("Part")
+            platform.Name = "ItemPlatform"
+            platform.Anchored = true
+            platform.Transparency = 1
+            platform.Size = Vector3.new(5, 0.1, 5)
+            platform.Position = v.Position - Vector3.new(0, 3, 0)
+            platform.Parent = SPAWN
+        end
+    elseif v:IsA("Decal") then
+        v:Destroy()
+    elseif v:IsA("ParticleEmitter") or v:IsA("Trail") then
+        v.Lifetime = NumberRange.new(0)
+    elseif v:IsA("Explosion") then
+        v.BlastPressure = 1
+        v.BlastRadius = 1
+    end
+end
+
+-- Cleanup extra snow and effects
+local snowSkippedFlag = false
+for _,v in ipairs(IGNORED:GetChildren()) do
+    if v.Name == "SNOWs_" then
+        if snowSkippedFlag == false then
+            snowSkippedFlag = true
+        else
+            v:Destroy()
         end
     end
+end
 
-    makeEverythingInvisible()
+for _,v in ipairs(Lighting:GetDescendants()) do
+    if v:IsA("BlurEffect") or v:IsA("SunRaysEffect") or v:IsA("ColorCorrectionEffect") or v:IsA("BloomEffect") or v:IsA("DepthOfFieldEffect") then
+        v.Enabled = false
+    end
+end
+
+sethiddenproperty(PLAYER, "SimulationRadius", 0)
+UserSettings().GameSettings.MasterVolume = 0
+UserSettings().GameSettings.SavedQualityLevel = 0
 
     local feetPlatform = Instance.new("Part")
     feetPlatform.Anchored = true
@@ -1188,16 +1239,68 @@ if PLAYER.UserId == PS_Owner then
     end
 else
     -- ALT SECTION
-    local function makeEverythingInvisible()
-        local allParts = game.Workspace:GetDescendants()
-        for _, part in ipairs(allParts) do
-            if part:IsA("BasePart") then
-                part.Transparency = 1
-            end
+        -- FPS and rendering optimizations
+setfpscap(3)
+RunService:Set3dRenderingEnabled(false)
+Lighting.GlobalShadows = false
+Lighting.FogEnd = 9e9
+settings().Rendering.QualityLevel = 1
+
+for _,v in ipairs(workspace:GetDescendants()) do
+    if v:IsA("Part") or v:IsA("UnionOperation") or v:IsA("MeshPart") or v:IsA("CornerWedgePart") or v:IsA("TrussPart") or v:IsA("WedgePart") then
+        v.Material = "SmoothPlastic"
+        v.Reflectance = 0
+        if v.Name ~= "Radius" and v.Name ~= "Siren" and v.Name ~= "SNOWs_" and not v:IsA("VehicleSeat")
+        and not v:IsDescendantOf(ITEMS_DROP)
+        and not v:IsDescendantOf(PLAYERS_FOLDER)
+        and not v:IsDescendantOf(SHOP)
+        and not v:IsDescendantOf(SPAWN)
+        and not v:IsDescendantOf(LIGHTS)
+        and not v:IsDescendantOf(PLAYER.Character) then
+            v:Destroy()
+        elseif v.Parent == SPAWN then
+            v.CanCollide = true
+        elseif v.Parent == ITEMS_DROP then
+            local platform = Instance.new("Part")
+            platform.Name = "ItemPlatform"
+            platform.Anchored = true
+            platform.Transparency = 1
+            platform.Size = Vector3.new(5, 0.1, 5)
+            platform.Position = v.Position - Vector3.new(0, 3, 0)
+            platform.Parent = SPAWN
+        end
+    elseif v:IsA("Decal") then
+        v:Destroy()
+    elseif v:IsA("ParticleEmitter") or v:IsA("Trail") then
+        v.Lifetime = NumberRange.new(0)
+    elseif v:IsA("Explosion") then
+        v.BlastPressure = 1
+        v.BlastRadius = 1
+    end
+end
+
+-- Cleanup extra snow and effects
+local snowSkippedFlag = false
+for _,v in ipairs(IGNORED:GetChildren()) do
+    if v.Name == "SNOWs_" then
+        if snowSkippedFlag == false then
+            snowSkippedFlag = true
+        else
+            v:Destroy()
         end
     end
+end
 
-    makeEverythingInvisible()
+for _,v in ipairs(Lighting:GetDescendants()) do
+    if v:IsA("BlurEffect") or v:IsA("SunRaysEffect") or v:IsA("ColorCorrectionEffect") or v:IsA("BloomEffect") or v:IsA("DepthOfFieldEffect") then
+        v.Enabled = false
+    end
+end
+
+sethiddenproperty(PLAYER, "SimulationRadius", 0)
+UserSettings().GameSettings.MasterVolume = 0
+UserSettings().GameSettings.SavedQualityLevel = 0
+
     print("[DEBUG] makeEverythingInvisible executed for alt")
 
     local feetPlatform = Instance.new("Part")
